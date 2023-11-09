@@ -61,7 +61,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/edthoten"
+            android:id="@+id/edthoten_dk"
             android:layout_width="380dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center">
@@ -74,7 +74,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/edtsdt"
+            android:id="@+id/edtsdt_dk"
             android:layout_width="380dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center">
@@ -87,7 +87,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/edtemail"
+            android:id="@+id/edtemail_dk"
             android:layout_width="380dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center">
@@ -100,7 +100,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/edtPassword_login"
+            android:id="@+id/edtPassword_dk"
             android:layout_width="380dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -114,7 +114,7 @@
                 android:inputType="textPassword" />
         </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/edtPassword_nhaplai_login"
+            android:id="@+id/edtPassword_nhaplai_dk"
             android:layout_width="380dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -137,7 +137,7 @@
         android:orientation="vertical">
 
         <CheckBox
-            android:id="@+id/chkLuuTK_login"
+            android:id="@+id/chkLuuTK_dk"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:buttonTint="#0a3d62"
@@ -146,21 +146,20 @@
             android:layout_gravity="left"
             android:textColor="#0a3d62" />
         <Button
-            android:id="@+id/btndangnhap_login"
-            android:layout_width="256dp"
+            android:id="@+id/btndangky_dk"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:text="Đăng nhập"
-            android:layout_marginTop="10dp"
+            android:text="Đăng Ký"
             android:backgroundTint="#F08726"
             />
-        <TextView
-            android:id="@+id/txtchuacotk_login"
-            android:layout_width="wrap_content"
+        <Button
+            android:id="@+id/btndangnhap_dk"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:text="Chưa có tài khoản?"
-            android:textColor="#ccc"
-            android:layout_marginTop="5dp"
+            android:text="Đăng nhập"
+            android:backgroundTint="#F08726"
             />
+
 
     </LinearLayout>
 
