@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "812965363731",
+    "project_id": "vtt-store",
+    "storage_bucket": "vtt-store.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:812965363731:android:aa44f22fca45a0f3d4bfe6",
+        "android_client_info": {
+          "package_name": "anhpvph37030.fpoly.duan_nhom8"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC8lISxFCK9_qNNW2IEsq_GsBprvxWSoRU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
