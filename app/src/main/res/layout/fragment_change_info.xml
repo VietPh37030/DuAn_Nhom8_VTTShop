@@ -1,101 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".fragment.ChangeInfo"
-    android:orientation="vertical">
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="625dp"
-    android:layout_marginTop="-40dp"
-    android:background="@drawable/round_shape"
-    android:orientation="vertical">
-<ImageButton
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:background="@drawable/avt"
-    android:layout_marginTop="50dp"
-    />
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/edtchangehoten"
-        android:layout_width="380dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="15dp"
-        app:startIconDrawable="@drawable/person"
-        >
+    tools:context=".fragment.ChangeInfo">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/hello_blank_fragment" />
 
-            android:hint="Họ và tên"
-            android:maxLines="1" />
-    </com.google.android.material.textfield.TextInputLayout>
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/edtchangenamsinh"
-        android:layout_width="380dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginBottom="20dp"
-        android:layout_marginTop="10dp"
-        app:startIconDrawable="@drawable/person"
-        >
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-
-            android:hint="Năm sinh"
-            android:maxLines="1" />
-    </com.google.android.material.textfield.TextInputLayout>
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/edtchangesdt"
-        android:layout_width="380dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginBottom="20dp"
-        android:layout_marginTop="10dp"
-        app:startIconDrawable="@drawable/phone"
-        >
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-
-            android:hint="Số điện thoại"
-            android:maxLines="1" />
-    </com.google.android.material.textfield.TextInputLayout>
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/edtchangediachi"
-        android:layout_width="380dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginBottom="20dp"
-        android:layout_marginTop="10dp"
-        app:startIconDrawable="@drawable/email"
-        >
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-
-            android:hint="Địa chỉ"
-            android:maxLines="1" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-</LinearLayout>
-    <Button
-        android:id="@+id/btnchangethaydoi"
-        android:layout_width="256dp"
-        android:layout_height="wrap_content"
-        android:text="Thay đổi"
-        android:layout_gravity="center"
-        android:layout_marginTop="10dp"
-        android:backgroundTint="#F08726"
-        />
-</LinearLayout>
+</FrameLayout>

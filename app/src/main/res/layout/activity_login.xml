@@ -7,6 +7,7 @@
     android:orientation="vertical"
     tools:context=".taikhoan.Login">
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="625dp"
@@ -76,37 +77,38 @@
         </com.google.android.material.textfield.TextInputLayout>
 
     </LinearLayout>
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-   android:gravity="center"
-    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical">
 
-    <CheckBox
-        android:id="@+id/chkLuuTK"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:buttonTint="#0a3d62"
-        android:text="Lưu tài khoản"
-        android:layout_marginLeft="10dp"
-        android:layout_gravity="left"
-        android:textColor="#0a3d62" />
-    <Button
-        android:id="@+id/btndangnhap"
-        android:layout_width="256dp"
-        android:layout_height="wrap_content"
-        android:text="Đăng nhập"
-        android:layout_marginTop="10dp"
-        android:backgroundTint="#F08726"
-        />
-    <TextView
-        android:id="@+id/txtchuacotk"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Chưa có tài khoản?"
-        android:textColor="#ccc"
-        android:layout_marginTop="5dp"
-        />
+        <CheckBox
+            android:id="@+id/chkLuuTK"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:buttonTint="#0a3d62"
+            android:text="Lưu tài khoản"
+            android:layout_marginLeft="10dp"
+            android:layout_gravity="left"
+            android:textColor="#0a3d62" />
+        <Button
+            android:id="@+id/btndangnhap"
+            android:layout_width="256dp"
+            android:layout_height="wrap_content"
+            android:text="Đăng nhập"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="#F08726"
+            />
+        <TextView
+            android:id="@+id/txtchuacotk"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Chưa có tài khoản?"
+            android:textColor="#ccc"
+            android:layout_marginTop="5dp"
+            />
 
-</LinearLayout>
+    </LinearLayout>
+
 </LinearLayout>
