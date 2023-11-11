@@ -10,8 +10,8 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="625dp"
-        android:layout_marginTop="-50dp"
+        android:layout_height="615dp"
+
         android:background="@drawable/round_shape"
         android:orientation="vertical">
 
@@ -38,22 +38,25 @@
             android:textColor="#6A16F3"
             android:textSize="30dp"
             android:textStyle="bold" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Đăng nhập"
             android:layout_gravity="center"
+            android:layout_marginTop="15dp"
+            android:text="Đăng nhập"
             android:textColor="#000"
             android:textSize="25dp"
-            android:textStyle="bold"
-            android:layout_marginTop="15dp"/>
+            android:textStyle="bold" />
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/edtUsername"
             android:layout_width="380dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginTop="10dp"
             android:layout_marginBottom="20dp"
-            android:layout_marginTop="10dp">
+            app:startIconDrawable="@drawable/person">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -61,13 +64,15 @@
                 android:hint="Tài khoản"
                 android:maxLines="1" />
         </com.google.android.material.textfield.TextInputLayout>
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/edtPassword"
             android:layout_width="380dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             app:hintEnabled="true"
-            app:passwordToggleEnabled="true">
+            app:passwordToggleEnabled="true"
+            app:startIconDrawable="@drawable/key">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -77,6 +82,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

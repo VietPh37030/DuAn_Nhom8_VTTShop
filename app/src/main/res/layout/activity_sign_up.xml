@@ -5,11 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+
     tools:context=".taikhoan.SignUp">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="650dp"
-        android:layout_marginTop="-50dp"
+        android:layout_height="630dp"
         android:background="@drawable/round_shape"
         android:orientation="vertical">
 
@@ -17,7 +17,7 @@
             android:layout_width="168dp"
             android:layout_height="100dp"
             android:layout_gravity="center"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="30dp"
             android:background="@drawable/logo" />
 
         <TextView
@@ -51,7 +51,8 @@
             android:id="@+id/edttendn"
             android:layout_width="380dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center">
+            android:layout_gravity="center"
+            app:startIconDrawable="@drawable/person">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -64,7 +65,8 @@
             android:id="@+id/edthoten"
             android:layout_width="380dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center">
+            android:layout_gravity="center"
+            app:startIconDrawable="@drawable/person">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -77,7 +79,8 @@
             android:id="@+id/edtsdt"
             android:layout_width="380dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center">
+            android:layout_gravity="center"
+            app:startIconDrawable="@drawable/phone">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -90,7 +93,8 @@
             android:id="@+id/edtemail"
             android:layout_width="380dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center">
+            android:layout_gravity="center"
+            app:startIconDrawable="@drawable/email">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -105,7 +109,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             app:hintEnabled="true"
-            app:passwordToggleEnabled="true">
+            app:passwordToggleEnabled="true"
+            app:startIconDrawable="@drawable/pass">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -119,7 +124,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             app:hintEnabled="true"
-            app:passwordToggleEnabled="true">
+            app:passwordToggleEnabled="true"
+            app:startIconDrawable="@drawable/key">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -136,31 +142,15 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <CheckBox
-            android:id="@+id/chkLuuTK_login"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:buttonTint="#0a3d62"
-            android:text="Lưu tài khoản"
-            android:layout_marginLeft="10dp"
-            android:layout_gravity="left"
-            android:textColor="#0a3d62" />
         <Button
-            android:id="@+id/btndangnhap_login"
+            android:id="@+id/btndangki"
             android:layout_width="256dp"
             android:layout_height="wrap_content"
-            android:text="Đăng nhập"
+            android:text="Đăng kí"
             android:layout_marginTop="10dp"
             android:backgroundTint="#F08726"
             />
-        <TextView
-            android:id="@+id/txtchuacotk_login"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Chưa có tài khoản?"
-            android:textColor="#ccc"
-            android:layout_marginTop="5dp"
-            />
+
 
     </LinearLayout>
 
