@@ -7,12 +7,11 @@
     android:background="#CEEDD9"
     tools:context=".MainActivity">
 
-
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/pagerMain"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#CEEDD9"/>
+        android:background="#CEEDD9" />
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -31,7 +30,7 @@
             android:background="#fff"
             app:itemIconTint="@color/color_item_bottom_nav"
             app:itemTextColor="@color/color_item_bottom_nav"
-            app:menu="@menu/bottom_nav" />
+            app:menu="@menu/bottom_navigation" />
     </androidx.cardview.widget.CardView>
 
 </RelativeLayout>

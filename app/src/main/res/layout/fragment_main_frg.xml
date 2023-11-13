@@ -43,7 +43,7 @@
 
     </RelativeLayout>
 
-    <SearchView
+    <androidx.appcompat.widget.SearchView
         android:id="@+id/searchView"
         style="@style/SearchViewStyle"
         android:layout_width="match_parent"
