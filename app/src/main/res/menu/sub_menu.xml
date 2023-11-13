@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
     <item
         android:id="@+id/item_add"
-        android:icon="@drawable/ic_search2"
+        android:icon="@drawable/ic_search"
         android:title="Add new"
         app:showAsAction="ifRoom"
         app:actionViewClass="androidx.appcompat.widget.SearchView"/>

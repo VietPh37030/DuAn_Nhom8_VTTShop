@@ -43,7 +43,7 @@
 
     </RelativeLayout>
 
-    <SearchView
+    <androidx.appcompat.widget.SearchView
         android:id="@+id/searchView"
         style="@style/SearchViewStyle"
         android:layout_width="match_parent"
@@ -154,12 +154,17 @@
         </androidx.cardview.widget.CardView>
     </GridLayout>
 
-    <ListView
-        android:id="@+id/lvDienThoai"
+    <GridView
+        android:id="@+id/gvSponsor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/GridMenu1"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
         android:divider="@android:color/transparent"
-        android:dividerHeight="10dp" />
+        android:dividerHeight="10dp"
+        android:numColumns="2" />
 
 </RelativeLayout>
