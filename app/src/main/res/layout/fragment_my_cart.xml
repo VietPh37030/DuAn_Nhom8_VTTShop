@@ -6,23 +6,49 @@
     android:layout_height="match_parent"
     tools:context=".fragment.MyCart">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:background="#4CAF50"
-        android:elevation="4dp"
-        android:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:menu="@menu/sub_menu"
-        />
-
     <ListView
         android:id="@+id/lstmycart"
-        android:layout_width="409dp"
-        android:layout_height="673dp"
-        tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="57dp" />
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="10dp" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/lstmycart"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="587dp"
+        android:layout_marginRight="10dp">
+
+        <TextView
+            android:id="@+id/tongGia"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="10dp"
+            android:layout_marginRight="20dp"
+            android:layout_weight="20"
+            android:ems="10"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="Tổng cộng: 12.000.000đ"
+            android:textSize="13sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="10dp"
+            android:layout_marginRight="20dp"
+            android:layout_weight="20"
+            android:background="#eb4d4b"
+            android:ems="10"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="Thanh toán"
+            android:textColor="#ffffff"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+    </LinearLayout>
 
 </RelativeLayout>
