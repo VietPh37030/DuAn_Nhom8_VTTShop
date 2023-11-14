@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".fragment.hoadon">
+    tools:context=".Activities.HoaDonActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -16,10 +16,12 @@
         android:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:menu="@menu/sub_menu" />
+
     <ListView
         android:id="@+id/lsthoadon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        />
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="10dp" />
 
 </LinearLayout>

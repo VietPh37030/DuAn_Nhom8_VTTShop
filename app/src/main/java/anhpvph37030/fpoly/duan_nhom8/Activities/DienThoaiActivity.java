@@ -1,4 +1,4 @@
-package anhpvph37030.fpoly.duan_nhom8.fragment;
+package anhpvph37030.fpoly.duan_nhom8.Activities;
 
 import android.os.Bundle;
 
@@ -10,12 +10,17 @@ import android.view.ViewGroup;
 
 import anhpvph37030.fpoly.duan_nhom8.R;
 
-public class ChangePass extends Fragment {
+
+public class DienThoaiActivity extends Fragment {
+
+    public DienThoaiActivity() {
+        // Required empty public constructor
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_change_pass, container, false);
+        return inflater.inflate(R.layout.activity_dien_thoai, container, false);
     }
 }
