@@ -4,10 +4,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,6 +19,8 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.Firebase;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import anhpvph37030.fpoly.duan_nhom8.MainActivity;
@@ -26,7 +30,9 @@ public class Login extends AppCompatActivity {
     TextView txtchuacotaikoan;
     TextInputLayout txttk, txtmk;
     Button btndangnhap;
+    CheckBox chkluumk;
     FirebaseAuth mauth;
+    FirebaseUser mUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +64,7 @@ public class Login extends AppCompatActivity {
         txttk = findViewById(R.id.edtUsername);
         txtmk = findViewById(R.id.edtPassword);
         btndangnhap = findViewById(R.id.btndangnhap);
+        chkluumk = findViewById(R.id.chkLuuTK);
     }
 
     private void dangnhap() {
@@ -73,14 +80,27 @@ public class Login extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             Toast.makeText(Login.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
+                            if (chkluumk.isChecked()) {
+                                saveAccountInfo(email, pass);
+                            }
                             Intent intent = new Intent(Login.this, MainActivity.class);
                             startActivity(intent);
+
 
                         } else {
                             Toast.makeText(Login.this, "Đăng nhập thất bại", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
+    }
+    private void saveAccountInfo(String email, String password) {
+        FirebaseUser user = mauth.getCurrentUser();
+        if (user != null) {
+            String userId = user.getUid();
+            DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("users");
+            usersRef.child(userId).child("email").setValue(email);
+            usersRef.child(userId).child("password").setValue(password);
+        }
     }
 
 }
