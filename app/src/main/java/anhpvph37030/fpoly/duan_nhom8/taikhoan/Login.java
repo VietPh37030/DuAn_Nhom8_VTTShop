@@ -1,5 +1,6 @@
 package anhpvph37030.fpoly.duan_nhom8.taikhoan;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -27,6 +28,7 @@ public class Login extends AppCompatActivity {
     TextInputLayout txttk, txtmk;
     Button btndangnhap;
     CheckBox chkluumk;
+
     FirebaseAuth mauth;
 
     @Override
@@ -86,6 +88,12 @@ public class Login extends AppCompatActivity {
             Toast.makeText(this, "Không được để trống", Toast.LENGTH_SHORT).show();
             return;
         }
+
+        ProgressDialog progressDialog = new ProgressDialog(Login.this);
+        progressDialog.setMessage("Đang đăng nhập...");
+
+        // Show the progress dialog
+        progressDialog.show();
 
         mauth.signInWithEmailAndPassword(email, pass)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
