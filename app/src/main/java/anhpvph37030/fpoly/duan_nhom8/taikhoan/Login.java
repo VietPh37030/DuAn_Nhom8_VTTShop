@@ -130,7 +130,6 @@ public class Login extends AppCompatActivity {
             editor.putString("email", email);
             editor.putString("password", password);
             editor.putBoolean("isChecked", status);
-
             // Lưu dữ liệu lên Firebase Realtime Database
             FirebaseUser user = mauth.getCurrentUser();
             if (user != null) {
