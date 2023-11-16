@@ -151,6 +151,12 @@
             android:backgroundTint="#F08726"
             android:text="Đăng kí" />
 
+        <TextView
+            android:id="@+id/tvDangNhap"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="đăng nhập"/>
     </LinearLayout>
 
 </LinearLayout>

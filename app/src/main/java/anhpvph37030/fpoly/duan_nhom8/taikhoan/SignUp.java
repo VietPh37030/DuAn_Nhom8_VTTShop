@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -27,6 +28,7 @@ public class SignUp extends AppCompatActivity {
 
     private TextInputLayout edtTenDangNhap, edtHoTen, edtSoDienThoai, edtEmail, edtMatKhau, edtNhapLaiMatKhau;
     private Button btnDangKy;
+    private TextView btnDangNhap;
     private ProgressDialog progressDialog;
 
     @Override
@@ -40,6 +42,12 @@ public class SignUp extends AppCompatActivity {
                 dangKy();
             }
         });
+        btnDangNhap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dangNhap();
+            }
+        });
     }
 
     private void anhXa() {
@@ -50,9 +58,14 @@ public class SignUp extends AppCompatActivity {
         edtMatKhau = findViewById(R.id.edtPassword_login);
         edtNhapLaiMatKhau = findViewById(R.id.edtPassword_nhaplai_login);
         btnDangKy = findViewById(R.id.btndangki);
+        btnDangNhap = findViewById(R.id.tvDangNhap);
         progressDialog = new ProgressDialog(this);
     }
 
+    private void dangNhap(){
+        Intent intent = new Intent(this, Login.class);
+        startActivity(intent);
+    }
     private void dangKy() {
         String email = edtEmail.getEditText().getText().toString().trim();
         String password = edtMatKhau.getEditText().getText().toString().trim();
