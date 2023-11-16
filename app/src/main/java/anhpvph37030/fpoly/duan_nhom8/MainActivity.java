@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     MenuAdapter adapter;
     ViewPager2 pagerMain;
     ArrayList<Fragment> list = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         list.add(new MainFrg());
         list.add(new MyCart());
         list.add(new CaNhan());
-        adapter = new MenuAdapter(this,list);
+        adapter = new MenuAdapter(this, list);
         pagerMain.setAdapter(adapter);
         pagerMain.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override

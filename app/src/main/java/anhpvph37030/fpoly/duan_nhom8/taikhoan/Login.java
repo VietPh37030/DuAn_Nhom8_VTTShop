@@ -19,6 +19,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import anhpvph37030.fpoly.duan_nhom8.MainActivity;
 import anhpvph37030.fpoly.duan_nhom8.R;
@@ -90,6 +93,7 @@ public class Login extends AppCompatActivity {
         }
 
         ProgressDialog progressDialog = new ProgressDialog(Login.this);
+        progressDialog.setTitle("Loading");
         progressDialog.setMessage("Đang đăng nhập...");
 
         // Show the progress dialog
@@ -126,6 +130,15 @@ public class Login extends AppCompatActivity {
             editor.putString("email", email);
             editor.putString("password", password);
             editor.putBoolean("isChecked", status);
+
+            // Lưu dữ liệu lên Firebase Realtime Database
+            FirebaseUser user = mauth.getCurrentUser();
+            if (user != null) {
+                String userId = user.getUid();
+                DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("users");
+                usersRef.child(userId).child("email").setValue(email);
+                usersRef.child(userId).child("password").setValue(password);
+            }
         }
         // luu lai toan bo du lieu
         editor.apply();
