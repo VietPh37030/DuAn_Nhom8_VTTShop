@@ -155,14 +155,14 @@
     </GridLayout>
 
     <GridView
-        android:id="@+id/gvSponsor"
+        android:id="@+id/gvDT"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/GridMenu1"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
+        android:padding="5dp"
         android:divider="@android:color/transparent"
         android:dividerHeight="10dp"
         android:numColumns="2" />
