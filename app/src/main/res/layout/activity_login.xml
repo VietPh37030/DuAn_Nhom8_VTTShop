@@ -102,7 +102,8 @@
             android:layout_width="256dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:backgroundTint="#F08726"
+          android:background="@drawable/editbootom3"
+
             android:text="Đăng nhập" />
 
         <TextView
