@@ -34,7 +34,6 @@ public class MainFrg extends Fragment {
         productList.add(new Product(R.drawable.item_phone,"Product 2", "10.000.000 đ"));
         productList.add(new Product(R.drawable.item_phone,"Product 3", "10.000.000 đ"));
         // Thêm thông tin cho các sản phẩm khác
-
         // Tạo Adapter
         ProductAdapter adapter = new ProductAdapter(getActivity(), productList);
 
