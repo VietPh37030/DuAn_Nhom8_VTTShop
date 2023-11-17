@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ProductDelta">
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="#4CAF50"
+        android:elevation="4dp"
+        android:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:menu="@menu/sub_menu" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="350dp"
+            android:layout_height="250dp"
+            android:background="@drawable/grey_bg"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+<ImageView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:src="@drawable/phone_phong"
+    android:layout_gravity="center"
+    android:layout_marginTop="30dp"/>
+
+            <!--    // close bao1-->
+        </LinearLayout>
+       <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:orientation="vertical"
+           android:layout_marginTop="15dp"
+           android:paddingLeft="25dp">
+           <TextView
+               android:id="@+id/txtnamedeita"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="Lenovo ideapad3"
+               android:textStyle="bold"
+               android:textColor="#000"
+               android:textSize="30dp"/>
+           <TextView
+               android:id="@+id/txtgiadeita"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="12.490.000 đ"
+               android:textStyle="bold"
+               android:textColor="#E31818"
+               android:layout_marginTop="10dp"
+               android:textSize="18dp"/>
+           <TextView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="Thông tin sản phẩm:"
+               android:textColor="#03A9F4"
+               android:layout_gravity="center"
+               android:layout_marginTop="5px"/>
+
+       </LinearLayout>
+        <LinearLayout
+            android:layout_width="380dp"
+            android:layout_height="245dp"
+            android:orientation="vertical"
+            android:background="@drawable/solid"
+            android:layout_gravity="center"
+            >
+
+            <TextView
+                android:id="@+id/txtmota"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="30dp"
+                android:textColor="#000"
+                android:text="iPhone 13 mini: 128GB | 256GB | 512GB. Màu sắc: Hồng, Đen, Trắng, Xanh, Đỏ (Đối với bản 512GB chỉ áp dụng màu Đen).
+iPhone 13: 128GB | 256GB | 512GB. Màu sắc: Hồng, Đen, Trắng" />
+
+        </LinearLayout>
+    </LinearLayout>
+<!--    //layout bao-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/btnthemvaogio"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Thêm giỏ hàng"
+            android:textColor="@android:color/white"
+            android:background="@drawable/editbootom2"
+
+            />
+        <Button
+            android:id="@+id/btnmuangay"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/editbootom"
+            android:layout_weight="1"
+            android:textColor="@android:color/white"
+            android:text="Mua ngay"
+            />
+    </LinearLayout>
+</LinearLayout>
