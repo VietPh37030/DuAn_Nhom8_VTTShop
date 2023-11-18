@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_trangtru"
+        android:title="Thể Loại"
+        android:icon="@drawable/home"/>
+    <item
+        android:id="@+id/nav_sanpham"
+        android:title="Sản Phẩm"
+        android:icon="@drawable/smartphone"/>
+    <item
+        android:id="@+id/navthongke"
+        android:title="Thống Kê"
+        android:icon="@drawable/chart"/>
+    <item
+        android:id="@+id/nav_tai_khoan"
+        android:title="Tài khoản"
+        android:icon="@drawable/person"/>
+</menu>
