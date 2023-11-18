@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import anhpvph37030.fpoly.duan_nhom8.R;
 
 
-public class MyCart extends Fragment {
+public class MyCartFrg extends Fragment {
 
 
     @Override

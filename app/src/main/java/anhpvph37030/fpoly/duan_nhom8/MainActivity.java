@@ -14,9 +14,9 @@ import com.google.android.material.navigation.NavigationBarView;
 import java.util.ArrayList;
 
 import anhpvph37030.fpoly.duan_nhom8.Adapter.MenuAdapter;
-import anhpvph37030.fpoly.duan_nhom8.fragment.CaNhan;
+import anhpvph37030.fpoly.duan_nhom8.fragment.CaNhanFrg;
 import anhpvph37030.fpoly.duan_nhom8.fragment.MainFrg;
-import anhpvph37030.fpoly.duan_nhom8.fragment.MyCart;
+import anhpvph37030.fpoly.duan_nhom8.fragment.MyCartFrg;
 
 public class MainActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
@@ -35,8 +35,8 @@ public class MainActivity extends AppCompatActivity {
         pagerMain = findViewById(R.id.pagerMain);
         bottomNavigationView = findViewById(R.id.menu_nav);
         list.add(new MainFrg());
-        list.add(new MyCart());
-        list.add(new CaNhan());
+        list.add(new MyCartFrg());
+        list.add(new CaNhanFrg());
         adapter = new MenuAdapter(this, list);
         pagerMain.setAdapter(adapter);
         pagerMain.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {

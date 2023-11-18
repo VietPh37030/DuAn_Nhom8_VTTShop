@@ -22,7 +22,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import anhpvph37030.fpoly.duan_nhom8.Activities.ProductDelta;
+import anhpvph37030.fpoly.duan_nhom8.Activities.ProductDeltaActivity;
 import anhpvph37030.fpoly.duan_nhom8.Adapter.ProductAdapter;
 import anhpvph37030.fpoly.duan_nhom8.R;
 import anhpvph37030.fpoly.duan_nhom8.model.Product;
@@ -73,7 +73,7 @@ public class MainFrg extends Fragment {
                 Product selectedProduct = (Product) parent.getItemAtPosition(position);
 
                 // Tạo Intent để chuyển từ MainFrg sang ProductDetailActivity
-                Intent intent = new Intent(getActivity(), ProductDelta.class);
+                Intent intent = new Intent(getActivity(), ProductDeltaActivity.class);
 
                 // Đặt thông tin sản phẩm vào Intent
                 intent.putExtra("PRODUCT_ID", selectedProduct.getId());

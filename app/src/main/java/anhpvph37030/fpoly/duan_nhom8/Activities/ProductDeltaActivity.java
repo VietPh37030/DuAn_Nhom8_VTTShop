@@ -6,7 +6,7 @@ import android.os.Bundle;
 
 import anhpvph37030.fpoly.duan_nhom8.R;
 
-public class ProductDelta extends AppCompatActivity {
+public class ProductDeltaActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

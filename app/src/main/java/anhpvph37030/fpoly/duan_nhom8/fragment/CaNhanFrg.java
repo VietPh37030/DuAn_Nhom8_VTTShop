@@ -8,7 +8,6 @@ import android.os.Bundle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,12 +24,12 @@ import anhpvph37030.fpoly.duan_nhom8.R;
 import anhpvph37030.fpoly.duan_nhom8.taikhoan.Login;
 
 
-public class CaNhan extends Fragment {
+public class CaNhanFrg extends Fragment {
     ImageView imgavt;
     TextView txtht, txtemailcn;
     Button btndangxuat;
 
-    public CaNhan() {
+    public CaNhanFrg() {
 
     }
 
