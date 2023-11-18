@@ -1,42 +1,51 @@
 package anhpvph37030.fpoly.duan_nhom8.model;
 
 public class Product {
-    private int productImage;
-
-    private String productName;
-    private String productPrice;
+    private String id;
+    private String image;
+    private String name;
+    private String price;
 
     public Product() {
     }
 
-    public Product(int productImage, String productName, String productPrice) {
-        this.productImage = productImage;
-        this.productName = productName;
-        this.productPrice = productPrice;
+    public Product(String id, String image, String name, String price) {
+        this.id = id;
+        this.image = image;
+        this.name = name;
+        this.price = price;
     }
 
-    public int getProductImage() {
-        return productImage;
+    public String getId() {
+        return id;
     }
 
-    public void setProductImage(int productImage) {
-        this.productImage = productImage;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public String getProductName() {
-        return productName;
+    public String getImage() {
+        return image;
     }
 
-    public void setProductName(String productName) {
-        this.productName = productName;
+    public void setImage(String image) {
+        this.image = image;
     }
 
-    public String getProductPrice() {
-        return productPrice;
+    public String getName() {
+        return name;
     }
 
-    public void setProductPrice(String productPrice) {
-        this.productPrice = productPrice;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
     }
 }
 

@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.util.List;
 
@@ -18,8 +19,18 @@ import anhpvph37030.fpoly.duan_nhom8.R;
 import anhpvph37030.fpoly.duan_nhom8.model.Product;
 
 public class ProductAdapter extends ArrayAdapter<Product> {
-    public ProductAdapter(Context context, List<Product> products) {
-        super(context, 0, products);
+    private Context context;
+    private List<Product> productList;
+
+    public ProductAdapter(Context context, List<Product> productList) {
+        super(context, 0, productList);
+        this.context = context;
+        this.productList = productList;
+    }
+
+    @Override
+    public int getCount() {
+        return productList.size();
     }
 
     @Override
@@ -36,17 +47,33 @@ public class ProductAdapter extends ArrayAdapter<Product> {
         TextView productNameTextView = listItemView.findViewById(R.id.tvTenDT);
         TextView productPriceTextView = listItemView.findViewById(R.id.tvGia);
 
+//        if (currentProduct != null) {
+//            // Sử dụng thư viện Glide để hiển thị ảnh từ URL hoặc resource
+//            Glide.with(getContext())
+//                    .load(currentProduct.getImage())
+//                    .into(productImageView);
+//
+//            productNameTextView.setText(currentProduct.getName());
+//            productPriceTextView.setText(currentProduct.getPrice());
+//        }
         if (currentProduct != null) {
             // Sử dụng thư viện Glide để hiển thị ảnh từ URL hoặc resource
-            Glide.with(getContext())
-                    .load(currentProduct.getProductImage())
+            RequestOptions options = new RequestOptions()
+                    .centerCrop()
+                    .placeholder(R.drawable.ic_cart) // Ảnh mặc định khi tải
+                    .error(R.drawable.item_phone); // Ảnh mặc định khi có lỗi
+
+            Glide.with(context)
+                    .load(currentProduct.getImage())
+                    .apply(options)
                     .into(productImageView);
 
-
-            productNameTextView.setText(currentProduct.getProductName());
-            productPriceTextView.setText(currentProduct.getProductPrice());
+            productNameTextView.setText(currentProduct.getName());
+            productPriceTextView.setText(currentProduct.getPrice());
         }
+
 
         return listItemView;
     }
 }
+
