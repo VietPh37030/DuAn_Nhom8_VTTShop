@@ -77,6 +77,8 @@ public class MainFrg extends Fragment {
 
                 // Đặt thông tin sản phẩm vào Intent
                 intent.putExtra("PRODUCT_ID", selectedProduct.getId());
+                intent.putExtra("PRODUCT_NAME", selectedProduct.getName());
+                intent.putExtra("PRODUCT_PRICE", selectedProduct.getPrice());
 
                 // Chuyển sang ProductDetailActivity
                 startActivity(intent);

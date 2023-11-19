@@ -18,6 +18,9 @@
             android:name=".MainactivityAdmin"
             android:exported="false" />
         <activity
+            android:name=".Activities.ChangePassActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activities.ProductDeltaActivity"
             android:exported="false" />
         <activity

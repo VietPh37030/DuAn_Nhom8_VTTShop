@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -19,6 +20,7 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import anhpvph37030.fpoly.duan_nhom8.Activities.ChangePassActivity;
 import anhpvph37030.fpoly.duan_nhom8.R;
 import anhpvph37030.fpoly.duan_nhom8.taikhoan.Login;
 
@@ -27,7 +29,7 @@ public class CaNhanFrg extends Fragment {
     ImageView imgavt;
     TextView txtht, txtemailcn;
     TextView btndangxuat;
-
+    TextView cthaydoimk;
     public CaNhanFrg() {
 
     }
@@ -40,6 +42,7 @@ public class CaNhanFrg extends Fragment {
         imgavt = (ImageView) v.findViewById(R.id.imageView2);
         txtht = (TextView) v.findViewById(R.id.txtttHoten);
         txtemailcn = v.findViewById(R.id.txtttemail);
+        cthaydoimk = v.findViewById(R.id.nav_repasswork);
         btndangxuat = v.findViewById(R.id.btndangxuat);
         showUserInfo();
         btndangxuat.setOnClickListener(new View.OnClickListener() {
@@ -64,6 +67,14 @@ public class CaNhanFrg extends Fragment {
                     }
                 });
                 builder.show();
+            }
+        });
+        cthaydoimk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent =  new Intent(getActivity(), ChangePassActivity.class);
+                startActivity(intent);
+
             }
         });
         return v;

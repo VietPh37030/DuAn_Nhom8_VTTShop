@@ -129,7 +129,7 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
         <androidx.cardview.widget.CardView
-            android:id="@+id/nav_Ls_received"
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="1dp"
@@ -150,6 +150,7 @@
                     android:layout_gravity="center_vertical"
                     android:src="@drawable/key" />
                 <TextView
+                    android:id="@+id/nav_repasswork"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="9"

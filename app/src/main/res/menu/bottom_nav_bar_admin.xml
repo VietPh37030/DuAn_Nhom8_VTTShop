@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/nav_trangtru"
-        android:title="Thể Loại"
+        android:title="Trang Chủ"
         android:icon="@drawable/home"/>
     <item
         android:id="@+id/nav_sanpham"

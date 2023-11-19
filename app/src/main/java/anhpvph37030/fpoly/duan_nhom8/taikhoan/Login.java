@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -20,10 +21,14 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import anhpvph37030.fpoly.duan_nhom8.MainActivity;
+import anhpvph37030.fpoly.duan_nhom8.MainactivityAdmin;
 import anhpvph37030.fpoly.duan_nhom8.R;
 
 public class Login extends AppCompatActivity {
@@ -103,16 +108,48 @@ public class Login extends AppCompatActivity {
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+                        progressDialog.dismiss(); // Dismiss progress dialog
+
                         if (task.isSuccessful()) {
-                            Toast.makeText(Login.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
+                            FirebaseUser user = mauth.getCurrentUser();
+                            if (user != null) {
+                                String userId = user.getUid();
+                                DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("users");
 
-                            // Lưu tài khoản và mật khẩu nếu checkbox được chọn
-                            saveCredentials(email, pass, chkluumk.isChecked());
+                                usersRef.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                        if (dataSnapshot.exists()) {
+                                            // Lấy giá trị của trường role từ Realtime Database
+                                            String role = dataSnapshot.child("role").getValue(String.class);
 
-                            Intent intent = new Intent(Login.this, MainActivity.class);
-                            startActivity(intent);
+                                            // Kiểm tra và chuyển hướng
+                                            if ("admin".equals(role)) {
+                                                // Người dùng là admin, chuyển hướng tới màn hình admin
+                                                Intent intent = new Intent(Login.this, MainactivityAdmin.class);
+
+                                                startActivity(intent);
+                                            } else {
+                                                // Người dùng không phải admin, chuyển hướng tới màn hình thông thường
+                                                Intent intent = new Intent(Login.this, MainActivity.class);
+                                                saveCredentials(email,pass,chkluumk.isChecked());
+                                                startActivity(intent);
+                                            }
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                                        Log.w("Login", "getUser:onCancelled", databaseError.toException());
+                                    }
+                                });
+                            }
                         } else {
                             Toast.makeText(Login.this, "Đăng nhập thất bại", Toast.LENGTH_SHORT).show();
+                            Exception exception = task.getException();
+                            if (exception != null) {
+                                Log.e("Login", "onComplete: " + exception.getMessage());
+                            }
                         }
                     }
                 });
