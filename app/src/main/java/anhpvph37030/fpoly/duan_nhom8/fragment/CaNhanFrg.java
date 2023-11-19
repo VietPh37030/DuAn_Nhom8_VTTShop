@@ -16,7 +16,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -27,7 +26,7 @@ import anhpvph37030.fpoly.duan_nhom8.taikhoan.Login;
 public class CaNhanFrg extends Fragment {
     ImageView imgavt;
     TextView txtht, txtemailcn;
-    Button btndangxuat;
+    TextView btndangxuat;
 
     public CaNhanFrg() {
 
@@ -100,7 +99,7 @@ public class CaNhanFrg extends Fragment {
 
         // Sử dụng thư viện Glide để tải ảnh đại diện từ URL và hiển thị nó trong ImageView imgavt
         // Nếu không tải được ảnh, sẽ hiển thị ảnh mặc định (R.drawable.avt)
-        Glide.with(this).load(photoUrl).error(R.drawable.avt).into(imgavt);
+
     }
 
 
