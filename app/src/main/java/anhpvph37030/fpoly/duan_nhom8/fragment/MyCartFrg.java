@@ -36,8 +36,10 @@ public class MyCartFrg extends Fragment {
 
         // Khởi tạo giỏ hàng và Adapter
         cartItems = new ArrayList<>();
-        // Khởi tạo DatabaseReference để truy cập nút "carts" trong Firebase Realtime Database
-        cartRef = FirebaseDatabase.getInstance().getReference().child("carts");
+        // Lấy userId của người dùng hiện tại (bạn có thể thay thế bằng userId thực tế của người dùng)
+        String userId = "YOUR_USER_ID";
+        // Khởi tạo DatabaseReference để truy cập nút giỏ hàng của người dùng trong Firebase Realtime Database
+        cartRef = FirebaseDatabase.getInstance().getReference().child("carts").child(userId);
         // Liên kết Adapter với ListView
         cartListView = view.findViewById(R.id.lstmycart);
         cartAdapter = new CartAdapter(getContext(), cartItems);
@@ -51,9 +53,14 @@ public class MyCartFrg extends Fragment {
                 cartItems.clear();
 
                 // Duyệt qua danh sách items trong giỏ hàng trên Firebase và thêm vào giỏ hàng local
-                for (DataSnapshot cartItemSnapshot : dataSnapshot.getChildren()) {
-                    Cart cartItem = cartItemSnapshot.getValue(Cart.class);
-                    cartItems.add(cartItem);
+                for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
+                    for (DataSnapshot cartItemSnapshot : userSnapshot.getChildren()) {
+                        // Sử dụng Cart.class trực tiếp để Firebase tự chuyển đổi dữ liệu
+                        Cart cartItem = cartItemSnapshot.getValue(Cart.class);
+                        if (cartItem != null) {
+                            cartItems.add(cartItem);
+                        }
+                    }
                 }
 
                 // Cập nhật dữ liệu cho Adapter
@@ -70,3 +77,4 @@ public class MyCartFrg extends Fragment {
         return view;
     }
 }
+

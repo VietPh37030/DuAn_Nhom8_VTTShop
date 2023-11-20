@@ -69,7 +69,7 @@ public class ProductDeltaActivity extends AppCompatActivity {
 
     private void addToCart() {
         // Tạo đối tượng Product từ thông tin chi tiết của sản phẩm
-        Product product = new Product(productId, productName, productPrice, productImageUrl);
+        Product product = new Product(productId, productImageUrl, productName, productPrice);
         // Thêm sản phẩm vào giỏ hàng
         cartDAO.addToCart(product, 1); // 1 là số lượng mặc định
 
