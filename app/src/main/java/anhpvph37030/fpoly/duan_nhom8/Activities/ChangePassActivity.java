@@ -1,13 +1,18 @@
 package anhpvph37030.fpoly.duan_nhom8.Activities;// ChangePasswordActivity.java
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.appcompat.widget.Toolbar;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -16,6 +21,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 
+import anhpvph37030.fpoly.duan_nhom8.MainActivity;
 import anhpvph37030.fpoly.duan_nhom8.R;
 
 public class ChangePassActivity extends AppCompatActivity {
@@ -27,6 +33,8 @@ public class ChangePassActivity extends AppCompatActivity {
     private TextInputLayout edtOldPassword, edtNewPassword, edtConfirmPassword;
     private Button btnConfirm, btnChangePassword;
     TextView txttag;
+
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,8 +65,29 @@ public class ChangePassActivity extends AppCompatActivity {
                 changePassword();
             }
         });
+
+
+        Toolbar toolbar = findViewById(R.id.toolbardmk);
+        setSupportActionBar(toolbar);
+
+        // Đặt Navigation Icon là icon Exit
+        toolbar.setNavigationIcon(R.drawable.back);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                exitApp();
+            }
+        });
     }
 
+
+    private void exitApp() {
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        finish();
+
+    }
     private void sendConfirmationEmail() {
         String email = currentUser.getEmail();
         // Gửi email xác nhận đến email người dùng
