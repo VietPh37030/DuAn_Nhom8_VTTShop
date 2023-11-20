@@ -24,6 +24,7 @@
             android:orientation="vertical">
 
             <TextView
+
                 android:id="@+id/txt_phone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -83,7 +84,9 @@
                     android:id="@+id/img_tang"
                     android:layout_width="50dp"
                     android:layout_height="30dp"
-                    android:src="@drawable/img_1" />
+                    android:src="@drawable/img_1"
+
+                    />
 
             </LinearLayout>
 

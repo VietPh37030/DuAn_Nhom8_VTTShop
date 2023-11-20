@@ -47,15 +47,6 @@ public class ProductAdapter extends ArrayAdapter<Product> {
         TextView productNameTextView = listItemView.findViewById(R.id.tvTenDT);
         TextView productPriceTextView = listItemView.findViewById(R.id.tvGia);
 
-//        if (currentProduct != null) {
-//            // Sử dụng thư viện Glide để hiển thị ảnh từ URL hoặc resource
-//            Glide.with(getContext())
-//                    .load(currentProduct.getImage())
-//                    .into(productImageView);
-//
-//            productNameTextView.setText(currentProduct.getName());
-//            productPriceTextView.setText(currentProduct.getPrice());
-//        }
         if (currentProduct != null) {
             // Sử dụng thư viện Glide để hiển thị ảnh từ URL hoặc resource
             RequestOptions options = new RequestOptions()

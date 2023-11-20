@@ -71,19 +71,6 @@ public class CartDAO {
         }
     }
     // Cập nhật giỏ hàng lên Firebase
-
-//    public void updateCartOnFirebase(List<Cart> cartItems) {
-//        // Lưu giỏ hàng lên Firebase dựa trên userId (ví dụ: sử dụng Auth.getCurrentUser().getUid())
-//        String userId = "YOUR_USER_ID"; // Thay đổi thành cách bạn lấy userId
-//
-//        // Xóa dữ liệu giỏ hàng cũ
-//        cartRef.child(userId).removeValue();
-//
-//        // Thêm các sản phẩm mới vào giỏ hàng
-//        for (Cart cartItem : cartItems) {
-//            cartRef.child(userId).push().setValue(cartItem);
-//        }
-//    }
     public void updateCartOnFirebase(List<Cart> cartItems) {
         // Lưu giỏ hàng lên Firebase dựa trên userId (ví dụ: sử dụng Auth.getCurrentUser().getUid())
         String userId = "YOUR_USER_ID"; // Thay đổi thành cách bạn lấy userId
