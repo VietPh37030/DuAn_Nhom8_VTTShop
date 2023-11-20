@@ -25,7 +25,7 @@ public class ChangeInfoActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         // Đặt Navigation Icon là icon Exit
-        toolbar.setNavigationIcon(R.drawable.dangxuat);
+        toolbar.setNavigationIcon(R.drawable.back);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
