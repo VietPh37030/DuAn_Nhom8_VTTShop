@@ -33,7 +33,6 @@ public class MyCartFrg extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_my_cart, container, false);
-
         // Khởi tạo giỏ hàng và Adapter
         cartItems = new ArrayList<>();
         // Lấy userId của người dùng hiện tại (bạn có thể thay thế bằng userId thực tế của người dùng)
