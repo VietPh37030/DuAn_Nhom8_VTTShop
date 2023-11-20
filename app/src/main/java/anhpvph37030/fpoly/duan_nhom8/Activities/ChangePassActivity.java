@@ -71,7 +71,7 @@ public class ChangePassActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         // Đặt Navigation Icon là icon Exit
-        toolbar.setNavigationIcon(R.drawable.dangxuat);
+        toolbar.setNavigationIcon(R.drawable.back);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -86,7 +86,7 @@ public class ChangePassActivity extends AppCompatActivity {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
         finish();
-        
+
     }
     private void sendConfirmationEmail() {
         String email = currentUser.getEmail();
