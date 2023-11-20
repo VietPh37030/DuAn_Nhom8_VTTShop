@@ -5,11 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#FFF"
     tools:context=".Activities.ChangePassActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="625dp"
+        android:layout_height="525dp"
         android:background="@drawable/round_shape"
         android:orientation="vertical">
 
@@ -74,6 +75,30 @@
                     android:hint="Nhập lại mật khẩu"
                     android:maxLines="1" />
             </com.google.android.material.textfield.TextInputLayout>
+          <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:gravity="center"
+              android:orientation="vertical"
+
+              android:layout_marginTop="10dp">
+              <TextView
+                  android:id="@+id/txttag"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="Vui Lòng Xác Nhận Qua Email Mà Bạn Đăng Kí!"
+                  android:textStyle="italic"
+                  android:textColor="#F3DCDC"
+                  />
+              <Button
+                  android:id="@+id/btn_sendotp"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="Xác Nhận"
+                  android:layout_gravity="center"/>
+
+
+          </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 
@@ -84,5 +109,5 @@
         android:layout_gravity="center"
         android:layout_marginTop="10dp"
         android:backgroundTint="#F08726"
-        android:text="Thay đổi" />
+        android:text="Cập Nhật" />
 </LinearLayout>
