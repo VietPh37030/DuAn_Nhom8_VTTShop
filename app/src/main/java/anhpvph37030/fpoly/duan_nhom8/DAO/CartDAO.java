@@ -1,5 +1,7 @@
 package anhpvph37030.fpoly.duan_nhom8.DAO;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -72,10 +74,13 @@ public class CartDAO {
     }
     // Cập nhật giỏ hàng lên Firebase
     public void updateCartOnFirebase(List<Cart> cartItems) {
-        // Lưu giỏ hàng lên Firebase dựa trên userId (ví dụ: sử dụng Auth.getCurrentUser().getUid())
-        String userId = "YOUR_USER_ID"; // Thay đổi thành cách bạn lấy userId
-        DatabaseReference userCartRef = cartRef.child(userId);
-        userCartRef.push().setValue(cartItems);
+        // Lưu giỏ hàng lên Firebase dựa trên userId
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser != null) {
+            String userId = currentUser.getUid();
+            DatabaseReference userCartRef = cartRef.child(userId);
+            userCartRef.setValue(cartItems);
+        }
     }
 
 

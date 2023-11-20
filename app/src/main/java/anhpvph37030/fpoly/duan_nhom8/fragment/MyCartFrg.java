@@ -10,6 +10,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -36,45 +38,45 @@ public class MyCartFrg extends Fragment {
 
         // Khởi tạo giỏ hàng và Adapter
         cartItems = new ArrayList<>();
-        // Lấy userId của người dùng hiện tại (bạn có thể thay thế bằng userId thực tế của người dùng)
-        String userId = "YOUR_USER_ID";
-        // Khởi tạo DatabaseReference để truy cập nút giỏ hàng của người dùng trong Firebase Realtime Database
-        cartRef = FirebaseDatabase.getInstance().getReference().child("carts").child(userId);
-        // Liên kết Adapter với ListView
-        cartListView = view.findViewById(R.id.lstmycart);
-        cartAdapter = new CartAdapter(getContext(), cartItems);
-        cartListView.setAdapter(cartAdapter);
+        // Lấy userId của người dùng hiện tại
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser != null) {
+            String userId = currentUser.getUid();
+            // Khởi tạo DatabaseReference để truy cập nút giỏ hàng của người dùng trong Firebase Realtime Database
+            cartRef = FirebaseDatabase.getInstance().getReference().child("carts").child(userId);
+            // Liên kết Adapter với ListView
+            cartListView = view.findViewById(R.id.lstmycart);
+            cartAdapter = new CartAdapter(getContext(), cartItems);
+            cartListView.setAdapter(cartAdapter);
 
-        // Lắng nghe sự kiện khi có thay đổi trong dữ liệu của giỏ hàng trên Firebase
-        cartRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                // Xóa toàn bộ items trong giỏ hàng local
-                cartItems.clear();
+            // Lắng nghe sự kiện khi có thay đổi trong dữ liệu của giỏ hàng trên Firebase
+            cartRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    // Xóa toàn bộ items trong giỏ hàng local
+                    cartItems.clear();
 
-                // Duyệt qua danh sách items trong giỏ hàng trên Firebase và thêm vào giỏ hàng local
-                for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
-                    for (DataSnapshot cartItemSnapshot : userSnapshot.getChildren()) {
+                    // Duyệt qua danh sách items trong giỏ hàng trên Firebase và thêm vào giỏ hàng local
+                    for (DataSnapshot cartItemSnapshot : dataSnapshot.getChildren()) {
                         // Sử dụng Cart.class trực tiếp để Firebase tự chuyển đổi dữ liệu
                         Cart cartItem = cartItemSnapshot.getValue(Cart.class);
                         if (cartItem != null) {
                             cartItems.add(cartItem);
                         }
                     }
+
+                    // Cập nhật dữ liệu cho Adapter
+                    cartAdapter.notifyDataSetChanged();
                 }
 
-                // Cập nhật dữ liệu cho Adapter
-                cartAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                // Xử lý khi có lỗi truy cập cơ sở dữ liệu
-                Toast.makeText(getContext(), "Lỗi khi truy cập giỏ hàng trên Firebase", Toast.LENGTH_SHORT).show();
-            }
-        });
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    // Xử lý khi có lỗi truy cập cơ sở dữ liệu
+                    Toast.makeText(getContext(), "Lỗi khi truy cập giỏ hàng trên Firebase", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
 
         return view;
     }
 }
-
