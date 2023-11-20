@@ -13,14 +13,9 @@ import anhpvph37030.fpoly.duan_nhom8.R;
 
 public class AdminQL extends Fragment {
 
-
-
     public AdminQL() {
         // Required empty public constructor
     }
-
-
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
