@@ -88,9 +88,7 @@
                     android:id="@+id/img_tang"
                     android:layout_width="50dp"
                     android:layout_height="30dp"
-                    android:src="@drawable/img_1"
-
-                    />
+                    android:src="@drawable/img_1" />
 
             </LinearLayout>
 

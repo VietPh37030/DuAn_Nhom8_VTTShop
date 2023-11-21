@@ -1,5 +1,7 @@
 package anhpvph37030.fpoly.duan_nhom8.DAO;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -34,7 +36,7 @@ public class CartDAO {
             if (item.getProduct().getId().equals(product.getId())) {
                 // Nếu có rồi, tăng số lượng
                 item.setQuantity(item.getQuantity() + quantity);
-                updateCartOnFirebase(cartItems);
+                addUpdateCartOnFirebase(cartItems); // Cập nhật toàn bộ giỏ hàng
                 return;
             }
         }
@@ -42,8 +44,9 @@ public class CartDAO {
         // Nếu chưa có, thêm sản phẩm mới vào giỏ hàng
         Cart newItem = new Cart(product, quantity);
         cartItems.add(newItem);
-        updateCartOnFirebase(cartItems);
+        addUpdateCartOnFirebase(cartItems); // Cập nhật toàn bộ giỏ hàng
     }
+
 
 
     public void removeFromCart(Product product) {
@@ -67,16 +70,40 @@ public class CartDAO {
     public void clearCart() {
         if (cartItems != null) {
             cartItems.clear();
-            updateCartOnFirebase(new ArrayList<>()); // Truyền danh sách trống để xóa giỏ hàng trên Firebase
+            addUpdateCartOnFirebase(new ArrayList<>()); // Truyền danh sách trống để xóa giỏ hàng trên Firebase
         }
     }
     // Cập nhật giỏ hàng lên Firebase
-    public void updateCartOnFirebase(List<Cart> cartItems) {
-        // Lưu giỏ hàng lên Firebase dựa trên userId (ví dụ: sử dụng Auth.getCurrentUser().getUid())
-        String userId = "YOUR_USER_ID"; // Thay đổi thành cách bạn lấy userId
-        DatabaseReference userCartRef = cartRef.child(userId);
-        userCartRef.push().setValue(cartItems);
+    public void addUpdateCartOnFirebase(List<Cart> cartItems) {
+        // Lưu giỏ hàng lên Firebase dựa trên userId
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser != null) {
+            String userId = currentUser.getUid();
+            DatabaseReference userCartRef = cartRef.child(userId);
+
+            // Sử dụng push() để tạo một nút mới với khóa ngẫu nhiên
+            DatabaseReference newCartItemRef = userCartRef.push();
+
+            // Sét giá trị cho nút mới
+            newCartItemRef.setValue(cartItems);
+        }
     }
 
+    public void updateCartOnFirebase(List<Cart> cartItems) {
+        // Lưu giỏ hàng lên Firebase dựa trên userId
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser != null) {
+            String userId = currentUser.getUid();
+            DatabaseReference userCartRef = cartRef.child(userId);
 
+            // Cập nhật giỏ hàng trên Firebase
+            userCartRef.setValue(cartItems);
+        }
+    }
+
+    // Add this method to retrieve cartRef
+    public DatabaseReference getCartRef() {
+        return cartRef;
+    }
 }
+
