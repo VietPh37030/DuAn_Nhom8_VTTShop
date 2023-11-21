@@ -22,6 +22,9 @@
             android:name=".Activities.ChangePassActivity"
             android:exported="false" />
         <activity
+            android:name=".Activities.ChangeInfoActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activities.ProductDeltaActivity"
             android:exported="false" />
         <activity

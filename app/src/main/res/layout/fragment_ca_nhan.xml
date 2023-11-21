@@ -24,12 +24,11 @@
         android:gravity="center_vertical"
         android:orientation="vertical"
         android:paddingHorizontal="20dp">
-        <com.google.android.material.imageview.ShapeableImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/imageView2"
             android:layout_width="105dp"
             android:layout_height="105dp"
             android:layout_gravity="center_horizontal"
-            android:background="@drawable/avt"
             android:padding="5dp"
             app:strokeColor="#fff"
             app:strokeWidth="5dp" />
@@ -92,7 +91,7 @@
         android:layout_marginTop="30dp"
         android:orientation="vertical">
         <androidx.cardview.widget.CardView
-            android:id="@+id/nav_Bill_ltru"
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_rowWeight="1"
@@ -113,6 +112,7 @@
                     android:layout_gravity="center_vertical"
                     android:src="@drawable/person" />
                 <TextView
+                    android:id="@+id/nav_Bill_ltru"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="9"
