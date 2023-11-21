@@ -1,4 +1,3 @@
-// CartAdapter.java
 package anhpvph37030.fpoly.duan_nhom8.Adapter;
 
 import android.content.Context;
@@ -59,6 +58,8 @@ public class CartAdapter extends ArrayAdapter<Cart> {
 
             holder = new ViewHolder();
             holder.productImageView = listItemView.findViewById(R.id.img_phone);
+            holder.imgGiam = listItemView.findViewById(R.id.img_giam);
+            holder.imgTang = listItemView.findViewById(R.id.img_tang);
             holder.productNameTextView = listItemView.findViewById(R.id.txt_phone);
             holder.productPriceTextView = listItemView.findViewById(R.id.txt_gia);
             holder.quantityTextView = listItemView.findViewById(R.id.txt_soluong2);
@@ -86,6 +87,20 @@ public class CartAdapter extends ArrayAdapter<Cart> {
             holder.productPriceTextView.setText(cartItem.getProduct().getPrice());
             holder.quantityTextView.setText(String.valueOf(cartItem.getQuantity()));
 
+            holder.imgGiam.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    reduceQuantity(position);
+                }
+            });
+
+            holder.imgTang.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    increaseQuantity(position);
+                }
+            });
+
             holder.btnCancle.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -100,7 +115,7 @@ public class CartAdapter extends ArrayAdapter<Cart> {
     }
 
     private static class ViewHolder {
-        ImageView productImageView;
+        ImageView productImageView, imgGiam, imgTang;
         TextView productNameTextView;
         TextView productPriceTextView;
         TextView quantityTextView;
@@ -137,6 +152,53 @@ public class CartAdapter extends ArrayAdapter<Cart> {
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
                     Toast.makeText(context, "Lỗi khi xóa sản phẩm trên Firebase", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    }
+
+    private void reduceQuantity(int position) {
+        Cart cartItem = getItem(position);
+
+        if (cartItem != null && cartItem.getQuantity() > 1) {
+            cartItem.setQuantity(cartItem.getQuantity() - 1);
+            notifyDataSetChanged();
+            updateQuantityOnFirebase(cartItem);
+        }
+    }
+
+    private void increaseQuantity(int position) {
+        Cart cartItem = getItem(position);
+
+        if (cartItem != null && cartItem.getQuantity() < 10) {
+            cartItem.setQuantity(cartItem.getQuantity() + 1);
+            notifyDataSetChanged();
+            updateQuantityOnFirebase(cartItem);
+        }
+    }
+
+    private void updateQuantityOnFirebase(Cart cartItem) {
+        // Lấy userId
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser != null) {
+            String userId = currentUser.getUid();
+            DatabaseReference userCartRef = cartDAO.getCartRef().child(userId);
+
+            // Duyệt qua danh sách sản phẩm trong giỏ hàng
+            userCartRef.orderByChild("product/id").equalTo(cartItem.getProduct().getId()).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot.exists()) {
+                        // Nếu tìm thấy sản phẩm, cập nhật số lượng trên Firebase
+                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                            dataSnapshot.getRef().child("quantity").setValue(cartItem.getQuantity());
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    // Xử lý khi có lỗi xảy ra
                 }
             });
         }
