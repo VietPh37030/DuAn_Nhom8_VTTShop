@@ -100,7 +100,6 @@ public class ChangePassActivity extends AppCompatActivity {
                             // Ẩn trường nhập mật khẩu cũ và nút xác nhận
                             edtOldPassword.setVisibility(View.GONE);
                             btnConfirm.setVisibility(View.GONE);
-                            txttag.setVisibility(View.GONE);
                             // Hiển thị trường nhập mật khẩu mới và nút thay đổi
                             edtNewPassword.setVisibility(View.VISIBLE);
                             edtConfirmPassword.setVisibility(View.VISIBLE);

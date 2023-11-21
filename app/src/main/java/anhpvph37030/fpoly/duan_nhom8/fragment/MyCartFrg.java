@@ -57,14 +57,23 @@ public class MyCartFrg extends Fragment {
                     cartItems.clear();
 
                     // Duyệt qua danh sách items trong giỏ hàng trên Firebase và thêm vào giỏ hàng local
-                    for (DataSnapshot cartItemSnapshot : dataSnapshot.getChildren()) {
-                        // Sử dụng Cart.class trực tiếp để Firebase tự chuyển đổi dữ liệu
-                        Cart cartItem = cartItemSnapshot.getValue(Cart.class);
-                        if (cartItem != null) {
-                            cartItems.add(cartItem);
+//                    for (DataSnapshot cartItemSnapshot : dataSnapshot.getChildren()) {
+//                        // Sử dụng Cart.class trực tiếp để Firebase tự chuyển đổi dữ liệu
+//                        Cart cartItem = cartItemSnapshot.getValue(Cart.class);
+//                        if (cartItem != null) {
+//                            cartItems.add(cartItem);
+//                        }
+//                    }
+// Duyệt qua danh sách items trong giỏ hàng trên Firebase và thêm vào giỏ hàng local
+                    for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
+                        for (DataSnapshot cartItemSnapshot : userSnapshot.getChildren()) {
+                            // Sử dụng Cart.class trực tiếp để Firebase tự chuyển đổi dữ liệu
+                            Cart cartItem = cartItemSnapshot.getValue(Cart.class);
+                            if (cartItem != null) {
+                                cartItems.add(cartItem);
+                            }
                         }
                     }
-
                     // Cập nhật dữ liệu cho Adapter
                     cartAdapter.notifyDataSetChanged();
                 }

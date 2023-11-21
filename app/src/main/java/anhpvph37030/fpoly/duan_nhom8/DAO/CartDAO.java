@@ -36,7 +36,7 @@ public class CartDAO {
             if (item.getProduct().getId().equals(product.getId())) {
                 // Nếu có rồi, tăng số lượng
                 item.setQuantity(item.getQuantity() + quantity);
-                updateCartOnFirebase(cartItems);
+                updateCartOnFirebase(cartItems); // Cập nhật toàn bộ giỏ hàng
                 return;
             }
         }
@@ -44,8 +44,9 @@ public class CartDAO {
         // Nếu chưa có, thêm sản phẩm mới vào giỏ hàng
         Cart newItem = new Cart(product, quantity);
         cartItems.add(newItem);
-        updateCartOnFirebase(cartItems);
+        updateCartOnFirebase(cartItems); // Cập nhật toàn bộ giỏ hàng
     }
+
 
 
     public void removeFromCart(Product product) {
@@ -79,9 +80,15 @@ public class CartDAO {
         if (currentUser != null) {
             String userId = currentUser.getUid();
             DatabaseReference userCartRef = cartRef.child(userId);
-            userCartRef.setValue(cartItems);
+
+            // Sử dụng push() để tạo một nút mới với khóa ngẫu nhiên
+            DatabaseReference newCartItemRef = userCartRef.push();
+
+            // Sét giá trị cho nút mới
+            newCartItemRef.setValue(cartItems);
         }
     }
+
 
 
 }
