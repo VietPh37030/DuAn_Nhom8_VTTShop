@@ -16,6 +16,8 @@ import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -142,7 +144,19 @@ public class CartAdapter extends ArrayAdapter<Cart> {
                         for (DataSnapshot cartItemSnapshot : userSnapshot.getChildren()) {
                             Cart cartItem = cartItemSnapshot.getValue(Cart.class);
                             if (cartItem != null && cartItem.getProduct().getId().equals(removedItem.getProduct().getId())) {
-                                cartItemSnapshot.getRef().removeValue();
+                                cartItemSnapshot.getRef().removeValue()
+                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if (task.isSuccessful()) {
+                                                    // Xử lý khi xóa thành công
+                                                    Toast.makeText(context, "Sản phẩm đã được xóa khỏi Firebase", Toast.LENGTH_SHORT).show();
+                                                } else {
+                                                    // Xử lý khi xóa thất bại
+                                                    Toast.makeText(context, "Không thể xóa sản phẩm khỏi Firebase", Toast.LENGTH_SHORT).show();
+                                                }
+                                            }
+                                        });
                                 return;
                             }
                         }
@@ -151,14 +165,14 @@ public class CartAdapter extends ArrayAdapter<Cart> {
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
-                    Toast.makeText(context, "Lỗi khi xóa sản phẩm trên Firebase", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Lỗi khi xóa sản phẩm khỏi Firebase", Toast.LENGTH_SHORT).show();
                 }
             });
         }
     }
 
     private void reduceQuantity(int position) {
-        Cart cartItem = getItem(position);
+        final Cart cartItem = getItem(position);
 
         if (cartItem != null && cartItem.getQuantity() > 1) {
             cartItem.setQuantity(cartItem.getQuantity() - 1);
@@ -168,7 +182,7 @@ public class CartAdapter extends ArrayAdapter<Cart> {
     }
 
     private void increaseQuantity(int position) {
-        Cart cartItem = getItem(position);
+        final Cart cartItem = getItem(position);
 
         if (cartItem != null && cartItem.getQuantity() < 10) {
             cartItem.setQuantity(cartItem.getQuantity() + 1);
@@ -177,30 +191,45 @@ public class CartAdapter extends ArrayAdapter<Cart> {
         }
     }
 
-    private void updateQuantityOnFirebase(Cart cartItem) {
-        // Lấy userId
+    private void updateQuantityOnFirebase(final Cart cartItem) {
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (currentUser != null) {
             String userId = currentUser.getUid();
             DatabaseReference userCartRef = cartDAO.getCartRef().child(userId);
 
-            // Duyệt qua danh sách sản phẩm trong giỏ hàng
-            userCartRef.orderByChild("product/id").equalTo(cartItem.getProduct().getId()).addListenerForSingleValueEvent(new ValueEventListener() {
+            userCartRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    if (snapshot.exists()) {
-                        // Nếu tìm thấy sản phẩm, cập nhật số lượng trên Firebase
-                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                            dataSnapshot.getRef().child("quantity").setValue(cartItem.getQuantity());
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
+                        for (DataSnapshot cartItemSnapshot : userSnapshot.getChildren()) {
+                            Cart existingCartItem = cartItemSnapshot.getValue(Cart.class);
+                            if (existingCartItem != null && existingCartItem.getProduct().getId().equals(cartItem.getProduct().getId())) {
+                                cartItemSnapshot.getRef().child("quantity").setValue(cartItem.getQuantity())
+                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if (task.isSuccessful()) {
+                                                    // Xử lý khi cập nhật số lượng thành công
+                                                    Toast.makeText(context, "Số lượng đã được cập nhật trên Firebase", Toast.LENGTH_SHORT).show();
+                                                } else {
+                                                    // Xử lý khi cập nhật số lượng thất bại
+                                                    Toast.makeText(context, "Không thể cập nhật số lượng trên Firebase", Toast.LENGTH_SHORT).show();
+                                                }
+                                            }
+                                        });
+                                return;
+                            }
                         }
                     }
                 }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-                    // Xử lý khi có lỗi xảy ra
+                    // Xử lý lỗi cơ sở dữ liệu
+                    Toast.makeText(context, "Lỗi cơ sở dữ liệu: " + error.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
         }
     }
 }
+
