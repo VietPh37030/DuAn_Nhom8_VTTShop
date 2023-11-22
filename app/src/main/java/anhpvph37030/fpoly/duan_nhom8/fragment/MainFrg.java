@@ -2,16 +2,18 @@ package anhpvph37030.fpoly.duan_nhom8.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -21,15 +23,22 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import anhpvph37030.fpoly.duan_nhom8.Activities.ProductDeltaActivity;
+import anhpvph37030.fpoly.duan_nhom8.Adapter.BannerPagerAdapter;
 import anhpvph37030.fpoly.duan_nhom8.Adapter.ProductAdapter;
 import anhpvph37030.fpoly.duan_nhom8.R;
 import anhpvph37030.fpoly.duan_nhom8.model.Product;
 
-
 public class MainFrg extends Fragment {
+
     private DatabaseReference productsRef;
+    private ViewPager viewPager;
+    private int[] bannerImages = {R.drawable.banner14, R.drawable.banner15, R.drawable.banner12};
+    private List<Product> productList;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -42,11 +51,14 @@ public class MainFrg extends Fragment {
         // Liên kết Adapter với GridView
         GridView gridView = v.findViewById(R.id.gvDT);
 
+        // Liên kết ViewPager
+        viewPager = v.findViewById(R.id.viewPager);
+
         // Lắng nghe sự kiện khi có thay đổi trong dữ liệu
         productsRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                List<Product> productList = new ArrayList<>();
+                productList = new ArrayList<>();
 
                 for (DataSnapshot productSnapshot : dataSnapshot.getChildren()) {
                     Product product = productSnapshot.getValue(Product.class);
@@ -56,6 +68,14 @@ public class MainFrg extends Fragment {
                 // Tạo Adapter và setAdapter cho GridView
                 ProductAdapter adapter = new ProductAdapter(getContext(), productList);
                 gridView.setAdapter(adapter);
+
+                // Tạo Adapter cho ViewPager
+                BannerPagerAdapter bannerPagerAdapter = new BannerPagerAdapter(getContext(), bannerImages);
+                viewPager.setAdapter(bannerPagerAdapter);
+
+                // Tự động chuyển đổi giữa các ảnh sau một khoảng thời gian
+                Timer timer = new Timer();
+                timer.scheduleAtFixedRate(new MyTimerTask(), 2000, 4000); // Chuyển đổi ảnh mỗi 4 giây
             }
 
             @Override
@@ -70,7 +90,7 @@ public class MainFrg extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // Lấy sản phẩm được chọn từ danh sách
-                Product selectedProduct = (Product) parent.getItemAtPosition(position);
+                Product selectedProduct = productList.get(position);
 
                 // Tạo Intent để chuyển từ MainFrg sang ProductDetailActivity
                 Intent intent = new Intent(getActivity(), ProductDeltaActivity.class);
@@ -86,7 +106,23 @@ public class MainFrg extends Fragment {
             }
         });
 
-
         return v;
+    }
+
+    // TimerTask để tự động chuyển đổi ảnh trong ViewPager
+    public class MyTimerTask extends TimerTask {
+        @Override
+        public void run() {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (viewPager.getCurrentItem() < bannerImages.length - 1) {
+                        viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
+                    } else {
+                        viewPager.setCurrentItem(0);
+                    }
+                }
+            });
+        }
     }
 }
