@@ -1,16 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".fragment.MyCartFrg">
 
     <ListView
         android:id="@+id/lstmycart"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:divider="@android:color/transparent"
         android:dividerHeight="10dp" />
 
-</RelativeLayout>
+    <!-- LinearLayout chứa 2 TextView và Button -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-150dp"
+        android:orientation="horizontal"
+        android:padding="16dp">
+
+        <!-- TextView để hiển thị tổng tiền -->
+        <TextView
+            android:id="@+id/txtTotalAmount"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Tổng tiền: 0 VND"
+            android:textSize="18sp" />
+
+        <!-- Button để thanh toán -->
+        <Button
+            android:id="@+id/btnThanhToan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Thanh toán" />
+    </LinearLayout>
+
+</LinearLayout>

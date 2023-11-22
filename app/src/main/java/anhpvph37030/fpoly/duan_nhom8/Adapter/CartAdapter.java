@@ -1,6 +1,8 @@
 package anhpvph37030.fpoly.duan_nhom8.Adapter;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,11 +10,13 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -29,18 +33,21 @@ import java.util.List;
 
 import anhpvph37030.fpoly.duan_nhom8.DAO.CartDAO;
 import anhpvph37030.fpoly.duan_nhom8.R;
+import anhpvph37030.fpoly.duan_nhom8.fragment.MyCartFrg;
 import anhpvph37030.fpoly.duan_nhom8.model.Cart;
 
 public class CartAdapter extends ArrayAdapter<Cart> {
     private Context context;
     private List<Cart> cartItemList;
     private CartDAO cartDAO;
+    private MyCartFrg myCartFragment;
 
-    public CartAdapter(Context context, List<Cart> cartItemList, CartDAO cartDAO) {
+    public CartAdapter(Context context, List<Cart> cartItemList, CartDAO cartDAO, MyCartFrg myCartFragment) {
         super(context, 0, cartItemList);
         this.context = context;
         this.cartItemList = cartItemList;
         this.cartDAO = cartDAO;
+        this.myCartFragment = myCartFragment;
     }
 
     @Override
@@ -66,6 +73,7 @@ public class CartAdapter extends ArrayAdapter<Cart> {
             holder.productPriceTextView = listItemView.findViewById(R.id.txt_gia);
             holder.quantityTextView = listItemView.findViewById(R.id.txt_soluong2);
             holder.btnCancle = listItemView.findViewById(R.id.btn_cancle);
+            holder.cardView = listItemView.findViewById(R.id.cardView);
 
             listItemView.setTag(holder);
         } else {
@@ -109,6 +117,24 @@ public class CartAdapter extends ArrayAdapter<Cart> {
                     removeFromCart(position);
                 }
             });
+
+            holder.cardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Toggle the selection state
+                    holder.isSelected = !holder.isSelected;
+
+                    // Update the UI based on the selection state
+                    if (holder.isSelected) {
+                        holder.cardView.setBackground(new ColorDrawable(Color.parseColor("#A9B388")));
+                    } else {
+                        holder.cardView.setBackground(new ColorDrawable(Color.parseColor("#FFFFFF")));
+                    }
+
+                    // Recalculate the total price whenever the selection state changes
+                    myCartFragment.updateTotalPrice();
+                }
+            });
         } else {
             Log.e("CartAdapter", "cartItem or cartItem.getProduct() is null");
         }
@@ -122,6 +148,8 @@ public class CartAdapter extends ArrayAdapter<Cart> {
         TextView productPriceTextView;
         TextView quantityTextView;
         Button btnCancle;
+        LinearLayout cardView;
+        boolean isSelected;
     }
 
     private void removeFromCart(final int position) {
@@ -169,6 +197,9 @@ public class CartAdapter extends ArrayAdapter<Cart> {
                 }
             });
         }
+
+        // Gọi phương thức tính tổng giá trị từ MyCartFrg
+        myCartFragment.updateTotalPrice();
     }
 
     private void reduceQuantity(int position) {
@@ -179,6 +210,9 @@ public class CartAdapter extends ArrayAdapter<Cart> {
             notifyDataSetChanged();
             updateQuantityOnFirebase(cartItem);
         }
+
+        // Gọi phương thức tính tổng giá trị từ MyCartFrg
+        myCartFragment.updateTotalPrice();
     }
 
     private void increaseQuantity(int position) {
@@ -189,6 +223,9 @@ public class CartAdapter extends ArrayAdapter<Cart> {
             notifyDataSetChanged();
             updateQuantityOnFirebase(cartItem);
         }
+
+        // Gọi phương thức tính tổng giá trị từ MyCartFrg
+        myCartFragment.updateTotalPrice();
     }
 
     private void updateQuantityOnFirebase(final Cart cartItem) {
@@ -230,6 +267,8 @@ public class CartAdapter extends ArrayAdapter<Cart> {
                 }
             });
         }
+
+        // Gọi phương thức tính tổng giá trị từ MyCartFrg
+        myCartFragment.updateTotalPrice();
     }
 }
-
