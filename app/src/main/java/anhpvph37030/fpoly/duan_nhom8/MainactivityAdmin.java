@@ -12,8 +12,12 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import anhpvph37030.fpoly.duan_nhom8.Adapter.MenuAdapter;
+import anhpvph37030.fpoly.duan_nhom8.fragment.Ad_TaiKhoanFrg;
+import anhpvph37030.fpoly.duan_nhom8.fragment.Ad_ThongKeFrg;
+import anhpvph37030.fpoly.duan_nhom8.fragment.Ad_TrangThaiFrg;
 import anhpvph37030.fpoly.duan_nhom8.fragment.AdminQL;
 import anhpvph37030.fpoly.duan_nhom8.fragment.CaNhanFrg;
 import anhpvph37030.fpoly.duan_nhom8.fragment.MainFrg;
@@ -24,6 +28,7 @@ public class MainactivityAdmin extends AppCompatActivity {
     MenuAdapter adapter;
     ViewPager2 pagerMain_adm;
     ArrayList<Fragment> list = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +40,9 @@ public class MainactivityAdmin extends AppCompatActivity {
         pagerMain_adm = findViewById(R.id.pagerMain_adm);
         bottomNavigationView_adm = findViewById(R.id.menu_nav_adm);
         list.add(new AdminQL());
+        list.add(new Ad_TrangThaiFrg());
+        list.add(new Ad_ThongKeFrg());
+        list.add(new Ad_TaiKhoanFrg());
         adapter = new MenuAdapter(this, list);
         pagerMain_adm.setAdapter(adapter);
         pagerMain_adm.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
@@ -45,7 +53,7 @@ public class MainactivityAdmin extends AppCompatActivity {
                         bottomNavigationView_adm.setSelectedItemId(R.id.nav_trangtru);
                         break;
                     case 1:
-                        bottomNavigationView_adm.setSelectedItemId(R.id.nav_sanpham);
+                        bottomNavigationView_adm.setSelectedItemId(R.id.nav_trangthai);
                         break;
                     case 2:
                         bottomNavigationView_adm.setSelectedItemId(R.id.nav_thongke);
@@ -63,7 +71,7 @@ public class MainactivityAdmin extends AppCompatActivity {
                 if (item.getItemId() == R.id.nav_trangtru) {
                     pagerMain_adm.setCurrentItem(0);
                 }
-                if (item.getItemId() == R.id.nav_sanpham) {
+                if (item.getItemId() == R.id.nav_trangthai) {
                     pagerMain_adm.setCurrentItem(1);
                 }
                 if (item.getItemId() == R.id.nav_thongke) {

@@ -2,18 +2,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/nav_trangtru"
-        android:title="Trang Chủ"
-        android:icon="@drawable/home"/>
+        android:icon="@drawable/home"
+        android:title="Trang Chủ" />
     <item
-        android:id="@+id/nav_sanpham"
-        android:title="Sản Phẩm"
-        android:icon="@drawable/smartphone"/>
+        android:id="@+id/nav_trangthai"
+        android:icon="@drawable/trangthai"
+        android:title="Trạng Thái" />
     <item
         android:id="@+id/nav_thongke"
-        android:title="Thống Kê"
-        android:icon="@drawable/chart"/>
+        android:icon="@drawable/chart"
+        android:title="Thống Kê" />
     <item
         android:id="@+id/nav_tai_khoan"
-        android:title="Tài khoản"
-        android:icon="@drawable/person"/>
+        android:icon="@drawable/person"
+        android:title="Tài khoản" />
 </menu>
