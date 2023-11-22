@@ -9,7 +9,7 @@
         android:title="Sản Phẩm"
         android:icon="@drawable/smartphone"/>
     <item
-        android:id="@+id/navthongke"
+        android:id="@+id/nav_thongke"
         android:title="Thống Kê"
         android:icon="@drawable/chart"/>
     <item

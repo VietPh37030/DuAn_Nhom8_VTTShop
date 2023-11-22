@@ -19,7 +19,7 @@
         android:background="@drawable/timkiemstyle"
         app:iconifiedByDefault="false" />
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rcvPhim"
+        android:id="@+id/rcvDienthoai"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/search_view"
@@ -27,14 +27,16 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:padding="10dp"/>
+
     <ImageButton
         android:id="@+id/btnThem"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
+        android:layout_marginEnd="14dp"
         android:layout_marginRight="10dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="73dp"
         android:background="@drawable/add_button"
         android:src="@drawable/ic_add"
         android:text="Nút nổi" />
