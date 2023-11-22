@@ -5,14 +5,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainactivityAdmin">
-    <FrameLayout
-        android:id="@+id/frame_layout"
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/pagerMain_adm"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:layout_above="@id/nav_bottom_bar"/>
+        android:background="#CEEDD9" />
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginBottom="8dp"
+        android:elevation="5dp"
+        android:translationZ="10dp"
+        app:cardCornerRadius="20dp"/>
     <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/nav_bottom_bar"
+        android:id="@+id/menu_nav_adm"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:menu="@menu/bottom_nav_bar_admin"
