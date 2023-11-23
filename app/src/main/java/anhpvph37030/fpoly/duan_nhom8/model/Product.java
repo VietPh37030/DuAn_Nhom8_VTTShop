@@ -5,8 +5,27 @@ public class Product {
     private String image;
     private String name;
     private String price;
+    private int quantity;// them truong du lieu
+
+    public boolean isVisible() {
+        return isVisible;
+    }
+
+    public void setVisible(boolean visible) {
+        isVisible = visible;
+    }
+
+    private boolean isVisible; // Thêm trường đánh dấu sản phẩm có hiển thị hay không
 
     public Product() {
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
     public Product(String id, String image, String name, String price) {
@@ -15,6 +34,15 @@ public class Product {
         this.name = name;
         this.price = price;
     }
+    public Product(String id, String image, String name, String price, int quantity,boolean isVisible) {
+        this.id = id;
+        this.image = image;
+        this.name = name;
+        this.price = price;
+        this.quantity = quantity;
+        this.isVisible = isVisible;
+    }
+
 
     public String getId() {
         return id;
