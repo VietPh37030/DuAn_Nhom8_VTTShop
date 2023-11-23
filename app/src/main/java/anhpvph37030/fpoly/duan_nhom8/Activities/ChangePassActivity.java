@@ -17,6 +17,8 @@ import androidx.appcompat.widget.Toolbar;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
@@ -32,7 +34,7 @@ public class ChangePassActivity extends AppCompatActivity {
 
     private TextInputLayout edtOldPassword, edtNewPassword, edtConfirmPassword;
     private Button btnConfirm, btnChangePassword;
-    TextView txttag;
+
 
     Toolbar toolbar;
 
@@ -50,7 +52,6 @@ public class ChangePassActivity extends AppCompatActivity {
         edtConfirmPassword = findViewById(R.id.edt_changepass_nhaplaimk);
         btnConfirm = findViewById(R.id.btn_sendotp);
         btnChangePassword = findViewById(R.id.btnchangepass_thaydoi);
-        TextView txttag = findViewById(R.id.txttag);
 
         btnConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,7 +63,25 @@ public class ChangePassActivity extends AppCompatActivity {
         btnChangePassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                changePassword();
+                String oldPassword = edtOldPassword.getEditText().getText().toString();
+                String newPassword = edtNewPassword.getEditText().getText().toString();
+                String confirmPassword = edtConfirmPassword.getEditText().getText().toString();
+
+                // Kiểm tra mật khẩu cũ
+                AuthCredential credential = EmailAuthProvider.getCredential(currentUser.getEmail(), oldPassword);
+                currentUser.reauthenticate(credential)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    // Nếu xác thực thành công, tiến hành đổi mật khẩu
+                                    performPasswordChange(newPassword, confirmPassword);
+                                } else {
+                                    Toast.makeText(ChangePassActivity.this, "Mật khẩu cũ không đúng", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+
             }
         });
 
@@ -82,9 +101,7 @@ public class ChangePassActivity extends AppCompatActivity {
 
 
     private void exitApp() {
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
+       
         finish();
 
     }
@@ -98,9 +115,7 @@ public class ChangePassActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             Toast.makeText(ChangePassActivity.this, "Vui lòng xác nhận email trước khi đổi mật khẩu", Toast.LENGTH_SHORT).show();
                             // Ẩn trường nhập mật khẩu cũ và nút xác nhận
-                            edtOldPassword.setVisibility(View.GONE);
                             btnConfirm.setVisibility(View.GONE);
-                            txttag.setVisibility(View.GONE);
                             // Hiển thị trường nhập mật khẩu mới và nút thay đổi
                             edtNewPassword.setVisibility(View.VISIBLE);
                             edtConfirmPassword.setVisibility(View.VISIBLE);
@@ -117,6 +132,24 @@ public class ChangePassActivity extends AppCompatActivity {
         String newPassword = edtNewPassword.getEditText().getText().toString();
         String confirmPassword = edtConfirmPassword.getEditText().getText().toString();
 
+        if (newPassword.equals(confirmPassword)) {
+            currentUser.updatePassword(newPassword)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(ChangePassActivity.this, "Đổi mật khẩu thành công", Toast.LENGTH_SHORT).show();
+                                finish();
+                            } else {
+                                Toast.makeText(ChangePassActivity.this, "Lỗi khi đổi mật khẩu", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+        } else {
+            Toast.makeText(ChangePassActivity.this, "Mật khẩu mới không khớp", Toast.LENGTH_SHORT).show();
+        }
+    }
+    private void performPasswordChange(String newPassword, String confirmPassword) {
         if (newPassword.equals(confirmPassword)) {
             currentUser.updatePassword(newPassword)
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
