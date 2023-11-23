@@ -11,14 +11,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ListView;
 
 import anhpvph37030.fpoly.duan_nhom8.R;
 
 
 public class AdminQL extends Fragment {
 
-    ListView lst_main_adm;
+    RecyclerView recyclerView;
     ImageButton btnThem;
     SearchView searchView;
     @Override

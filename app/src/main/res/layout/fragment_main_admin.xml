@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragment.AdminQL">
 
     <androidx.appcompat.widget.SearchView
@@ -15,19 +15,18 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
+        app:queryHint="Tìm Kiếm..."
         android:background="@drawable/timkiemstyle"
-        app:iconifiedByDefault="false"
-        app:queryHint="Tìm Kiếm..." />
-
-    <ListView
-        android:id="@+id/lst_main_adm"
+        app:iconifiedByDefault="false" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcvDienthoai"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/search_view"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:padding="10dp" />
+        android:padding="10dp"/>
 
     <ImageButton
         android:id="@+id/btnThem"
