@@ -13,6 +13,7 @@ import anhpvph37030.fpoly.duan_nhom8.model.Cart;
 import anhpvph37030.fpoly.duan_nhom8.model.Product;
 
 public class CartDAO {
+    private static CartDAO instance;
     private List<Cart> cartItems;
     private DatabaseReference cartRef;
 
@@ -21,6 +22,12 @@ public class CartDAO {
         this.cartRef = FirebaseDatabase.getInstance().getReference().child("carts");
     }
 
+    public static synchronized CartDAO getInstance() {
+        if (instance == null) {
+            instance = new CartDAO();
+        }
+        return instance;
+    }
     public List<Cart> getCartItems() {
         return cartItems;
     }
@@ -46,8 +53,6 @@ public class CartDAO {
         cartItems.add(newItem);
         addUpdateCartOnFirebase(cartItems); // Cập nhật toàn bộ giỏ hàng
     }
-
-
 
     public void removeFromCart(Product product) {
         if (cartItems == null) {
@@ -105,5 +110,15 @@ public class CartDAO {
     public DatabaseReference getCartRef() {
         return cartRef;
     }
+    // Trong CartDAO.java
+    public boolean isProductAlreadyInCart(String productId) {
+        for (Cart cartItem : cartItems) {
+            if (cartItem.getProduct().getId().equals(productId)) {
+                return true; // Sản phẩm đã có trong giỏ hàng
+            }
+        }
+        return false; // Sản phẩm chưa có trong giỏ hàng
+    }
+
 }
 

@@ -6,6 +6,26 @@ public class Product {
     private String name;
     private String price;
     private int quantity;// them truong du lieu
+    private String hang;
+
+    private int maDanhMuc;
+
+    // Các phương thức khác...
+
+    public int getMaDanhMuc() {
+        return maDanhMuc;
+    }
+
+    public void setMaDanhMuc(int maDanhMuc) {
+        this.maDanhMuc = maDanhMuc;
+    }
+    public String getHang() {
+        return hang;
+    }
+
+    public void setHang(String hang) {
+        this.hang = hang;
+    }
 
     public boolean isVisible() {
         return isVisible;
@@ -34,15 +54,15 @@ public class Product {
         this.name = name;
         this.price = price;
     }
-    public Product(String id, String image, String name, String price, int quantity,boolean isVisible) {
+
+    public Product(String id, String image, String name, String price, int quantity, String hang) {
         this.id = id;
         this.image = image;
         this.name = name;
         this.price = price;
         this.quantity = quantity;
-        this.isVisible = isVisible;
+        this.hang = hang;
     }
-
 
     public String getId() {
         return id;

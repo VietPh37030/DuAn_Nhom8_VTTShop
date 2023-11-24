@@ -32,6 +32,7 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="7dp"
                 android:orientation="vertical">
                 <TextView
                     android:id="@+id/txtTenSp"
@@ -54,6 +55,16 @@
                     android:textSize="8sp"
                     android:textStyle="bold" />
                 <TextView
+                    android:id="@+id/txtHangSp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="5dp"
+                    android:text="Iporn "
+                    android:textColor="@color/black"
+                    android:textSize="10sp"
+                    android:textStyle="bold" />
+                <TextView
                     android:id="@+id/txtsoluongsp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -73,7 +84,7 @@
                 android:layout_gravity="center_vertical"
                 android:src="@drawable/edit" />
 
-            <ImageView
+            <ImageButton
                 android:id="@+id/btnDelete"
                 android:layout_width="20dp"
                 android:layout_height="wrap_content"

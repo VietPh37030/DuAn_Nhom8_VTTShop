@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -14,8 +13,6 @@ import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.List;
 
@@ -45,6 +42,7 @@ public class ProductAdminAdapter extends ArrayAdapter<Product> {
         TextView productNameTextView = listItemView.findViewById(R.id.txtTenSp);
         TextView productPriceTextView = listItemView.findViewById(R.id.txtGiasp);
         TextView productQuantityTextView = listItemView.findViewById(R.id.txtsoluongsp);
+        TextView productHangTextView = listItemView.findViewById(R.id.txtHangSp);
 
         if (currentProduct != null) {
             RequestOptions options = new RequestOptions()
@@ -60,8 +58,10 @@ public class ProductAdminAdapter extends ArrayAdapter<Product> {
             productNameTextView.setText(currentProduct.getName());
             productPriceTextView.setText(currentProduct.getPrice());
             productQuantityTextView.setText(String.valueOf(currentProduct.getQuantity()));
+            productHangTextView.setText(currentProduct.getHang());
         }
 
         return listItemView;
     }
 }
+

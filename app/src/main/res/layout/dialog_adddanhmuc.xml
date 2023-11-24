@@ -4,12 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    app:cardCornerRadius="20dp">
+   >
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="650dp"
-        android:background="@drawable/round_shape"
+        android:layout_height="550dp"
         android:orientation="vertical"
         android:padding="20dp">
 
@@ -17,21 +16,29 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="Thêm Sản Phẩm"
+            android:text="Thêm Hãng Sản Phẩm"
             android:textColor="#F30A0A"
-            android:textSize="30sp"
+            android:textSize="25sp"
             android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="ID danh mục:"
+            android:textColor="@color/black"
+            android:textSize="23sp"
+            android:textStyle="bold" />
+
         <EditText
-            android:id="@+id/ed_idSp"
+            android:id="@+id/ed_maDanhMuc"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:hint="Nhập ID của sản phẩm"
+            android:hint="ID danh mục"
             android:inputType="text"
             android:paddingLeft="10dp"
-            android:textStyle="bold"
-            android:textColor="#000"
-            android:background="@drawable/grey_bg"
             android:textSize="23sp" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -42,7 +49,7 @@
             android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/ed_URL_SanPham1"
+            android:id="@+id/ed_URL_SanPham"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:hint="Nhập URL của sản phẩm"
@@ -54,13 +61,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="Tên sản phẩm"
+            android:text="Tên Hãng"
             android:textColor="@color/black"
             android:textSize="23sp"
             android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/ed_TenTL"
+            android:id="@+id/ed_TenHang"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:hint="Nhập Tên "
@@ -68,40 +75,8 @@
             android:paddingLeft="10dp"
             android:textSize="23sp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="Giá sản phẩm"
-            android:textColor="@color/black"
-            android:textSize="23sp"
-            android:textStyle="bold" />
 
-        <EditText
-            android:id="@+id/ed_Gia"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:hint="Nhập Giá "
-            android:inputType="text"
-            android:paddingLeft="10dp"
-            android:textSize="23sp" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="SL sản phẩm"
-            android:textColor="@color/black"
-            android:textSize="23sp"
-            android:textStyle="bold" />
 
-        <EditText
-            android:id="@+id/ed_soLuong"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:hint="Nhập Giá "
-            android:inputType="text"
-            android:paddingLeft="10dp"
-            android:textSize="23sp" />
 
 
         <LinearLayout
@@ -112,7 +87,7 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/btnAdd"
+                android:id="@+id/btnAddhang"
                 android:layout_width="140dp"
                 android:layout_height="50dp"
                 android:layout_marginRight="50dp"

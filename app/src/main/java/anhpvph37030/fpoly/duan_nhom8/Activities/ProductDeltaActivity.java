@@ -13,24 +13,21 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import anhpvph37030.fpoly.duan_nhom8.DAO.CartDAO;
 import anhpvph37030.fpoly.duan_nhom8.R;
-import anhpvph37030.fpoly.duan_nhom8.fragment.MyCartFrg;
 import anhpvph37030.fpoly.duan_nhom8.model.Cart;
 import anhpvph37030.fpoly.duan_nhom8.model.Product;
 
 public class ProductDeltaActivity extends AppCompatActivity {
     private CartDAO cartDAO; // Khai báo đối tượng CartDAO
-    private Cart cart; // Khai báo đối tượng Cart
 
     private String productId;
     private String productName;
     private String productPrice;
     private String productImageUrl;
-
+    private Cart cart;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,8 +44,7 @@ public class ProductDeltaActivity extends AppCompatActivity {
         ImageView productImageView = findViewById(R.id.imgdeilta);
         Button btnThemGioHang = findViewById(R.id.btnthemvaogio);
 
-        // Khởi tạo đối tượng CartDAO
-        cartDAO = new CartDAO();
+        cartDAO = CartDAO.getInstance();
         cart = new Cart();
 
         productNameTextView.setText(productName);
@@ -61,8 +57,14 @@ public class ProductDeltaActivity extends AppCompatActivity {
         btnThemGioHang.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Thêm sản phẩm vào giỏ hàng và hiển thị thông báo
-                addToCart();
+                // Kiểm tra xem sản phẩm đã có trong giỏ hàng chưa
+                if (!cartDAO.isProductAlreadyInCart(productId)) {
+                    // Nếu chưa có, thêm sản phẩm vào giỏ hàng và hiển thị thông báo
+                    addToCart();
+                } else {
+                    // Nếu đã có, hiển thị thông báo
+                    showProductAlreadyInCartDialog();
+                }
             }
         });
     }
@@ -78,6 +80,17 @@ public class ProductDeltaActivity extends AppCompatActivity {
 
         // Hiển thị dialog thông báo thêm vào giỏ hàng thành công
         showAddToCartSuccessDialog(updatedCartItems);
+    }
+
+    private void showProductAlreadyInCartDialog() {
+        // Hiển thị dialog thông báo sản phẩm đã có trong giỏ hàng
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Sản phẩm đã có trong giỏ hàng.")
+                .setPositiveButton("OK", (dialog, which) -> {
+                    // Đóng dialog
+                    dialog.dismiss();
+                })
+                .show();
     }
 
     private void showAddToCartSuccessDialog(List<Cart> updatedCartItems) {
