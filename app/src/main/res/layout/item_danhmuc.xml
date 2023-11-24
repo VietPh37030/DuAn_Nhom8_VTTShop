@@ -51,7 +51,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
                         android:layout_marginTop="5dp"
-                        android:text="Tên Hang "
+                        android:text="Tên Hãng : "
                         android:textAllCaps="true"
                         android:textColor="@color/black"
                         android:textSize="22sp"
