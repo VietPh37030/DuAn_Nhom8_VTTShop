@@ -32,6 +32,7 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
                 android:orientation="vertical">
                 <TextView
                     android:id="@+id/txthang"
@@ -41,7 +42,8 @@
                     android:layout_marginTop="15dp"
                     android:text="Tên Hang "
                     android:textColor="@color/black"
-                    android:textSize="25sp"
+                    android:textSize="22sp"
+                    android:textAllCaps="true"
                     android:textStyle="bold" />
             </LinearLayout>
             </LinearLayout>

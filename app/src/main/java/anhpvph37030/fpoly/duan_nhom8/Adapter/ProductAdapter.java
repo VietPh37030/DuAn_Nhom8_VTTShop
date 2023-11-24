@@ -46,6 +46,7 @@ public class ProductAdapter extends ArrayAdapter<Product> {
         ImageView productImageView = listItemView.findViewById(R.id.ivAnhSP);
         TextView productNameTextView = listItemView.findViewById(R.id.tvTenDT);
         TextView productPriceTextView = listItemView.findViewById(R.id.tvGia);
+        TextView productHangTextView = listItemView.findViewById(R.id.tvHang);// them truong du lieu moi
 
         if (currentProduct != null) {
             // Sử dụng thư viện Glide để hiển thị ảnh từ URL hoặc resource
@@ -61,6 +62,7 @@ public class ProductAdapter extends ArrayAdapter<Product> {
 
             productNameTextView.setText(currentProduct.getName());
             productPriceTextView.setText(currentProduct.getPrice());
+            productHangTextView.setText(currentProduct.getHang()); // Thêm dòng này để hiển thị tên hãng sản phẩm
         }
 
 

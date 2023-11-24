@@ -21,7 +21,17 @@
             android:textColor="#F30A0A"
             android:textSize="30sp"
             android:textStyle="bold" />
-
+        <EditText
+            android:id="@+id/ed_idSp"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="Nhập ID của sản phẩm"
+            android:inputType="text"
+            android:paddingLeft="10dp"
+            android:textStyle="bold"
+            android:textColor="#000"
+            android:background="@drawable/grey_bg"
+            android:textSize="23sp" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -32,7 +42,7 @@
             android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/ed_URL_SanPham"
+            android:id="@+id/ed_URL_SanPham1"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:hint="Nhập URL của sản phẩm"
@@ -68,6 +78,23 @@
 
         <EditText
             android:id="@+id/ed_Gia"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="Nhập Giá "
+            android:inputType="text"
+            android:paddingLeft="10dp"
+            android:textSize="23sp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="SL sản phẩm"
+            android:textColor="@color/black"
+            android:textSize="23sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/ed_soLuong"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:hint="Nhập Giá "

@@ -6,6 +6,15 @@ public class Product {
     private String name;
     private String price;
     private int quantity;// them truong du lieu
+    private String hang;
+
+    public String getHang() {
+        return hang;
+    }
+
+    public void setHang(String hang) {
+        this.hang = hang;
+    }
 
     public boolean isVisible() {
         return isVisible;
