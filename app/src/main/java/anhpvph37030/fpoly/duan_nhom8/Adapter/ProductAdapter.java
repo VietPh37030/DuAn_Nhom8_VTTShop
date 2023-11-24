@@ -62,7 +62,6 @@ public class ProductAdapter extends ArrayAdapter<Product> {
 
             productNameTextView.setText(currentProduct.getName());
             productPriceTextView.setText(currentProduct.getPrice());
-            productHangTextView.setText(currentProduct.getHang()); // Thêm dòng này để hiển thị tên hãng sản phẩm
         }
 
 

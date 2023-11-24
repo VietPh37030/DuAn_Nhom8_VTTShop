@@ -29,23 +29,34 @@
                     android:layout_height="80dp"
                     android:scaleType="fitXY"
                     android:src="@drawable/item_phone" />
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:orientation="vertical">
-                <TextView
-                    android:id="@+id/txthang"
+
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
-                    android:layout_marginTop="15dp"
-                    android:text="Tên Hang "
-                    android:textColor="@color/black"
-                    android:textSize="22sp"
-                    android:textAllCaps="true"
-                    android:textStyle="bold" />
-            </LinearLayout>
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/txtMaHang"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="15dp"
+                        android:text="Mã hãng: "
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/txthang"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="5dp"
+                        android:text="Tên Hang "
+                        android:textAllCaps="true"
+                        android:textColor="@color/black"
+                        android:textSize="22sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
             </LinearLayout>
 
             <ImageView
@@ -54,8 +65,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:src="@drawable/edit" />
-
-
 
 
         </LinearLayout>

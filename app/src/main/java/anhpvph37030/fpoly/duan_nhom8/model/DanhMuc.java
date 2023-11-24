@@ -1,15 +1,25 @@
 package anhpvph37030.fpoly.duan_nhom8.model;
 
 public class DanhMuc {
+    private int maDanhMuc;
     private String urlSanPham;
     private String tenHang;
 
     public DanhMuc() {
     }
 
-    public DanhMuc(String urlSanPham, String tenHang) {
+    public DanhMuc(int maDanhMuc, String urlSanPham, String tenHang) {
+        this.maDanhMuc = maDanhMuc;
         this.urlSanPham = urlSanPham;
         this.tenHang = tenHang;
+    }
+
+    public int getMaDanhMuc() {
+        return maDanhMuc;
+    }
+
+    public void setMaDanhMuc(int maDanhMuc) {
+        this.maDanhMuc = maDanhMuc;
     }
 
     public String getUrlSanPham() {

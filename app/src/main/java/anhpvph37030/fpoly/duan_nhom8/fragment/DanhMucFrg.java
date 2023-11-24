@@ -19,24 +19,25 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import anhpvph37030.fpoly.duan_nhom8.Adapter.DanhMucAdapter;
+import anhpvph37030.fpoly.duan_nhom8.Adapter.ProductAdapter;
+import anhpvph37030.fpoly.duan_nhom8.DAO.DanhMucDAO;
 import anhpvph37030.fpoly.duan_nhom8.R;
 import anhpvph37030.fpoly.duan_nhom8.model.DanhMuc;
 import anhpvph37030.fpoly.duan_nhom8.model.Product;
 
 public class DanhMucFrg extends Fragment {
 
-    ImageButton btnThemHang;
-    ListView lstDanhMuc;
-    DatabaseReference danhMucRef;
-    List<DanhMuc> danhMucList;
-    DanhMucAdapter danhMucAdapter;
+    private ImageButton btnThemHang;
+    private ListView lstDanhMuc;
+    private DanhMucDAO danhMucDAO;
+    private List<DanhMuc> danhMucList;
+    private DanhMucAdapter danhMucAdapter;
 
     public DanhMucFrg() {
         // Required empty public constructor
@@ -45,8 +46,7 @@ public class DanhMucFrg extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Thay đổi đường dẫn tới "danhmuc" nếu cần
-        danhMucRef = FirebaseDatabase.getInstance().getReference().child("danhmuc");
+        danhMucDAO = new DanhMucDAO();
         danhMucList = new ArrayList<>();
         danhMucAdapter = new DanhMucAdapter(getContext(), R.layout.item_danhmuc, danhMucList);
     }
@@ -59,14 +59,16 @@ public class DanhMucFrg extends Fragment {
         btnThemHang = v.findViewById(R.id.btnThem);
         lstDanhMuc = v.findViewById(R.id.lstdanhmuc);
         lstDanhMuc.setAdapter(danhMucAdapter);
+
         btnThemHang.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openThemHangLayout();
             }
         });
-// Lắng nghe sự kiện khi có dữ liệu mới từ Firebase
-        danhMucRef.addValueEventListener(new ValueEventListener() {
+
+        // Lắng nghe sự kiện khi có dữ liệu mới từ Firebase
+        danhMucDAO.getDanhMucRef().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 // Xóa danh sách hiện tại
@@ -132,44 +134,24 @@ public class DanhMucFrg extends Fragment {
         String urlSanPham = edURL.getText().toString().trim();
         String tenHang = edTenHang.getText().toString().trim();
 
-        // Kiểm tra nếu dữ liệu không rỗng
-        if (!TextUtils.isEmpty(urlSanPham) && !TextUtils.isEmpty(tenHang)) {
-            // Thực hiện thêm vào Firebase
-            DatabaseReference newHangRef = danhMucRef.push();
-            newHangRef.child("urlSanPham").setValue(urlSanPham);
-            newHangRef.child("tenHang").setValue(tenHang);
-
-            // Hiển thị thông báo hoặc cập nhật giao diện nếu cần
-            Toast.makeText(getContext(), "Đã thêm hãng sản phẩm", Toast.LENGTH_SHORT).show();
-            // Cập nhật danh sách sản phẩm với tên hãng mới thêm
-            updateProductsWithNewHang(tenHang);
-        } else {
-            Toast.makeText(getContext(), "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private void updateProductsWithNewHang(String tenHang) {
-        danhMucRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        // Generate ID
+        danhMucDAO.getMaxMaDanhMuc(new DanhMucDAO.MaxMaDanhMucCallback() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot productSnapshot : dataSnapshot.getChildren()) {
-                    Product product = productSnapshot.getValue(Product.class);
-                    String productId = productSnapshot.getKey();
+            public void onCallback(int maxMaDanhMuc) {
+                int maDanhMuc = maxMaDanhMuc + 1;
 
-                    if (product != null && productId != null) {
-                        // Cập nhật tên hãng cho sản phẩm
-                        product.setHang(tenHang);
-                        // Đẩy dữ liệu đã cập nhật lên Firebase
-                        danhMucRef.child(productId).child("hang").setValue(tenHang);
-                    }
+                if (!TextUtils.isEmpty(urlSanPham) && !TextUtils.isEmpty(tenHang)) {
+                    DanhMuc danhMuc = new DanhMuc(maDanhMuc, urlSanPham, tenHang);
+                    danhMucDAO.addDanhMuc(danhMuc);
+
+                    // Hiển thị thông báo hoặc cập nhật giao diện nếu cần
+                    Toast.makeText(getContext(), "Đã thêm hãng sản phẩm", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getContext(), "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
                 }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                // Xử lý lỗi nếu cần
             }
         });
     }
+
 
 }

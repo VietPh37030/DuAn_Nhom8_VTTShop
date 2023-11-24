@@ -1,4 +1,5 @@
-package anhpvph37030.fpoly.duan_nhom8.Adapter;
+package anhpvph37030.fpoly.duan_nhom8.Adapter;// DanhMucAdapter.java
+// Import statements...
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -38,14 +39,19 @@ public class DanhMucAdapter extends ArrayAdapter<DanhMuc> {
         DanhMuc danhMuc = getItem(position);
 
         if (danhMuc != null) {
+            TextView txtMaDanhMuc = convertView.findViewById(R.id.txtMaHang);
             ImageView imgAnhSp = convertView.findViewById(R.id.imgAnhSp);
             TextView txthang = convertView.findViewById(R.id.txthang);
 
-            // Đặt dữ liệu từ danhMuc vào các thành phần của layout
+            // Set the ID to the TextView
+            txtMaDanhMuc.setText("ID: " + danhMuc.getMaDanhMuc());
+
+            // Load image using Picasso or your preferred image loading library
             if (danhMuc.getUrlSanPham() != null && !danhMuc.getUrlSanPham().isEmpty()) {
                 Picasso.get().load(danhMuc.getUrlSanPham()).into(imgAnhSp);
             }
 
+            // Set other data to the views
             if (danhMuc.getTenHang() != null) {
                 txthang.setText(danhMuc.getTenHang());
             }
@@ -53,5 +59,4 @@ public class DanhMucAdapter extends ArrayAdapter<DanhMuc> {
 
         return convertView;
     }
-
 }

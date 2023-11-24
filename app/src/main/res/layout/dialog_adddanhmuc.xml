@@ -25,6 +25,24 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+            android:text="ID danh mục:"
+            android:textColor="@color/black"
+            android:textSize="23sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/ed_maDanhMuc"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="ID danh mục"
+            android:inputType="text"
+            android:paddingLeft="10dp"
+            android:textSize="23sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:text="URL ảnh sản phẩm"
             android:textColor="@color/black"
             android:textSize="23sp"

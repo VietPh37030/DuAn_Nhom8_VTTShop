@@ -42,6 +42,7 @@ public class ProductAdminAdapter extends ArrayAdapter<Product> {
         TextView productNameTextView = listItemView.findViewById(R.id.txtTenSp);
         TextView productPriceTextView = listItemView.findViewById(R.id.txtGiasp);
         TextView productQuantityTextView = listItemView.findViewById(R.id.txtsoluongsp);
+        TextView productHangTextView = listItemView.findViewById(R.id.txtHangSp);
 
         if (currentProduct != null) {
             RequestOptions options = new RequestOptions()
@@ -57,6 +58,7 @@ public class ProductAdminAdapter extends ArrayAdapter<Product> {
             productNameTextView.setText(currentProduct.getName());
             productPriceTextView.setText(currentProduct.getPrice());
             productQuantityTextView.setText(String.valueOf(currentProduct.getQuantity()));
+            productHangTextView.setText(currentProduct.getHang());
         }
 
         return listItemView;
