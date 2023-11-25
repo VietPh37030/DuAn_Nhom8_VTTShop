@@ -37,22 +37,25 @@ public class ProductDeltaActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         productId = intent.getStringExtra("PRODUCT_ID");
+        Log.d("ProductDeltaActivity", "Received Product ID: " + productId);
         productName = intent.getStringExtra("PRODUCT_NAME");
         productPrice = intent.getStringExtra("PRODUCT_PRICE");
         productImageUrl = intent.getStringExtra("PRODUCT_IMAGE_URL");
         productDescription = intent.getStringExtra("PRODUCT_description");
-        productQuantity = intent.getStringExtra("PRODUCT_QUATITY");
+        productQuantity = intent.getStringExtra("PRODUCT_QUANTITY");
+        Log.d("ProductDeltaActivity", "Received Product Quantity: " + productQuantity);
         TextView productNameTextView = findViewById(R.id.txtnamedeita);
         TextView productPriceTextView = findViewById(R.id.txtgiadeita);
         ImageView productImageView = findViewById(R.id.imgdeilta);
+        TextView productQantityTextView = findViewById(R.id.txtsoluongsanpham);
         TextView productDescription1 = findViewById(R.id.txtmota);
         Button btnThemGioHang = findViewById(R.id.btnthemvaogio);
-
+        Log.d("ProductDeltaActivity", "Received Quantity: " + productQuantity);
         cartDAO = CartDAO.getInstance();
         cart = new Cart();
-
         productNameTextView.setText(productName);
         productPriceTextView.setText(productPrice);
+        productQantityTextView.setText(productQuantity);
         productDescription1.setText(productDescription);
 
         Picasso.get().load(productImageUrl).into(productImageView);
@@ -76,7 +79,7 @@ public class ProductDeltaActivity extends AppCompatActivity {
 
     private void addToCart() {
         // Tạo đối tượng Product từ thông tin chi tiết của sản phẩm
-        Product product = new Product(productId, productImageUrl, productName, productPrice);
+        Product product = new Product(productId, productImageUrl, productName, productPrice, Integer.parseInt(productQuantity), 0, "");
         // Thêm sản phẩm vào giỏ hàng
         cartDAO.addToCart(product, 1); // 1 là số lượng mặc định
 

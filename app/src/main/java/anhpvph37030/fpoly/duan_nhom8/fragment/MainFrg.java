@@ -3,6 +3,7 @@ package anhpvph37030.fpoly.duan_nhom8.fragment;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -111,14 +112,18 @@ public class MainFrg extends Fragment {
 
                 // Tạo Intent để chuyển từ MainFrg sang ProductDetailActivity
                 Intent intent = new Intent(getActivity(), ProductDeltaActivity.class);
-
+                // Log để kiểm tra xem dữ liệu số lượng có đúng không
+                Log.d("MainFrg", "Selected Product Quantity: " + selectedProduct.getQuantity1());
                 // Đặt thông tin sản phẩm vào Intent
                 intent.putExtra("PRODUCT_ID", selectedProduct.getId());
                 intent.putExtra("PRODUCT_NAME", selectedProduct.getName());
                 intent.putExtra("PRODUCT_PRICE", selectedProduct.getPrice());
                 intent.putExtra("PRODUCT_IMAGE_URL", selectedProduct.getImage());
                 intent.putExtra("PRODUCT_description",selectedProduct.getDescription());
+                intent.putExtra("PRODUCT_QUANTITY", String.valueOf(selectedProduct.getQuantity1()));
                 // Chuyển sang ProductDetailActivity
+                // Log để kiểm tra xem Intent đã chứa đúng dữ liệu không
+                Log.d("MainFrg", "Sending Intent with Quantity: " + selectedProduct.getQuantity1());
                 startActivity(intent);
             }
         });
