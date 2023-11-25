@@ -1,5 +1,6 @@
 package anhpvph37030.fpoly.duan_nhom8.fragment;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -8,27 +9,35 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import anhpvph37030.fpoly.duan_nhom8.Adapter.ProductAdminAdapter;
+import anhpvph37030.fpoly.duan_nhom8.DAO.DanhMucDAO;
 import anhpvph37030.fpoly.duan_nhom8.R;
+import anhpvph37030.fpoly.duan_nhom8.model.DanhMuc;
 import anhpvph37030.fpoly.duan_nhom8.model.Product;
-
 
 public class AdminQL extends Fragment {
 
@@ -37,12 +46,15 @@ public class AdminQL extends Fragment {
     SearchView searchView;
     private DatabaseReference productsRef;
     private ProductAdminAdapter productAdminAdapter;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main_admin, container, false);
         searchView = view.findViewById(R.id.search_view);
+        lstadminql = view.findViewById(R.id.lstadmin);
         btnThem = view.findViewById(R.id.btnThem);
+
         // Xử lý sự kiện khi thanh tìm kiếm thay đổi
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -57,13 +69,16 @@ public class AdminQL extends Fragment {
                 return false;
             }
         });
+
         btnThem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Xử lý sự kiện ở đây
+                openThemSanPhamDialog();
             }
         });
-        ListView listView = view.findViewById(R.id.lstadminql);
+
+        ListView listView = view.findViewById(R.id.lstadmin);
         ImageButton btnThem = view.findViewById(R.id.btnThem);
 
         productsRef = FirebaseDatabase.getInstance().getReference().child("products");
@@ -109,11 +124,153 @@ public class AdminQL extends Fragment {
             }
         });
 
-
-
-
-
-
         return view;
     }
+
+    private void openThemSanPhamDialog() {
+        // Inflate layout cho Dialog
+        View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_add_sanpham, null);
+
+        // Khởi tạo controls trong Dialog
+        EditText edIdSp = dialogView.findViewById(R.id.ed_idSp);
+        EditText edURL = dialogView.findViewById(R.id.ed_URL_SanPham1);
+        EditText edTenTL = dialogView.findViewById(R.id.ed_TenTL);
+        EditText edGia = dialogView.findViewById(R.id.ed_Gia);
+        EditText edSoLuong = dialogView.findViewById(R.id.ed_soLuong);
+        Spinner spnHang = dialogView.findViewById(R.id.spnhang);
+        Button btnThemSanPham = dialogView.findViewById(R.id.btnAdd);
+
+        // Khởi tạo Dialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setView(dialogView);
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+
+        // Lấy dữ liệu hãng sản phẩm từ Firebase và thiết lập Spinner
+        setupSpinnerHang(spnHang);
+
+        // Thiết lập sự kiện khi nhấn nút "Thêm Sản Phẩm"
+        btnThemSanPham.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Lấy thông tin từ các controls
+                String idSp = edIdSp.getText().toString().trim();
+                String urlSanPham = edURL.getText().toString().trim();
+                String tenTL = edTenTL.getText().toString().trim();
+                String gia = edGia.getText().toString().trim();
+                String soLuongStr = edSoLuong.getText().toString().trim();
+                String selectedHang = spnHang.getSelectedItem().toString();
+
+                // Kiểm tra và thêm sản phẩm vào Firebase
+                if (!TextUtils.isEmpty(idSp) && !TextUtils.isEmpty(urlSanPham)
+                        && !TextUtils.isEmpty(tenTL) && !TextUtils.isEmpty(gia)
+                        && !TextUtils.isEmpty(soLuongStr) && !TextUtils.isEmpty(selectedHang)) {
+
+                    try {
+                        // Chuyển đổi soLuong từ String sang int
+                        int soLuong = Integer.parseInt(soLuongStr);
+                        // Chuyển đổi selectedHang từ String sang int
+                        int maDanhMuc = getMaDanhMuc(selectedHang);
+
+                        // TODO: Kiểm tra xem sản phẩm đã tồn tại hay chưa
+                        DatabaseReference productNodeRef = productsRef.child(idSp);
+                        productNodeRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                if (dataSnapshot.exists()) {
+                                    Toast.makeText(getContext(), "Sản phẩm đã tồn tại", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    // Sản phẩm chưa tồn tại, thêm vào Firebase
+                                    Product newProduct = new Product(idSp, urlSanPham, tenTL, gia, soLuong, maDanhMuc);
+                                    productsRef.child(idSp).setValue(newProduct);
+
+                                    // Đóng Dialog sau khi thêm
+                                    alertDialog.dismiss();
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                // Xử lý lỗi nếu cần
+                            }
+                        });
+                    } catch (NumberFormatException e) {
+                        Toast.makeText(getContext(), "Số lượng không hợp lệ", Toast.LENGTH_SHORT).show();
+                    }
+
+                } else {
+                    Toast.makeText(getContext(), "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    private void setupSpinnerHang(Spinner spnHang) {
+        // Khởi tạo danh sách hãng sản phẩm từ danh mục
+        List<String> danhSachHang = new ArrayList<>();
+
+        // Lấy dữ liệu hãng sản phẩm từ Firebase và thiết lập Spinner
+        DanhMucDAO danhMucDAO = new DanhMucDAO();
+        DatabaseReference danhMucRef = danhMucDAO.getDanhMucRef();
+
+        danhMucRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                danhSachHang.clear();
+
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    DanhMuc danhMuc = snapshot.getValue(DanhMuc.class);
+                    if (danhMuc != null) {
+                        danhSachHang.add(danhMuc.getTenHang());
+                    }
+                }
+
+                // Tạo Adapter cho Spinner và thiết lập dữ liệu
+                ArrayAdapter<String> hangAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, danhSachHang);
+                hangAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spnHang.setAdapter(hangAdapter);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Xử lý lỗi nếu cần
+            }
+        });
+    }
+    private int getMaDanhMuc(String tenHang) {
+        // Hàm này để lấy mã danh mục tương ứng với tên hãng
+        // Bạn cần thay thế nó bằng cách phù hợp với cách lưu trữ dữ liệu của bạn
+        // Hiện tại, tôi giả sử rằng tên hãng sẽ là key, bạn có thể thay đổi nếu cần
+        DatabaseReference danhMucRef = FirebaseDatabase.getInstance().getReference().child("danhmuc");
+        Query query = danhMucRef.orderByChild("tenHang").equalTo(tenHang);
+
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    // Lấy mã danh mục từ dataSnapshot
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        DanhMuc danhMuc = snapshot.getValue(DanhMuc.class);
+                        if (danhMuc != null) {
+                            int maDanhMuc = danhMuc.getMaDanhMuc();
+                            Log.d("DEBUG", "Found maDanhMuc: " + maDanhMuc);
+                            // TODO: Gọi hàm thêm sản phẩm vào Firebase ở đây với maDanhMuc
+                        }
+                    }
+                } else {
+                    // Xử lý khi không tìm thấy tên hãng trong danh mục
+                    Log.d("DEBUG", "No matching danhMuc found for tenHang: " + tenHang);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Xử lý lỗi nếu cần
+                Log.e("ERROR", "Firebase query cancelled with error: " + databaseError.getMessage());
+            }
+        });
+
+        return -1; // hoặc một giá trị không hợp lệ khác
+        }
+
 }
