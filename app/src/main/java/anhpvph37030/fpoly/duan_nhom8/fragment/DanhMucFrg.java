@@ -124,7 +124,8 @@ public class DanhMucFrg extends Fragment {
     }
 
     private void themHangSanPham(AlertDialog alertDialog) {
-
+        EditText editText = alertDialog.findViewById(R.id.ed_maDanhMuc);
+        editText.setKeyListener(null);
         EditText edURL = alertDialog.findViewById(R.id.ed_URL_SanPham);
         EditText edTenHang = alertDialog.findViewById(R.id.ed_TenHang);
 
