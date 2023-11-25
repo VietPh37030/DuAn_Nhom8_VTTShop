@@ -2,13 +2,10 @@ package anhpvph37030.fpoly.duan_nhom8.fragment;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,17 +19,14 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
-
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import anhpvph37030.fpoly.duan_nhom8.Adapter.ProductAdminAdapter;
 import anhpvph37030.fpoly.duan_nhom8.DAO.DanhMucDAO;
 import anhpvph37030.fpoly.duan_nhom8.R;
@@ -169,10 +163,8 @@ public class AdminQL extends Fragment {
                     try {
                         // Chuyển đổi soLuong từ String sang int
                         int soLuong = Integer.parseInt(soLuongStr);
-                        // Chuyển đổi selectedHang từ String sang int
-                        int maDanhMuc = getMaDanhMuc(selectedHang);
 
-                        // TODO: Kiểm tra xem sản phẩm đã tồn tại hay chưa
+                        // Kiểm tra xem sản phẩm đã tồn tại hay chưa
                         DatabaseReference productNodeRef = productsRef.child(idSp);
                         productNodeRef.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
@@ -180,12 +172,28 @@ public class AdminQL extends Fragment {
                                 if (dataSnapshot.exists()) {
                                     Toast.makeText(getContext(), "Sản phẩm đã tồn tại", Toast.LENGTH_SHORT).show();
                                 } else {
-                                    // Sản phẩm chưa tồn tại, thêm vào Firebase
-                                    Product newProduct = new Product(idSp, urlSanPham, tenTL, gia, soLuong, maDanhMuc);
-                                    productsRef.child(idSp).setValue(newProduct);
+                                    // Sử dụng phương thức mới để lấy mã danh mục
+                                    getMaDanhMuc(selectedHang, new OnMaDanhMucListener() {
+                                        @Override
+                                        public void onMaDanhMucSuccess(int maDanhMuc) {
+                                            // Sản phẩm chưa tồn tại, thêm vào Firebase
+                                            Product newProduct = new Product(idSp, urlSanPham, tenTL, gia, soLuong, maDanhMuc);
+                                            productsRef.child(idSp).setValue(newProduct);
 
-                                    // Đóng Dialog sau khi thêm
-                                    alertDialog.dismiss();
+                                            // Đóng Dialog sau khi thêm
+                                            alertDialog.dismiss();
+                                        }
+
+                                        @Override
+                                        public void onMaDanhMucNotFound() {
+                                            Toast.makeText(getContext(), "Không tìm thấy mã danh mục", Toast.LENGTH_SHORT).show();
+                                        }
+
+                                        @Override
+                                        public void onMaDanhMucError(String errorMessage) {
+                                            Toast.makeText(getContext(), "Lỗi khi lấy mã danh mục: " + errorMessage, Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
                                 }
                             }
 
@@ -237,10 +245,8 @@ public class AdminQL extends Fragment {
             }
         });
     }
-    private int getMaDanhMuc(String tenHang) {
-        // Hàm này để lấy mã danh mục tương ứng với tên hãng
-        // Bạn cần thay thế nó bằng cách phù hợp với cách lưu trữ dữ liệu của bạn
-        // Hiện tại, tôi giả sử rằng tên hãng sẽ là key, bạn có thể thay đổi nếu cần
+
+    private void getMaDanhMuc(String tenHang, OnMaDanhMucListener listener) {
         DatabaseReference danhMucRef = FirebaseDatabase.getInstance().getReference().child("danhmuc");
         Query query = danhMucRef.orderByChild("tenHang").equalTo(tenHang);
 
@@ -254,23 +260,34 @@ public class AdminQL extends Fragment {
                         if (danhMuc != null) {
                             int maDanhMuc = danhMuc.getMaDanhMuc();
                             Log.d("DEBUG", "Found maDanhMuc: " + maDanhMuc);
-                            // TODO: Gọi hàm thêm sản phẩm vào Firebase ở đây với maDanhMuc
+
+                            // Gọi hàm thêm sản phẩm vào Firebase ở đây với maDanhMuc
+                            listener.onMaDanhMucSuccess(maDanhMuc);
+                            return;
                         }
                     }
-                } else {
-                    // Xử lý khi không tìm thấy tên hãng trong danh mục
-                    Log.d("DEBUG", "No matching danhMuc found for tenHang: " + tenHang);
                 }
+
+                // Xử lý khi không tìm thấy tên hãng trong danh mục
+                Log.d("DEBUG", "No matching danhMuc found for tenHang: " + tenHang);
+                listener.onMaDanhMucNotFound();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 // Xử lý lỗi nếu cần
                 Log.e("ERROR", "Firebase query cancelled with error: " + databaseError.getMessage());
+                listener.onMaDanhMucError(databaseError.getMessage());
             }
         });
+    }
 
-        return -1; // hoặc một giá trị không hợp lệ khác
-        }
+    // Interface để xử lý sự kiện khi có kết quả từ Firebase
+    interface OnMaDanhMucListener {
+        void onMaDanhMucSuccess(int maDanhMuc);
 
+        void onMaDanhMucNotFound();
+
+        void onMaDanhMucError(String errorMessage);
+    }
 }
