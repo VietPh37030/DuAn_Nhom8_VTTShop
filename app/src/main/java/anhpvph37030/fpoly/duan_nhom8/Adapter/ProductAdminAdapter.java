@@ -63,7 +63,7 @@ public class ProductAdminAdapter extends ArrayAdapter<Product> {
 
             productNameTextView.setText(currentProduct.getName());
             productPriceTextView.setText(currentProduct.getPrice());
-            productQuantityTextView.setText(String.valueOf(currentProduct.getQuantity()));
+            productQuantityTextView.setText(String.valueOf(currentProduct.getQuantity1()));
             productHangTextView.setText(currentProduct.getHang());
 
             // Thêm đoạn code sau để hiển thị tên hãng

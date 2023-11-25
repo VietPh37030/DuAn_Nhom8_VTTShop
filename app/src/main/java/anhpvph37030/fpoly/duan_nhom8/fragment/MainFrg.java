@@ -117,7 +117,7 @@ public class MainFrg extends Fragment {
                 intent.putExtra("PRODUCT_NAME", selectedProduct.getName());
                 intent.putExtra("PRODUCT_PRICE", selectedProduct.getPrice());
                 intent.putExtra("PRODUCT_IMAGE_URL", selectedProduct.getImage());
-
+                intent.putExtra("PRODUCT_description",selectedProduct.getDescription());
                 // Chuyển sang ProductDetailActivity
                 startActivity(intent);
             }

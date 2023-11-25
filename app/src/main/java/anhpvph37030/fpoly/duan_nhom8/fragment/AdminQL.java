@@ -132,6 +132,7 @@ public class AdminQL extends Fragment {
         EditText edGia = dialogView.findViewById(R.id.ed_Gia);
         EditText edSoLuong = dialogView.findViewById(R.id.ed_soLuong);
         Spinner spnHang = dialogView.findViewById(R.id.spnhang);
+        EditText edMoTa = dialogView.findViewById(R.id.ed_MoTa); // Add this line for description
         Button btnThemSanPham = dialogView.findViewById(R.id.btnAdd);
 
         // Khởi tạo Dialog
@@ -154,6 +155,7 @@ public class AdminQL extends Fragment {
                 String gia = edGia.getText().toString().trim();
                 String soLuongStr = edSoLuong.getText().toString().trim();
                 String selectedHang = spnHang.getSelectedItem().toString();
+                String moTa = edMoTa.getText().toString().trim(); // Get description
 
                 // Kiểm tra và thêm sản phẩm vào Firebase
                 if (!TextUtils.isEmpty(idSp) && !TextUtils.isEmpty(urlSanPham)
@@ -177,7 +179,7 @@ public class AdminQL extends Fragment {
                                         @Override
                                         public void onMaDanhMucSuccess(int maDanhMuc) {
                                             // Sản phẩm chưa tồn tại, thêm vào Firebase
-                                            Product newProduct = new Product(idSp, urlSanPham, tenTL, gia, soLuong, maDanhMuc);
+                                            Product newProduct = new Product(idSp, urlSanPham, tenTL, gia, soLuong, maDanhMuc,moTa);
                                             productsRef.child(idSp).setValue(newProduct);
 
                                             // Đóng Dialog sau khi thêm

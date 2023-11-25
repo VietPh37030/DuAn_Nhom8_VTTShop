@@ -27,6 +27,8 @@ public class ProductDeltaActivity extends AppCompatActivity {
     private String productName;
     private String productPrice;
     private String productImageUrl;
+    private  String productDescription;
+    private  String productQuantity;
     private Cart cart;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,10 +40,12 @@ public class ProductDeltaActivity extends AppCompatActivity {
         productName = intent.getStringExtra("PRODUCT_NAME");
         productPrice = intent.getStringExtra("PRODUCT_PRICE");
         productImageUrl = intent.getStringExtra("PRODUCT_IMAGE_URL");
-
+        productDescription = intent.getStringExtra("PRODUCT_description");
+        productQuantity = intent.getStringExtra("PRODUCT_QUATITY");
         TextView productNameTextView = findViewById(R.id.txtnamedeita);
         TextView productPriceTextView = findViewById(R.id.txtgiadeita);
         ImageView productImageView = findViewById(R.id.imgdeilta);
+        TextView productDescription1 = findViewById(R.id.txtmota);
         Button btnThemGioHang = findViewById(R.id.btnthemvaogio);
 
         cartDAO = CartDAO.getInstance();
@@ -49,6 +53,7 @@ public class ProductDeltaActivity extends AppCompatActivity {
 
         productNameTextView.setText(productName);
         productPriceTextView.setText(productPrice);
+        productDescription1.setText(productDescription);
 
         Picasso.get().load(productImageUrl).into(productImageView);
         Log.d("ImageLoad", "Image URL: " + productImageUrl);
