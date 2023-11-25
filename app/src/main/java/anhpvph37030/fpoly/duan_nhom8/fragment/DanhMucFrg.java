@@ -3,6 +3,7 @@ package anhpvph37030.fpoly.duan_nhom8.fragment;
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,17 +26,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import anhpvph37030.fpoly.duan_nhom8.Adapter.DanhMucAdapter;
-import anhpvph37030.fpoly.duan_nhom8.Adapter.ProductAdapter;
-import anhpvph37030.fpoly.duan_nhom8.DAO.DanhMucDAO;
 import anhpvph37030.fpoly.duan_nhom8.R;
 import anhpvph37030.fpoly.duan_nhom8.model.DanhMuc;
-import anhpvph37030.fpoly.duan_nhom8.model.Product;
 
 public class DanhMucFrg extends Fragment {
 
     private ImageButton btnThemHang;
     private ListView lstDanhMuc;
-    private DanhMucDAO danhMucDAO;
+    private DatabaseReference danhMucRef;
     private List<DanhMuc> danhMucList;
     private DanhMucAdapter danhMucAdapter;
 
@@ -46,7 +44,7 @@ public class DanhMucFrg extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        danhMucDAO = new DanhMucDAO();
+        danhMucRef = FirebaseDatabase.getInstance().getReference().child("danhmuc");
         danhMucList = new ArrayList<>();
         danhMucAdapter = new DanhMucAdapter(getContext(), R.layout.item_danhmuc, danhMucList);
     }
@@ -66,21 +64,23 @@ public class DanhMucFrg extends Fragment {
                 openThemHangLayout();
             }
         });
+        danhMucAdapter.setEditDanhMucListener(new DanhMucAdapter.EditDanhMucListener() {
+            @Override
+            public void onEditDanhMuc(DanhMuc danhMuc) {
+                openEditDanhMucDialog(danhMuc);
+            }
+        });
 
-        // Lắng nghe sự kiện khi có dữ liệu mới từ Firebase
-        danhMucDAO.getDanhMucRef().addValueEventListener(new ValueEventListener() {
+        danhMucRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                // Xóa danh sách hiện tại
                 danhMucList.clear();
 
-                // Lấy dữ liệu từ dataSnapshot và thêm vào danh sách
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     DanhMuc danhMuc = snapshot.getValue(DanhMuc.class);
                     danhMucList.add(danhMuc);
                 }
 
-                // Cập nhật giao diện
                 danhMucAdapter.notifyDataSetChanged();
             }
 
@@ -93,6 +93,8 @@ public class DanhMucFrg extends Fragment {
         return v;
     }
 
+
+
     private void openThemHangLayout() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         LayoutInflater inflater = getLayoutInflater();
@@ -102,53 +104,124 @@ public class DanhMucFrg extends Fragment {
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
 
-        // Xử lý sự kiện khi nhấn nút "Thêm" trong layout thêm hãng sản phẩm
         Button btnThemHang = dialogView.findViewById(R.id.btnAddhang);
         btnThemHang.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Thực hiện thêm hãng sản phẩm vào Firebase
                 themHangSanPham(alertDialog);
-
-                // Đóng dialog
                 alertDialog.dismiss();
             }
         });
 
-        // Xử lý sự kiện khi nhấn nút "Hủy"
         Button btnHuy = dialogView.findViewById(R.id.btnHuy);
         btnHuy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Đóng dialog
                 alertDialog.dismiss();
             }
         });
     }
 
     private void themHangSanPham(AlertDialog alertDialog) {
-        // Lấy dữ liệu từ EditText
+
         EditText edURL = alertDialog.findViewById(R.id.ed_URL_SanPham);
         EditText edTenHang = alertDialog.findViewById(R.id.ed_TenHang);
 
         String urlSanPham = edURL.getText().toString().trim();
         String tenHang = edTenHang.getText().toString().trim();
 
-        // Generate ID
-        danhMucDAO.getMaxMaDanhMuc(new DanhMucDAO.MaxMaDanhMucCallback() {
+        getMaxMaDanhMuc(new MaxMaDanhMucCallback() {
             @Override
             public void onCallback(int maxMaDanhMuc) {
                 int maDanhMuc = maxMaDanhMuc + 1;
 
                 if (!TextUtils.isEmpty(urlSanPham) && !TextUtils.isEmpty(tenHang)) {
                     DanhMuc danhMuc = new DanhMuc(maDanhMuc, urlSanPham, tenHang);
-                    danhMucDAO.addDanhMuc(danhMuc);
+                    danhMucRef.child(String.valueOf(maDanhMuc)).setValue(danhMuc);
 
-                    // Hiển thị thông báo hoặc cập nhật giao diện nếu cần
                     Toast.makeText(getContext(), "Đã thêm hãng sản phẩm", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getContext(), "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+    }
+
+    public void getMaxMaDanhMuc(MaxMaDanhMucCallback callback) {
+        danhMucRef.orderByChild("maDanhMuc").limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                int maMaDanhMuc = 0;
+                Log.d("ProductAdminAdapter", "Ma danh muc: " + maMaDanhMuc);
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        maMaDanhMuc = snapshot.child("maDanhMuc").getValue(Integer.class);
+                        DanhMuc danhMuc = snapshot.getValue(DanhMuc.class);
+                        danhMucList.add(danhMuc);
+                    }
+                    danhMucAdapter.notifyDataSetChanged();
+                    Log.d("DanhMucFrg", "Dữ liệu danh mục từ Firebase: " + danhMucList.size() + " danh mục");
+                }
+
+                callback.onCallback(maMaDanhMuc);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Handle errors if needed
+            }
+        });
+    }
+
+    public interface MaxMaDanhMucCallback {
+        void onCallback(int maxMaDanhMuc);
+    }
+    private void openEditDanhMucDialog(DanhMuc danhMuc) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_updatedanhmuc, null);
+
+        // Khởi tạo các trường EditText trong dialogView và thiết lập giá trị ban đầu
+        EditText edURL = dialogView.findViewById(R.id.ep_URL_UpdateSp);
+        EditText edTenHang = dialogView.findViewById(R.id.ed_Updatesp);
+        edURL.setText(danhMuc.getUrlSanPham());
+        edTenHang.setText(danhMuc.getTenHang());
+
+        builder.setView(dialogView);
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+
+        Button btnEditDanhMuc = dialogView.findViewById(R.id.btnUpdatehang);
+        btnEditDanhMuc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Lấy thông tin từ các EditText
+                String editedURL = edURL.getText().toString().trim();
+                String editedTenHang = edTenHang.getText().toString().trim();
+
+                // Kiểm tra xem có thay đổi không trước khi cập nhật
+                if (!danhMuc.getUrlSanPham().equals(editedURL) || !danhMuc.getTenHang().equals(editedTenHang)) {
+                    // Nếu có sự thay đổi, cập nhật vào Firebase và cập nhật vào danh sách
+                    danhMuc.setUrlSanPham(editedURL);
+                    danhMuc.setTenHang(editedTenHang);
+
+                    // Cập nhật lên Firebase
+                    danhMucRef.child(String.valueOf(danhMuc.getMaDanhMuc())).setValue(danhMuc);
+
+                    // Đóng dialog
+                    alertDialog.dismiss();
+                } else {
+                    // Nếu không có sự thay đổi, có thể thông báo hoặc không làm gì cả
+                    Toast.makeText(getContext(), "Không có thay đổi để cập nhật.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        Button btnHuy = dialogView.findViewById(R.id.btnHuy);
+        btnHuy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
             }
         });
     }

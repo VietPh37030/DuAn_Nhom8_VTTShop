@@ -13,10 +13,16 @@ import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
 import anhpvph37030.fpoly.duan_nhom8.R;
+import anhpvph37030.fpoly.duan_nhom8.model.DanhMuc;
 import anhpvph37030.fpoly.duan_nhom8.model.Product;
 
 public class ProductAdminAdapter extends ArrayAdapter<Product> {
@@ -59,9 +65,29 @@ public class ProductAdminAdapter extends ArrayAdapter<Product> {
             productPriceTextView.setText(currentProduct.getPrice());
             productQuantityTextView.setText(String.valueOf(currentProduct.getQuantity()));
             productHangTextView.setText(currentProduct.getHang());
+
+            // Thêm đoạn code sau để hiển thị tên hãng
+            int maDanhMuc = currentProduct.getMaDanhMuc();
+            DatabaseReference danhMucRef = FirebaseDatabase.getInstance().getReference().child("danhmuc").child(String.valueOf(maDanhMuc));
+
+            danhMucRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        DanhMuc danhMuc = dataSnapshot.getValue(DanhMuc.class);
+                        if (danhMuc != null) {
+                            productHangTextView.setText(danhMuc.getTenHang());
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    // Xử lý lỗi nếu cần
+                }
+            });
         }
 
         return listItemView;
     }
 }
-

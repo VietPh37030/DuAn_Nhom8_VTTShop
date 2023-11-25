@@ -77,11 +77,14 @@ public class MainactivityAdmin extends AppCompatActivity {
                 if (item.getItemId() == R.id.nav_sanpham) {
                     pagerMain_adm.setCurrentItem(1);
                 }
-                if (item.getItemId() == R.id.nav_thongke) {
+                if (item.getItemId() == R.id.nav_trangthai) {
                     pagerMain_adm.setCurrentItem(2);
                 }
-                if (item.getItemId() == R.id.nav_tai_khoan) {
+                if (item.getItemId() == R.id.nav_thongke) {
                     pagerMain_adm.setCurrentItem(3);
+                }
+                if (item.getItemId() == R.id.nav_tai_khoan) {
+                    pagerMain_adm.setCurrentItem(4);
                 }
                 return true;
             }

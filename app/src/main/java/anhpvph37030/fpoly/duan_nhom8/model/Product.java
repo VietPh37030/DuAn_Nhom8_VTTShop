@@ -55,14 +55,22 @@ public class Product {
         this.price = price;
     }
 
-    public Product(String id, String image, String name, String price, int quantity, String hang) {
+    public Product(String id, String image, String name, String price, int quantity, int maDanhMuc) {
         this.id = id;
         this.image = image;
         this.name = name;
         this.price = price;
         this.quantity = quantity;
-        this.hang = hang;
+        this.maDanhMuc = maDanhMuc;
     }
+//    public Product(String id, String image, String name, String price, int quantity, String hang) {
+//        this.id = id;
+//        this.image = image;
+//        this.name = name;
+//        this.price = price;
+//        this.quantity = quantity;
+//        this.hang = hang;
+//    }
 
     public String getId() {
         return id;
