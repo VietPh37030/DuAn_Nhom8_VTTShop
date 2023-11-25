@@ -18,8 +18,8 @@
         app:queryHint="Tìm Kiếm..."
         android:background="@drawable/timkiemstyle"
         app:iconifiedByDefault="false" />
-    <ListView
-        android:id="@+id/lstadminql"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcvDienthoai"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/search_view"

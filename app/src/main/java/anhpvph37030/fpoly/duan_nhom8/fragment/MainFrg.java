@@ -1,5 +1,6 @@
 package anhpvph37030.fpoly.duan_nhom8.fragment;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,7 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
-
+import androidx.appcompat.widget.SearchView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -38,7 +39,8 @@ public class MainFrg extends Fragment {
     private ViewPager viewPager;
     private int[] bannerImages = {R.drawable.banner14, R.drawable.banner15, R.drawable.banner12};
     private List<Product> productList;
-
+    private ProductAdapter productAdapter;
+    private GridView gridView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -49,11 +51,11 @@ public class MainFrg extends Fragment {
         productsRef = FirebaseDatabase.getInstance().getReference().child("products");
 
         // Liên kết Adapter với GridView
-        GridView gridView = v.findViewById(R.id.gvDT);
+        gridView = v.findViewById(R.id.gvDT);
 
         // Liên kết ViewPager
         viewPager = v.findViewById(R.id.viewPager);
-
+        androidx.appcompat.widget.SearchView searchView = v.findViewById(R.id.searchView);
         // Lắng nghe sự kiện khi có thay đổi trong dữ liệu
         productsRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -84,6 +86,21 @@ public class MainFrg extends Fragment {
                 Toast.makeText(getContext(), "Lỗi khi truy cập cơ sở dữ liệu", Toast.LENGTH_SHORT).show();
             }
         });
+        // Xử lý sự kiện khi người dùng thay đổi nội dung tìm kiếm
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                // Không cần xử lý submit ở đây
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                // Lọc danh sách sản phẩm dựa trên nội dung tìm kiếm
+                filterProducts(newText);
+                return true;
+            }
+        });
 
         // Xử lý sự kiện khi người dùng chọn một sản phẩm
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -107,6 +124,18 @@ public class MainFrg extends Fragment {
         });
 
         return v;
+    }
+
+    private void filterProducts(String query) {
+        List<Product> filteredList = new ArrayList<>();
+        for (Product product : productList) {
+            if (product.getName().toLowerCase().contains(query.toLowerCase())) {
+                filteredList.add(product);
+            }
+        }
+        // Tạo Adapter và setAdapter cho GridView với danh sách sản phẩm đã lọc
+        ProductAdapter adapter = new ProductAdapter(getContext(), filteredList);
+        gridView.setAdapter(adapter);
     }
 
     // TimerTask để tự động chuyển đổi ảnh trong ViewPager

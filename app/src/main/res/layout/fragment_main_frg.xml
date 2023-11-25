@@ -53,23 +53,24 @@
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginRight="10dp"
+        android:layout_marginBottom="3dp"
         android:background="@drawable/storke"
         android:theme="@style/SearchViewStyle"
         app:iconifiedByDefault="false"
-        app:queryHint="Tìm kiếm sản phẩm"
-        android:layout_marginBottom="3dp"/>
+        app:queryHint="Tìm kiếm sản phẩm" />
+
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_marginTop="10dp"
+        android:layout_height="150dp"
         android:layout_gravity="center"
-        android:layout_height="150dp">
+        android:layout_marginTop="10dp">
 
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/viewPager"
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="10dp" />
+            android:layout_marginTop="8dp" />
 
         <LinearLayout
             android:id="@+id/dotsLayout"
@@ -81,6 +82,7 @@
             android:orientation="horizontal" />
 
     </RelativeLayout>
+
     <TextView
         android:id="@+id/danhMucSP"
         android:layout_width="match_parent"
@@ -92,7 +94,6 @@
         android:textColor="#000"
         android:textSize="10sp"
         android:textStyle="bold" />
-
 
 
     <GridView
