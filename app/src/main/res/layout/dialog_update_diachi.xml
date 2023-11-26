@@ -13,23 +13,8 @@
         android:orientation="vertical"
         android:padding="20dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="Mã"
-            android:textColor="@color/black"
-            android:textSize="23sp"
-            android:textStyle="bold" />
 
-        <EditText
-            android:id="@+id/ed_id"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:hint="Mời Nhập MÃ"
-            android:inputType="text"
-            android:paddingLeft="10dp"
-            android:textSize="23sp" />
+
 
 
         <TextView
@@ -42,7 +27,7 @@
             android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/ed_hovaten"
+            android:id="@+id/up_hovaten"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:hint="Mời Nhập Tên"
@@ -60,7 +45,7 @@
             android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/ed_Gia"
+            android:id="@+id/up_sodienthoai"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:hint="Nhập Số "
@@ -78,7 +63,7 @@
             android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/ed_soLuong"
+            android:id="@+id/up_diachi"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:hint="Nhập Địa Chỉ "
@@ -94,7 +79,7 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/btnthemdiachi"
+                android:id="@+id/btnsuadiachi"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginRight="50dp"
@@ -102,7 +87,6 @@
                 android:text="Cập Nhật"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
-
                 android:textSize="18dp" />
 
             <Button

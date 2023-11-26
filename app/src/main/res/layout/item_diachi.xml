@@ -24,7 +24,7 @@
             android:orientation="vertical">
 
             <LinearLayout
-                android:layout_width="310dp"
+                android:layout_width="250dp"
                 android:layout_height="wrap_content"
 
                 android:orientation="horizontal">
@@ -37,7 +37,13 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
                     android:orientation="horizontal">
-
+                    <TextView
+                        android:id="@+id/txtMa"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:text=""
+                        android:textSize="14sp" />
                     <TextView
                         android:id="@+id/txtHovaten"
                         android:layout_width="wrap_content"
@@ -80,12 +86,26 @@
             </LinearLayout>
 
         </LinearLayout>
-        <TextView
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+        <ImageButton
             android:id="@+id/txtsuadiachi"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="#FF5722"
+            android:src="@drawable/edit"
             android:text="Sửa"/>
+        <ImageButton
+            android:id="@+id/btnDelete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/delete"
+            android:contentDescription="Delete" />
+        </LinearLayout>
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>

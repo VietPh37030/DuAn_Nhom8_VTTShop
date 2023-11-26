@@ -1,6 +1,7 @@
 package anhpvph37030.fpoly.duan_nhom8.Activities;
 
-import android.app.Dialog;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -54,7 +55,6 @@ public class DiaChiActi extends AppCompatActivity {
         diaChiAdapter = new DiaChiAdapter(this, diaChiList);
         listView.setAdapter(diaChiAdapter);
 
-        // Thêm sự kiện click vào button để hiển thị dialog thêm địa chỉ
         ImageButton btnThem = findViewById(R.id.btnThem);
         btnThem.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,76 +63,142 @@ public class DiaChiActi extends AppCompatActivity {
             }
         });
 
-        // Hiển thị danh sách địa chỉ
+        diaChiAdapter.setEditClickListener(new DiaChiAdapter.EditClickListener() {
+            @Override
+            public void onEditClick(int position) {
+                ThongTinDiaChi selectedDiaChi = diaChiList.get(position);
+                showEditAddressDialog(selectedDiaChi);
+            }
+        });
+
+        diaChiAdapter.setDeleteClickListener(new DiaChiAdapter.DeleteClickListener() {
+            @Override
+            public void onDeleteClick(int position) {
+                ThongTinDiaChi selectedDiaChi = diaChiList.get(position);
+                showDeleteConfirmationDialog(selectedDiaChi);
+            }
+        });
+
         updateListView();
     }
 
-    private void showAddAddressDialog() {
-        // Tạo dialog
-        Dialog dialog = new Dialog(this);
-        dialog.setContentView(R.layout.dialog_add_diachi);
+    private void showEditAddressDialog(ThongTinDiaChi selectedDiaChi) {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setTitle("Chỉnh sửa địa chỉ");
 
-        EditText edtHoTen = dialog.findViewById(R.id.ed_hovaten);
-        EditText edtSoDienThoai = dialog.findViewById(R.id.ed_Gia);
-        EditText edtDiaChi = dialog.findViewById(R.id.ed_soLuong);
+        View view = getLayoutInflater().inflate(R.layout.dialog_update_diachi, null);
+        alertDialogBuilder.setView(view);
 
-        Button btnThemDiaChi = dialog.findViewById(R.id.btnthemdiachi);
-        Button btnHuy = dialog.findViewById(R.id.btnHuydiachi);
+        EditText edtHoTen = view.findViewById(R.id.up_hovaten);
+        EditText edtSoDienThoai = view.findViewById(R.id.up_sodienthoai);
+        EditText edtDiaChi = view.findViewById(R.id.up_diachi);
 
-        // Thêm sự kiện click vào button "Thêm Địa Chỉ"
-        btnThemDiaChi.setOnClickListener(new View.OnClickListener() {
+        edtHoTen.setText(selectedDiaChi.getHoTen());
+        edtSoDienThoai.setText(selectedDiaChi.getSoDienThoai());
+        edtDiaChi.setText(selectedDiaChi.getDiaChi());
+
+        alertDialogBuilder.setPositiveButton("Cập nhật", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                // Lấy thông tin từ EditText
+            public void onClick(DialogInterface dialog, int which) {
                 String hoTen = edtHoTen.getText().toString();
                 String soDienThoai = edtSoDienThoai.getText().toString();
                 String diaChi = edtDiaChi.getText().toString();
 
-                // Kiểm tra xem các trường có trống không
                 if (hoTen.isEmpty() || soDienThoai.isEmpty() || diaChi.isEmpty()) {
                     Toast.makeText(DiaChiActi.this, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                // Tạo đối tượng ThongTinDiaChi
-                ThongTinDiaChi thongTinDiaChi = new ThongTinDiaChi(hoTen, soDienThoai, diaChi);
+                DatabaseReference selectedDiaChiRef = diaChiRef.child(selectedDiaChi.getId());
+                ThongTinDiaChi updatedDiaChi = new ThongTinDiaChi(selectedDiaChi.getId(), hoTen, soDienThoai, diaChi);
+                selectedDiaChiRef.setValue(updatedDiaChi);
 
-                // Thêm thông tin địa chỉ vào Firebase
-                diaChiRef.push().setValue(thongTinDiaChi, new DatabaseReference.CompletionListener() {
-                    @Override
-                    public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
-                        if (error == null) {
-                            Toast.makeText(DiaChiActi.this, "Thêm địa chỉ thành công", Toast.LENGTH_SHORT).show();
-                            // Cập nhật danh sách địa chỉ
-                            updateListView();
-                            // Đóng dialog
-                            dialog.dismiss();
-                        } else {
-                            Toast.makeText(DiaChiActi.this, "Lỗi khi thêm địa chỉ", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+                Toast.makeText(DiaChiActi.this, "Cập nhật địa chỉ thành công", Toast.LENGTH_SHORT).show();
+
+                updateListView();
             }
         });
 
-        // Thêm sự kiện click vào button "Hủy"
-        btnHuy.setOnClickListener(new View.OnClickListener() {
+        alertDialogBuilder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                // Đóng dialog
+            public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
             }
         });
 
-        // Hiển thị dialog
-        dialog.show();
+        alertDialogBuilder.create().show();
+    }
+
+    private void showAddAddressDialog() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setTitle("Thêm địa chỉ");
+
+        View view = getLayoutInflater().inflate(R.layout.dialog_add_diachi, null);
+        alertDialogBuilder.setView(view);
+
+        EditText edtid = view.findViewById(R.id.ed_id);
+        EditText edtHoTen = view.findViewById(R.id.ed_hovaten);
+        EditText edtSoDienThoai = view.findViewById(R.id.ed_Gia);
+        EditText edtDiaChi = view.findViewById(R.id.ed_soLuong);
+
+        alertDialogBuilder.setPositiveButton("Thêm", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String id = edtid.getText().toString();
+                String hoTen = edtHoTen.getText().toString();
+                String soDienThoai = edtSoDienThoai.getText().toString();
+                String diaChi = edtDiaChi.getText().toString();
+
+                if (hoTen.isEmpty() || soDienThoai.isEmpty() || diaChi.isEmpty()) {
+                    Toast.makeText(DiaChiActi.this, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                ThongTinDiaChi thongTinDiaChi = new ThongTinDiaChi(id, hoTen, soDienThoai, diaChi);
+
+                diaChiRef.child(id).setValue(thongTinDiaChi);
+
+                Toast.makeText(DiaChiActi.this, "Thêm địa chỉ thành công", Toast.LENGTH_SHORT).show();
+
+                updateListView();
+            }
+        });
+
+        alertDialogBuilder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        alertDialogBuilder.create().show();
+    }
+
+    private void showDeleteConfirmationDialog(ThongTinDiaChi selectedDiaChi) {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setTitle("Xác nhận xóa");
+        alertDialogBuilder.setMessage("Bạn có chắc chắn muốn xóa địa chỉ này?");
+        alertDialogBuilder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                diaChiRef.child(selectedDiaChi.getId()).removeValue();
+                Toast.makeText(DiaChiActi.this, "Xóa địa chỉ thành công", Toast.LENGTH_SHORT).show();
+                updateListView();
+            }
+        });
+        alertDialogBuilder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        alertDialogBuilder.create().show();
     }
 
     private void updateListView() {
-        // Xóa danh sách hiện tại
         diaChiList.clear();
 
-        // Lắng nghe sự kiện thay đổi trên Firebase và cập nhật danh sách
         diaChiRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -141,7 +207,6 @@ public class DiaChiActi extends AppCompatActivity {
                     diaChiList.add(thongTinDiaChi);
                 }
 
-                // Thông báo Adapter cập nhật lại ListView
                 diaChiAdapter.notifyDataSetChanged();
             }
 
