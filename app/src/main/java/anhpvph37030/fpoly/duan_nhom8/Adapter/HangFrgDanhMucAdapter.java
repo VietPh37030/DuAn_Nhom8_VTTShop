@@ -11,11 +11,17 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 import anhpvph37030.fpoly.duan_nhom8.R;
+import anhpvph37030.fpoly.duan_nhom8.model.DanhMuc;
 import anhpvph37030.fpoly.duan_nhom8.model.Product;
 
 public class HangFrgDanhMucAdapter extends ArrayAdapter<Product> {
@@ -43,6 +49,8 @@ public class HangFrgDanhMucAdapter extends ArrayAdapter<Product> {
             TextView txtTenSp = convertView.findViewById(R.id.txtTenSp);
             TextView txtGiaSp = convertView.findViewById(R.id.txtGiasp);
             TextView txtHangSp = convertView.findViewById(R.id.txtHangSp);
+            TextView txtSoLuong = convertView.findViewById(R.id.txtsoluongsp);
+
 
             // Load hình ảnh sử dụng Picasso
             String urlSanPham = product.getImage();
@@ -54,7 +62,28 @@ public class HangFrgDanhMucAdapter extends ArrayAdapter<Product> {
 
             txtTenSp.setText(product.getName());
             txtGiaSp.setText(product.getPrice());
+            txtSoLuong.setText(String.valueOf(product.getQuantity1()));
             txtHangSp.setText(product.getHang());
+
+            int maDanhMuc = product.getMaDanhMuc();
+            DatabaseReference danhMucRef = FirebaseDatabase.getInstance().getReference().child("danhmuc").child(String.valueOf(maDanhMuc));
+
+            danhMucRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        DanhMuc danhMuc = dataSnapshot.getValue(DanhMuc.class);
+                        if (danhMuc != null) {
+                            txtHangSp.setText(danhMuc.getTenHang());
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    // Xử lý lỗi nếu cần
+                }
+            });
         }
 
         return convertView;

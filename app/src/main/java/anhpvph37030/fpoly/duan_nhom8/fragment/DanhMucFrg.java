@@ -26,6 +26,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import anhpvph37030.fpoly.duan_nhom8.Activities.HangFrg_DanhMucActivity;
 import anhpvph37030.fpoly.duan_nhom8.Adapter.DanhMucAdapter;
 import anhpvph37030.fpoly.duan_nhom8.R;
 import anhpvph37030.fpoly.duan_nhom8.model.DanhMuc;
@@ -92,22 +93,20 @@ public class DanhMucFrg extends Fragment {
             }
         });
 
-        // Sử dụng setOnItemClickListener thay vì setOnClickListener
+
         lstDanhMuc.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // Lấy dữ liệu của mục được chọn
                 DanhMuc selectedDanhMuc = danhMucAdapter.getItem(position);
 
-                // Tạo Bundle để đóng gói dữ liệu
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("selectedDanhMuc", selectedDanhMuc);
+                // Tạo Intent để chuyển dữ liệu qua HangFrg_DanhMucActivity
+                Intent intent = new Intent(getActivity(), HangFrg_DanhMucActivity.class);
 
-                // Tạo Intent để chuyển dữ liệu qua Activity mới
-                Intent intent = new Intent(getActivity(), HangFrg_DanhMuc.class);
-                intent.putExtras(bundle);
+                // Đưa thông tin của danh mục vào Intent
+                intent.putExtra("selectedDanhMuc", selectedDanhMuc);
 
-                // Bắt đầu Activity mới
+                // Bắt đầu HangFrg_DanhMucActivity
                 startActivity(intent);
             }
         });
