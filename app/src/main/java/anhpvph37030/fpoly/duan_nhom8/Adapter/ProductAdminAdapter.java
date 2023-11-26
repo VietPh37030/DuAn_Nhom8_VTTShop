@@ -128,6 +128,7 @@ public class ProductAdminAdapter extends ArrayAdapter<Product> {
                 deleteProduct(selectedProduct);
             }
         });
+
         builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
