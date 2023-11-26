@@ -79,14 +79,14 @@
             </LinearLayout>
 
             <ImageView
-                android:id="@+id/btnEdit"
+                android:id="@+id/btnEditSp"
                 android:layout_width="20dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:src="@drawable/edit" />
 
-            <ImageButton
-                android:id="@+id/btnDelete"
+            <ImageView
+                android:id="@+id/btnDeleteSp"
                 android:layout_width="20dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"

@@ -27,6 +27,8 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
+
+import anhpvph37030.fpoly.duan_nhom8.Adapter.DanhMucAdapter;
 import anhpvph37030.fpoly.duan_nhom8.Adapter.ProductAdminAdapter;
 import anhpvph37030.fpoly.duan_nhom8.DAO.DanhMucDAO;
 import anhpvph37030.fpoly.duan_nhom8.R;
@@ -48,7 +50,14 @@ public class AdminQL extends Fragment {
         searchView = view.findViewById(R.id.search_view);
         lstadminql = view.findViewById(R.id.lstadmin);
         btnThem = view.findViewById(R.id.btnThem);
+        ListView listView = view.findViewById(R.id.lstadmin);
+        ImageButton btnThem = view.findViewById(R.id.btnThem);
 
+        productsRef = FirebaseDatabase.getInstance().getReference().child("products");
+
+        // Khởi tạo Adapter
+        productAdminAdapter = new ProductAdminAdapter(getContext(), new ArrayList<>());
+        listView.setAdapter(productAdminAdapter);
         // Xử lý sự kiện khi thanh tìm kiếm thay đổi
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -71,15 +80,13 @@ public class AdminQL extends Fragment {
                 openThemSanPhamDialog();
             }
         });
+        productAdminAdapter.setEditSanPhamListener(new ProductAdminAdapter.EditSanPhamListener() {
+            @Override
+            public void onEditSanPham(Product product) {
+                openEditSanPhamDialog(product);
+            }
+        });
 
-        ListView listView = view.findViewById(R.id.lstadmin);
-        ImageButton btnThem = view.findViewById(R.id.btnThem);
-
-        productsRef = FirebaseDatabase.getInstance().getReference().child("products");
-
-        // Khởi tạo Adapter
-        productAdminAdapter = new ProductAdminAdapter(getContext(), new ArrayList<>());
-        listView.setAdapter(productAdminAdapter);
 
         // Lắng nghe sự kiện khi có thay đổi trong dữ liệu
         productsRef.addValueEventListener(new ValueEventListener() {
@@ -213,7 +220,106 @@ public class AdminQL extends Fragment {
                 }
             }
         });
+        Button btnHuy = dialogView.findViewById(R.id.btnHuy);
+        btnHuy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+            }
+        });
     }
+
+    private void openEditSanPhamDialog(Product selectedProduct) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_update_sanpham, null);
+
+        // Khởi tạo controls trong Dialog
+        EditText edURL = dialogView.findViewById(R.id.ed_URL_SanPham1);
+        EditText edTenTL = dialogView.findViewById(R.id.ed_TenTL);
+        EditText edGia = dialogView.findViewById(R.id.ed_Gia);
+        EditText edSoLuong = dialogView.findViewById(R.id.ed_soLuong);
+        Spinner spnHang = dialogView.findViewById(R.id.spnhang);
+        EditText edMoTa = dialogView.findViewById(R.id.ed_MoTa); // Add this line for description
+        Button btnUpdate = dialogView.findViewById(R.id.btnUpdate);
+
+        // Khởi tạo Dialog
+        builder.setView(dialogView);
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+
+        // Lấy dữ liệu hãng sản phẩm từ Firebase và thiết lập Spinner
+        setupSpinnerHang(spnHang);
+
+        // Thiết lập giá trị ban đầu cho các controls từ selectedProduct
+        edURL.setText(selectedProduct.getImage());
+        edTenTL.setText(selectedProduct.getName());
+        edGia.setText(selectedProduct.getPrice());
+        edSoLuong.setText(String.valueOf(selectedProduct.getQuantity1()));
+        edMoTa.setText(selectedProduct.getDescription()); // Set description
+
+        // Thiết lập sự kiện khi nhấn nút "Cập Nhật"
+        btnUpdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Lấy thông tin từ các controls
+                String idSp = selectedProduct.getId(); // Use the ID from the selectedProduct
+                String urlSanPham = edURL.getText().toString().trim();
+                String tenTL = edTenTL.getText().toString().trim();
+                String gia = edGia.getText().toString().trim();
+                String soLuongStr = edSoLuong.getText().toString().trim();
+                String selectedHang = spnHang.getSelectedItem().toString();
+                String moTa = edMoTa.getText().toString().trim(); // Get description
+
+                // Kiểm tra và cập nhật sản phẩm vào Firebase
+                if (!TextUtils.isEmpty(idSp) && !TextUtils.isEmpty(urlSanPham)
+                        && !TextUtils.isEmpty(tenTL) && !TextUtils.isEmpty(gia)
+                        && !TextUtils.isEmpty(soLuongStr) && !TextUtils.isEmpty(selectedHang)) {
+
+                    try {
+                        // Chuyển đổi soLuong từ String sang int
+                        int soLuong = Integer.parseInt(soLuongStr);
+
+                        // Sử dụng phương thức mới để lấy mã danh mục
+                        getMaDanhMuc(selectedHang, new OnMaDanhMucListener() {
+                            @Override
+                            public void onMaDanhMucSuccess(int maDanhMuc) {
+                                // Cập nhật thông tin sản phẩm vào Firebase
+                                Product updatedProduct = new Product(idSp, urlSanPham, tenTL, gia, soLuong, maDanhMuc, moTa);
+                                productsRef.child(idSp).setValue(updatedProduct);
+
+                                // Đóng Dialog sau khi cập nhật
+                                alertDialog.dismiss();
+                            }
+
+                            @Override
+                            public void onMaDanhMucNotFound() {
+                                Toast.makeText(getContext(), "Không tìm thấy mã danh mục", Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onMaDanhMucError(String errorMessage) {
+                                Toast.makeText(getContext(), "Lỗi khi lấy mã danh mục: " + errorMessage, Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    } catch (NumberFormatException e) {
+                        Toast.makeText(getContext(), "Số lượng không hợp lệ", Toast.LENGTH_SHORT).show();
+                    }
+
+                } else {
+                    Toast.makeText(getContext(), "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        Button btnHuy = dialogView.findViewById(R.id.btnHuyUpdate);
+        btnHuy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+            }
+        });
+    }
+
 
     private void setupSpinnerHang(Spinner spnHang) {
         // Khởi tạo danh sách hãng sản phẩm từ danh mục

@@ -1,15 +1,18 @@
 package anhpvph37030.fpoly.duan_nhom8.Adapter;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -27,12 +30,18 @@ import anhpvph37030.fpoly.duan_nhom8.model.Product;
 
 public class ProductAdminAdapter extends ArrayAdapter<Product> {
     private Context context;
+    private EditSanPhamListener editSanPhamListener;
 
     public ProductAdminAdapter(Context context, List<Product> productList) {
         super(context, 0, productList);
         this.context = context;
     }
-
+    public interface EditSanPhamListener {
+        void onEditSanPham(Product danhMuc);
+    }
+    public void setEditSanPhamListener(ProductAdminAdapter.EditSanPhamListener listener) {
+        this.editSanPhamListener = listener;
+    }
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -49,6 +58,8 @@ public class ProductAdminAdapter extends ArrayAdapter<Product> {
         TextView productPriceTextView = listItemView.findViewById(R.id.txtGiasp);
         TextView productQuantityTextView = listItemView.findViewById(R.id.txtsoluongsp);
         TextView productHangTextView = listItemView.findViewById(R.id.txtHangSp);
+        ImageView btnedit = listItemView.findViewById(R.id.btnEditSp);
+        ImageView btnXoa = listItemView.findViewById(R.id.btnDeleteSp);
 
         if (currentProduct != null) {
             RequestOptions options = new RequestOptions()
@@ -86,8 +97,53 @@ public class ProductAdminAdapter extends ArrayAdapter<Product> {
                     // Xử lý lỗi nếu cần
                 }
             });
+            btnedit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (editSanPhamListener != null) {
+                        editSanPhamListener.onEditSanPham(currentProduct);
+                    }
+                }
+            });
+            btnXoa.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    confirmAndDeleteProduct(currentProduct);
+                }
+            });
+
         }
 
         return listItemView;
+    }
+    // Hàm xác nhận và xóa sản phẩm
+    private void confirmAndDeleteProduct(Product selectedProduct) {
+        // Hiển thị Dialog xác nhận xóa
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Xác nhận xóa sản phẩm");
+        builder.setMessage("Bạn có chắc chắn muốn xóa sản phẩm này?");
+        builder.setPositiveButton("Xóa", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                deleteProduct(selectedProduct);
+            }
+        });
+        builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.show();
+    }
+
+    // Hàm xóa sản phẩm
+    private void deleteProduct(Product selectedProduct) {
+        // Xóa sản phẩm từ Firebase ở đây
+        DatabaseReference productRef = FirebaseDatabase.getInstance().getReference().child("products").child(selectedProduct.getId());
+        productRef.removeValue();
+
+        // Hiển thị thông báo sau khi xóa
+        Toast.makeText(getContext(), "Đã xóa sản phẩm", Toast.LENGTH_SHORT).show();
     }
 }

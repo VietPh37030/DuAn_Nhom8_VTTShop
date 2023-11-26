@@ -51,7 +51,6 @@ public class HangFrgDanhMucAdapter extends ArrayAdapter<Product> {
             TextView txtHangSp = convertView.findViewById(R.id.txtHangSp);
             TextView txtSoLuong = convertView.findViewById(R.id.txtsoluongsp);
 
-
             // Load hình ảnh sử dụng Picasso
             String urlSanPham = product.getImage();
             if (urlSanPham != null && !urlSanPham.isEmpty()) {
