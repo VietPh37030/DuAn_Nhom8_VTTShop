@@ -1,6 +1,8 @@
 package anhpvph37030.fpoly.duan_nhom8.model;
 
-public class DanhMuc {
+import java.io.Serializable;
+
+public class DanhMuc implements Serializable {
     private int maDanhMuc;
     private String urlSanPham;
     private String tenHang;

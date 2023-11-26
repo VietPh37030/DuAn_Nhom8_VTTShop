@@ -21,21 +21,17 @@
             android:textSize="25sp"
             android:textStyle="bold" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="ID danh mục:"
-            android:textColor="@color/black"
-            android:textSize="23sp"
-            android:textStyle="bold" />
+
 
         <EditText
+            android:layout_marginTop="10dp"
             android:id="@+id/ed_maDanhMuc"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:hint="ID danh mục"
-            android:inputType="text"
+            android:text="ID danh mục"
+            android:inputType="none"
+           android:textAlignment="center"
+            android:background="@drawable/editbootom"
             android:paddingLeft="10dp"
             android:textSize="23sp" />
 

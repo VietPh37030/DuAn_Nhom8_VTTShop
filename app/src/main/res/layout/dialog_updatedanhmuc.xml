@@ -10,7 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="650dp"
         android:orientation="vertical"
-        android:background="@drawable/round_shape"
         android:padding="20dp">
 
         <TextView
@@ -19,7 +18,7 @@
             android:layout_gravity="center_horizontal"
             android:text="Update Hãng Sản Phẩm"
             android:textColor="#F30A0A"
-            android:textSize="30sp"
+            android:textSize="25sp"
             android:textStyle="bold" />
 
         <TextView
@@ -32,7 +31,7 @@
             android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/ed_URL_UpdateSp"
+            android:id="@+id/ep_URL_UpdateSp"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:hint="Nhập URL của sản phẩm"
@@ -66,7 +65,7 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/btnAddhang"
+                android:id="@+id/btnUpdatehang"
                 android:layout_width="140dp"
                 android:layout_height="50dp"
                 android:layout_marginRight="50dp"

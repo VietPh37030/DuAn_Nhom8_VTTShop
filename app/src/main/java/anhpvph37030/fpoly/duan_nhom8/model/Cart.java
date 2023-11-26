@@ -8,9 +8,9 @@ public class Cart {
         // Cần constructor mặc định để Firebase có thể deserializing dữ liệu
     }
 
-    public Cart(Product product, int quantity) {
+    public Cart(Product product, int quantity1) {
         this.product = product;
-        this.quantity = quantity;
+        this.quantity = quantity1;
     }
 
     public Product getProduct() {

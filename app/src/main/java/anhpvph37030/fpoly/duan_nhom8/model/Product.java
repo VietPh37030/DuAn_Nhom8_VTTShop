@@ -5,12 +5,22 @@ public class Product {
     private String image;
     private String name;
     private String price;
-    private int quantity;// them truong du lieu
+    private int quantity1;// them truong du lieu
     private String hang;
 
     private int maDanhMuc;
+    private String description;
+    
 
     // Các phương thức khác...
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     public int getMaDanhMuc() {
         return maDanhMuc;
@@ -40,12 +50,12 @@ public class Product {
     public Product() {
     }
 
-    public int getQuantity() {
-        return quantity;
+    public int getQuantity1() {
+        return quantity1;
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
+    public void setQuantity1(int quantity1) {
+        this.quantity1 = quantity1;
     }
 
     public Product(String id, String image, String name, String price) {
@@ -55,14 +65,33 @@ public class Product {
         this.price = price;
     }
 
-    public Product(String id, String image, String name, String price, int quantity, String hang) {
+    public Product(String id, String image, String name, String price, int quantity1, int maDanhMuc, String description) {
         this.id = id;
         this.image = image;
         this.name = name;
         this.price = price;
-        this.quantity = quantity;
-        this.hang = hang;
+        this.quantity1 = quantity1;
+        this.maDanhMuc = maDanhMuc;
+        this.description = description;
     }
+
+//    public Product(String id, String image, String name, String price, int quantity, int maDanhMuc,String description) {
+//        this.id = id;
+//        this.image = image;
+//        this.name = name;
+//        this.price = price;
+//        this.quantity = quantity;
+//        this.maDanhMuc = maDanhMuc;
+//        this.description = description;
+//    }
+//    public Product(String id, String image, String name, String price, int quantity, String hang) {
+//        this.id = id;
+//        this.image = image;
+//        this.name = name;
+//        this.price = price;
+//        this.quantity = quantity;
+//        this.hang = hang;
+//    }
 
     public String getId() {
         return id;

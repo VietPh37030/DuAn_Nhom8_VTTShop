@@ -1,5 +1,7 @@
 package anhpvph37030.fpoly.duan_nhom8.DAO;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.google.firebase.database.DataSnapshot;
@@ -13,43 +15,37 @@ import anhpvph37030.fpoly.duan_nhom8.model.DanhMuc;
 public class DanhMucDAO {
     private DatabaseReference danhMucRef;
 
+    // Tạo một biến DatabaseReference để sử dụng chung
     public DanhMucDAO() {
-        // Thay đổi đường dẫn tới "danhmuc" nếu cần
         danhMucRef = FirebaseDatabase.getInstance().getReference().child("danhmuc");
     }
 
     public void addDanhMuc(DanhMuc danhMuc) {
-        // Implement your logic to get the maximum maDanhMuc from Firebase
+        // Sử dụng biến DatabaseReference đã tạo
         getMaxMaDanhMuc(new MaxMaDanhMucCallback() {
             @Override
             public void onCallback(int maxMaDanhMuc) {
                 int newMaDanhMuc = maxMaDanhMuc + 1;
-
-                // Set the newMaDanhMuc to the danhMuc object
                 danhMuc.setMaDanhMuc(newMaDanhMuc);
 
                 // Thực hiện thêm hãng sản phẩm vào Firebase
                 DatabaseReference newHangRef = danhMucRef.child(String.valueOf(newMaDanhMuc));
                 newHangRef.setValue(danhMuc);
+                Log.d("DanhMucDAO", "Đã thêm danh mục mới: " + danhMuc.getTenHang() + " vào Firebase");
             }
         });
     }
 
-    // Callback interface to handle the result of getMaxMaDanhMuc
     public void getMaxMaDanhMuc(MaxMaDanhMucCallback callback) {
-        // Implement your logic here to get the maximum maDanhMuc from Firebase
-        // This method should invoke the callback with the result when available
-        // For example, if you are querying Firebase asynchronously, invoke the callback in the completion listener
-        // Replace the placeholder logic below with your actual implementation
+        // Sử dụng biến DatabaseReference đã tạo
         danhMucRef.orderByChild("maDanhMuc").limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 int maxMaDanhMuc = 0;
 
                 if (dataSnapshot.exists()) {
-                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        maxMaDanhMuc = snapshot.child("maDanhMuc").getValue(Integer.class);
-                    }
+                    DataSnapshot lastChild = dataSnapshot.getChildren().iterator().next();
+                    maxMaDanhMuc = lastChild.child("maDanhMuc").getValue(Integer.class);
                 }
 
                 callback.onCallback(maxMaDanhMuc);
@@ -57,12 +53,13 @@ public class DanhMucDAO {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                // Handle errors if needed
+                // Xử lý lỗi theo nhu cầu của ứng dụng
+                // Ví dụ: Log lỗi
+                // Log.e("DanhMucDAO", "Error fetching max maDanhMuc", databaseError.toException());
             }
         });
     }
 
-    // Define the callback interface
     public interface MaxMaDanhMucCallback {
         void onCallback(int maxMaDanhMuc);
     }

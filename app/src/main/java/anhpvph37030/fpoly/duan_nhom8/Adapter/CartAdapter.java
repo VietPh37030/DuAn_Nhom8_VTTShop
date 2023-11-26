@@ -16,7 +16,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -35,12 +34,14 @@ import anhpvph37030.fpoly.duan_nhom8.DAO.CartDAO;
 import anhpvph37030.fpoly.duan_nhom8.R;
 import anhpvph37030.fpoly.duan_nhom8.fragment.MyCartFrg;
 import anhpvph37030.fpoly.duan_nhom8.model.Cart;
+import anhpvph37030.fpoly.duan_nhom8.model.Product;
 
 public class CartAdapter extends ArrayAdapter<Cart> {
     private Context context;
     private List<Cart> cartItemList;
     private CartDAO cartDAO;
     private MyCartFrg myCartFragment;
+    Product product;
 
     public CartAdapter(Context context, List<Cart> cartItemList, CartDAO cartDAO, MyCartFrg myCartFragment) {
         super(context, 0, cartItemList);
@@ -71,6 +72,7 @@ public class CartAdapter extends ArrayAdapter<Cart> {
             holder.imgTang = listItemView.findViewById(R.id.img_tang);
             holder.productNameTextView = listItemView.findViewById(R.id.txt_phone);
             holder.productPriceTextView = listItemView.findViewById(R.id.txt_gia);
+            holder.QuantitySum = listItemView.findViewById(R.id.txt_soluong);
             holder.quantityTextView = listItemView.findViewById(R.id.txt_soluong2);
             holder.btnCancle = listItemView.findViewById(R.id.btn_cancle);
             holder.cardView = listItemView.findViewById(R.id.cardView);
@@ -95,6 +97,7 @@ public class CartAdapter extends ArrayAdapter<Cart> {
 
             holder.productNameTextView.setText(cartItem.getProduct().getName());
             holder.productPriceTextView.setText(cartItem.getProduct().getPrice());
+            holder.QuantitySum.setText(String.valueOf(cartItem.getProduct().getQuantity1()));
             holder.quantityTextView.setText(String.valueOf(cartItem.getQuantity()));
 
             holder.imgGiam.setOnClickListener(new View.OnClickListener() {
@@ -146,6 +149,7 @@ public class CartAdapter extends ArrayAdapter<Cart> {
         ImageView productImageView, imgGiam, imgTang;
         TextView productNameTextView;
         TextView productPriceTextView;
+        TextView QuantitySum;
         TextView quantityTextView;
         Button btnCancle;
         LinearLayout cardView;
