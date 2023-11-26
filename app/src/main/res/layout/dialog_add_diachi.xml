@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    app:cardCornerRadius="20dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Thêm Thông Tin "
+            android:textColor="#F30A0A"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Họ Và Tên"
+            android:textColor="@color/black"
+            android:textSize="23sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/ed_hovaten"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="Mời Nhập Tên"
+            android:inputType="text"
+            android:paddingLeft="10dp"
+            android:textSize="23sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Số Điện Thoại"
+            android:textColor="@color/black"
+            android:textSize="23sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/ed_Gia"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="Nhập Số "
+            android:inputType="number"
+            android:paddingLeft="10dp"
+            android:textSize="23sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Địa Chỉ"
+            android:textColor="@color/black"
+            android:textSize="23sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/ed_soLuong"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="Nhập Địa Chỉ "
+            android:inputType="text"
+            android:paddingLeft="10dp"
+            android:textSize="23sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnthemdiachi"
+                android:layout_width="140dp"
+                android:layout_height="50dp"
+                android:layout_marginRight="50dp"
+                android:background="#9AD2FC"
+                android:text="Cập Nhật"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="18dp" />
+
+            <Button
+                android:id="@+id/btnHuydiachi"
+                android:layout_width="140dp"
+                android:layout_height="50dp"
+                android:background="#F95B5B"
+                android:text="Hủy"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="18dp" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+</androidx.cardview.widget.CardView>

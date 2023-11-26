@@ -16,6 +16,15 @@
         android:layout_height="180dp"
         android:background="@drawable/round_shape"
         android:layout_alignParentBottom="true"/>
+    <ImageView
+        android:id="@+id/btneditdiachi"
+        android:layout_width="30dp"
+        android:layout_height="50dp"
+        android:src="@drawable/setting"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="30dp"
+        />
     <LinearLayout
         android:id="@+id/topView"
         android:layout_width="match_parent"

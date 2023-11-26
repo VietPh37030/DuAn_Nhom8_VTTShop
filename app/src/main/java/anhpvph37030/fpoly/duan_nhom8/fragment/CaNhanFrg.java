@@ -30,10 +30,12 @@ import com.google.firebase.storage.StorageReference;
 
 import anhpvph37030.fpoly.duan_nhom8.Activities.ChangeInfoActivity;
 import anhpvph37030.fpoly.duan_nhom8.Activities.ChangePassActivity;
+import anhpvph37030.fpoly.duan_nhom8.Activities.DiaChiActi;
 import anhpvph37030.fpoly.duan_nhom8.R;
 import anhpvph37030.fpoly.duan_nhom8.taikhoan.Login;
 
 public class CaNhanFrg extends Fragment {
+    ImageView btneditdiachi;
     ImageView imgavt;
     TextView txtht, txtemailcn;
     TextView btndangxuat;
@@ -60,7 +62,7 @@ public class CaNhanFrg extends Fragment {
         cthaydoimk = v.findViewById(R.id.nav_repasswork);
         cthaydoithongtin = v.findViewById(R.id.nav_Bill_ltru);
         btndangxuat = v.findViewById(R.id.btndangxuat);
-
+        btneditdiachi = v.findViewById(R.id.btneditdiachi);
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
         userRef = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUser.getUid());
@@ -105,6 +107,13 @@ public class CaNhanFrg extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), ChangeInfoActivity.class);
+                startActivity(intent);
+            }
+        });
+        btneditdiachi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), DiaChiActi.class);
                 startActivity(intent);
             }
         });

@@ -52,8 +52,8 @@ public class SignUp extends AppCompatActivity {
 
     private void anhXa() {
         edtTenDangNhap = findViewById(R.id.edttendn);
-        edtHoTen = findViewById(R.id.edthoten);
-        edtSoDienThoai = findViewById(R.id.edtsdt);
+//        edtHoTen = findViewById(R.id.edthoten);
+//        edtSoDienThoai = findViewById(R.id.edtsdt);
         edtEmail = findViewById(R.id.edtemail);
         edtMatKhau = findViewById(R.id.edtPassword_login);
         edtNhapLaiMatKhau = findViewById(R.id.edtPassword_nhaplai_login);
