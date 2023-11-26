@@ -1,12 +1,13 @@
 package anhpvph37030.fpoly.duan_nhom8.fragment;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -64,6 +65,7 @@ public class DanhMucFrg extends Fragment {
                 openThemHangLayout();
             }
         });
+
         danhMucAdapter.setEditDanhMucListener(new DanhMucAdapter.EditDanhMucListener() {
             @Override
             public void onEditDanhMuc(DanhMuc danhMuc) {
@@ -86,14 +88,32 @@ public class DanhMucFrg extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                // Xử lý lỗi nếu cần
+                // Handle errors if needed
+            }
+        });
+
+        // Sử dụng setOnItemClickListener thay vì setOnClickListener
+        lstDanhMuc.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // Lấy dữ liệu của mục được chọn
+                DanhMuc selectedDanhMuc = danhMucAdapter.getItem(position);
+
+                // Tạo Bundle để đóng gói dữ liệu
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("selectedDanhMuc", selectedDanhMuc);
+
+                // Tạo Intent để chuyển dữ liệu qua Activity mới
+                Intent intent = new Intent(getActivity(), HangFrg_DanhMuc.class);
+                intent.putExtras(bundle);
+
+                // Bắt đầu Activity mới
+                startActivity(intent);
             }
         });
 
         return v;
     }
-
-
 
     private void openThemHangLayout() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
@@ -112,7 +132,6 @@ public class DanhMucFrg extends Fragment {
                 alertDialog.dismiss();
             }
         });
-
 
         Button btnHuy = dialogView.findViewById(R.id.btnHuy);
         btnHuy.setOnClickListener(new View.OnClickListener() {
@@ -154,15 +173,10 @@ public class DanhMucFrg extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 int maMaDanhMuc = 0;
-                Log.d("ProductAdminAdapter", "Ma danh muc: " + maMaDanhMuc);
                 if (dataSnapshot.exists()) {
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         maMaDanhMuc = snapshot.child("maDanhMuc").getValue(Integer.class);
-                        DanhMuc danhMuc = snapshot.getValue(DanhMuc.class);
-                        danhMucList.add(danhMuc);
                     }
-                    danhMucAdapter.notifyDataSetChanged();
-                    Log.d("DanhMucFrg", "Dữ liệu danh mục từ Firebase: " + danhMucList.size() + " danh mục");
                 }
 
                 callback.onCallback(maMaDanhMuc);
@@ -178,6 +192,7 @@ public class DanhMucFrg extends Fragment {
     public interface MaxMaDanhMucCallback {
         void onCallback(int maxMaDanhMuc);
     }
+
     private void openEditDanhMucDialog(DanhMuc danhMuc) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         LayoutInflater inflater = getLayoutInflater();
@@ -227,6 +242,4 @@ public class DanhMucFrg extends Fragment {
             }
         });
     }
-
-
 }
