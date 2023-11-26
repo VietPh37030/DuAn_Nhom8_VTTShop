@@ -1,6 +1,5 @@
 package anhpvph37030.fpoly.duan_nhom8.fragment;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,14 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.Toast;
-
+import androidx.appcompat.widget.SearchView;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
-import androidx.viewpager2.widget.ViewPager2;
-import androidx.appcompat.widget.SearchView;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -44,12 +42,16 @@ public class MainFrg extends Fragment {
     private GridView gridView;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_main_frg, container, false);
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
         // Khởi tạo DatabaseReference để truy cập nút "products" trong Firebase Realtime Database
         productsRef = FirebaseDatabase.getInstance().getReference().child("products");
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.fragment_main_frg, container, false);
 
         // Liên kết Adapter với GridView
         gridView = v.findViewById(R.id.gvDT);
@@ -57,6 +59,7 @@ public class MainFrg extends Fragment {
         // Liên kết ViewPager
         viewPager = v.findViewById(R.id.viewPager);
         androidx.appcompat.widget.SearchView searchView = v.findViewById(R.id.searchView);
+
         // Lắng nghe sự kiện khi có thay đổi trong dữ liệu
         productsRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -67,6 +70,13 @@ public class MainFrg extends Fragment {
                     Product product = productSnapshot.getValue(Product.class);
                     productList.add(product);
                 }
+
+                // Tìm kiếm sản phẩm theo hãng "XIAOMI" (Thay thế bằng hãng muốn tìm kiếm)
+                String brandToSearch = "XIAOMI";
+                List<Product> filteredProducts = searchByBrand(productList, brandToSearch);
+
+                // Cập nhật GridView với danh sách sản phẩm đã lọc theo hãng
+                updateGridView(filteredProducts);
 
                 // Tạo Adapter và setAdapter cho GridView
                 ProductAdapter adapter = new ProductAdapter(getContext(), productList);
@@ -87,6 +97,7 @@ public class MainFrg extends Fragment {
                 Toast.makeText(getContext(), "Lỗi khi truy cập cơ sở dữ liệu", Toast.LENGTH_SHORT).show();
             }
         });
+
         // Xử lý sự kiện khi người dùng thay đổi nội dung tìm kiếm
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -107,41 +118,74 @@ public class MainFrg extends Fragment {
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // Lấy sản phẩm được chọn từ danh sách
-                Product selectedProduct = productList.get(position);
+                if (productList != null && position < productList.size()) {
+                    Product selectedProduct = productList.get(position);
 
-                // Tạo Intent để chuyển từ MainFrg sang ProductDetailActivity
-                Intent intent = new Intent(getActivity(), ProductDeltaActivity.class);
-                // Log để kiểm tra xem dữ liệu số lượng có đúng không
-                Log.d("MainFrg", "Selected Product Quantity: " + selectedProduct.getQuantity1());
-                // Đặt thông tin sản phẩm vào Intent
-                intent.putExtra("PRODUCT_ID", selectedProduct.getId());
-                intent.putExtra("PRODUCT_NAME", selectedProduct.getName());
-                intent.putExtra("PRODUCT_PRICE", selectedProduct.getPrice());
-                intent.putExtra("PRODUCT_IMAGE_URL", selectedProduct.getImage());
-                intent.putExtra("PRODUCT_description",selectedProduct.getDescription());
-                intent.putExtra("PRODUCT_QUANTITY", String.valueOf(selectedProduct.getQuantity1()));
-                // Chuyển sang ProductDetailActivity
-                // Log để kiểm tra xem Intent đã chứa đúng dữ liệu không
-                Log.d("MainFrg", "Sending Intent with Quantity: " + selectedProduct.getQuantity1());
-                startActivity(intent);
+                    // Kiểm tra xem selectedProduct có null hay không
+                    if (selectedProduct != null) {
+                        // Tạo Intent để chuyển từ MainFrg sang ProductDeltaActivity
+                        Intent intent = new Intent(getActivity(), ProductDeltaActivity.class);
+                        // Log để kiểm tra xem dữ liệu số lượng có đúng không
+                        Log.d("MainFrg", "Selected Product Quantity: " + selectedProduct.getQuantity1());
+                        // Đặt thông tin sản phẩm vào Intent
+                        intent.putExtra("PRODUCT_ID", selectedProduct.getId());
+                        intent.putExtra("PRODUCT_NAME", selectedProduct.getName());
+                        intent.putExtra("PRODUCT_PRICE", selectedProduct.getPrice());
+                        intent.putExtra("PRODUCT_IMAGE_URL", selectedProduct.getImage());
+                        intent.putExtra("PRODUCT_description", selectedProduct.getDescription());
+                        intent.putExtra("PRODUCT_QUANTITY", String.valueOf(selectedProduct.getQuantity1()));
+                        // Chuyển sang ProductDetailActivity
+                        // Log để kiểm tra xem Intent đã chứa đúng dữ liệu không
+                        Log.d("MainFrg", "Sending Intent with Quantity: " + selectedProduct.getQuantity1());
+                        startActivity(intent);
+                    }
+                }
             }
         });
 
         return v;
     }
 
+    // Thêm phương thức tìm kiếm theo hãng
+    private List<Product> searchByBrand(List<Product> products, String brand) {
+        List<Product> result = new ArrayList<>();
+        for (Product product : products) {
+            // Kiểm tra nếu hãng không null và chứa nội dung tìm kiếm
+            if (product.getHang() != null && product.getHang().equalsIgnoreCase(brand)) {
+                result.add(product);
+            }
+        }
+        return result;
+    }
+
+
+    // Thêm phương thức để kiểm tra sản phẩm có thuộc hãng không
+    private boolean isProductByBrand(Product product, String brand) {
+        return product.getHang() != null && product.getHang().equalsIgnoreCase(brand);
+    }
+
+    // Thêm phương thức để cập nhật GridView với danh sách sản phẩm đã lọc
+    private void updateGridView(List<Product> filteredProducts) {
+        ProductAdapter filteredAdapter = new ProductAdapter(getContext(), filteredProducts);
+        gridView.setAdapter(filteredAdapter);
+    }
+
     private void filterProducts(String query) {
         List<Product> filteredList = new ArrayList<>();
         for (Product product : productList) {
-            if (product.getName().toLowerCase().contains(query.toLowerCase())) {
+            // Kiểm tra nếu tên, giá hoặc hãng của sản phẩm không null và chứa nội dung tìm kiếm
+            if ((product.getName() != null && product.getName().toLowerCase().contains(query.toLowerCase())) ||
+                    (product.getPrice() != null && product.getPrice().toLowerCase().contains(query.toLowerCase())) ||
+                    (product.getHang() != null && product.getHang().toLowerCase().contains(query.toLowerCase()))) {
                 filteredList.add(product);
             }
         }
+
         // Tạo Adapter và setAdapter cho GridView với danh sách sản phẩm đã lọc
         ProductAdapter adapter = new ProductAdapter(getContext(), filteredList);
         gridView.setAdapter(adapter);
     }
+
 
     // TimerTask để tự động chuyển đổi ảnh trong ViewPager
     public class MyTimerTask extends TimerTask {
