@@ -1,13 +1,12 @@
-package anhpvph37030.fpoly.duan_nhom8.fragment;
+package anhpvph37030.fpoly.duan_nhom8.Activities;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ListView;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ListView;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -20,38 +19,42 @@ import java.util.List;
 
 import anhpvph37030.fpoly.duan_nhom8.Adapter.HangFrgDanhMucAdapter;
 import anhpvph37030.fpoly.duan_nhom8.R;
+import anhpvph37030.fpoly.duan_nhom8.model.DanhMuc;
 import anhpvph37030.fpoly.duan_nhom8.model.Product;
 
-
-public class HangFrg_DanhMuc extends Fragment {
-
+public class HangFrg_DanhMucActivity extends AppCompatActivity {
 
     private ListView listViewHang;
     private List<Product> productList;
-    private HangFrgDanhMucAdapter hangFrgDanhMucAdapter; // Đổi tên ở đây
+    private HangFrgDanhMucAdapter hangFrgDanhMucAdapter;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_hang_frg__danh_muc, container, false);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_hang_danh_muc);
 
-        listViewHang = v.findViewById(R.id.lsthangdanhmuc);
+        listViewHang = findViewById(R.id.lsthangdanhmuc);
         productList = new ArrayList<>();
-        hangFrgDanhMucAdapter = new HangFrgDanhMucAdapter(getContext(), R.layout.item_sanpham, productList); // Đổi tên ở đây
+        hangFrgDanhMucAdapter = new HangFrgDanhMucAdapter(this, R.layout.item_sanpham, productList);
 
         // Gắn Adapter vào ListView
         listViewHang.setAdapter(hangFrgDanhMucAdapter);
 
-        // Gọi hàm để lấy dữ liệu từ Firebase và đổ vào ListView
-        loadDataFromFirebase();
-
-        return v;
+        // Lấy thông tin của danh mục từ Intent
+        Intent intent = getIntent();
+        if (intent != null) {
+            DanhMuc selectedDanhMuc = (DanhMuc) intent.getSerializableExtra("selectedDanhMuc");
+            if (selectedDanhMuc != null) {
+                // Gọi hàm để lấy dữ liệu từ Firebase và đổ vào ListView, lọc theo danh mục
+                loadDataFromFirebase(selectedDanhMuc.getMaDanhMuc());
+            }
+        }
     }
 
-    // ... phần code khác
-    private void loadDataFromFirebase() {
+    private void loadDataFromFirebase(int maDanhMuc) {
         DatabaseReference productRef = FirebaseDatabase.getInstance().getReference().child("products");
 
-        productRef.addValueEventListener(new ValueEventListener() {
+        productRef.orderByChild("maDanhMuc").equalTo(maDanhMuc).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 productList.clear();
@@ -71,5 +74,4 @@ public class HangFrg_DanhMuc extends Fragment {
             }
         });
     }
-
 }

@@ -34,9 +34,8 @@
             android:name=".taikhoan.SignUp"
             android:exported="false" />
         <activity
-            android:name=".fragment.HangFrg_DanhMuc"
-            android:exported="false"
-            />
+            android:name=".Activities.HangFrg_DanhMucActivity"
+            android:exported="false" />
         <activity
             android:name=".taikhoan.Login"
             android:exported="false" />
