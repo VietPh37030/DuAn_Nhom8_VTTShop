@@ -1,11 +1,7 @@
 package anhpvph37030.fpoly.duan_nhom8.Activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -13,6 +9,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -20,11 +21,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import anhpvph37030.fpoly.duan_nhom8.model.ThongTinDiaChi;
 import anhpvph37030.fpoly.duan_nhom8.R;
+import anhpvph37030.fpoly.duan_nhom8.taikhoan.Login;
 
 public class ThanhToanActi extends AppCompatActivity {
     private ImageView ImageSanPham;
-    private TextView txttttensp, txttgiasp, txttsoluong, txtsoluonghienthi, txtTongtien;
+    private TextView txttttensp, txttgiasp, txttsoluong, txtsoluonghienthi, txtTongtien, txtnguoinhan, txtSdt, txtDiaChi;
     private ImageButton giamsoluong, tangsoluong;
     private Button btnthanhtoan;
     private int soLuong = 1;  // Số lượng mặc định
@@ -44,6 +47,8 @@ public class ThanhToanActi extends AppCompatActivity {
         String productPrice = intent.getStringExtra("PRODUCT_PRICE");
         String productQuantity = intent.getStringExtra("PRODUCT_QUANTITY");
 
+        // Kiểm tra đăng nhập và lấy thông tin địa chỉ
+        kiemTraDangNhap();
 
         // Áp dụng các giá trị này để điền vào giao diện hoặc thực hiện bất kỳ thao tác nào khác
         ImageSanPham = findViewById(R.id.imgttsp);
@@ -54,8 +59,11 @@ public class ThanhToanActi extends AppCompatActivity {
         tangsoluong = findViewById(R.id.img_tangnav);
         txtsoluonghienthi = findViewById(R.id.txt_navsoluong);
         txtTongtien = findViewById(R.id.txtTongtien);
+        txtnguoinhan = findViewById(R.id.txtnguoinhan);
+        txtSdt = findViewById(R.id.txtSdt);
+        txtDiaChi = findViewById(R.id.txtDiaChi);
+
         Picasso.get().load(productImageUrl).into(ImageSanPham);
-        Log.d("ImageLoad", "URL Ảnh: " + productImageUrl);
         txttttensp.setText(productName);
 
         // Xử lý giá sản phẩm
@@ -71,7 +79,8 @@ public class ThanhToanActi extends AppCompatActivity {
                 if (productId != null) {
                     layQuantity1TuFirebase();  // Lấy giá trị quantity1 từ Firebase
                 } else {
-                    Log.e("ThanhToanActi", "ID Sản phẩm là null");
+                    // Xử lý khi ID Sản phẩm là null
+                    // Log.e("ThanhToanActi", "ID Sản phẩm là null");
                 }
             }
         });
@@ -88,25 +97,67 @@ public class ThanhToanActi extends AppCompatActivity {
         });
     }
 
-    // Hàm cập nhật tổng tiền
+    private void kiemTraDangNhap() {
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = auth.getCurrentUser();
+
+        if (currentUser != null) {
+            // Người dùng đã đăng nhập
+            // Gọi hàm lấy thông tin địa chỉ từ Firebase
+            layThongTinDiaChi(currentUser.getUid());
+        } else {
+            // Người dùng chưa đăng nhập, chuyển hướng đến màn hình đăng nhập
+            // Hoặc thực hiện các hành động khác phù hợp với ứng dụng của bạn
+            // Ví dụ:
+            Intent intent = new Intent(ThanhToanActi.this, Login.class);
+            startActivity(intent);
+            finish();  // Đóng activity hiện tại nếu cần
+        }
+    }
+
+    private void layThongTinDiaChi(String userId) {
+        DatabaseReference diaChiRef = FirebaseDatabase.getInstance().getReference().child("thongtinnhanhang").child(userId);
+
+        diaChiRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    // Lấy thông tin địa chỉ đầu tiên (hoặc theo logic của bạn)
+                    DataSnapshot firstData = snapshot.getChildren().iterator().next();
+                    ThongTinDiaChi thongTinDiaChi = firstData.getValue(ThongTinDiaChi.class);
+
+                    if (thongTinDiaChi != null) {
+                        txtnguoinhan.setText(thongTinDiaChi.getHoTen());
+                        txtSdt.setText(thongTinDiaChi.getSoDienThoai());
+                        txtDiaChi.setText(thongTinDiaChi.getDiaChi());
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Xử lý khi có lỗi xảy ra
+            }
+        });
+    }
+
     private void capNhatTongTien() {
         int tongTien = giaSanPham * soLuong;
         String tongTienString = String.format("%,d", tongTien);  // Định dạng tổng tiền với dấu phẩy ngăn cách hàng nghìn
         txtTongtien.setText(tongTienString);
     }
 
-    // Hàm lấy giá sản phẩm từ chuỗi giá
     private int layGiaSanPham(String productPrice) {
         String priceString = productPrice.replaceAll("[^0-9]", "");
         try {
             return Integer.parseInt(priceString);
         } catch (NumberFormatException e) {
-            Log.e("ThanhToanActi", "Lỗi chuyển đổi giá: " + productPrice);
+            // Xử lý khi có lỗi chuyển đổi giá
+            // Log.e("ThanhToanActi", "Lỗi chuyển đổi giá: " + productPrice);
             return 0;  // Giá mặc định nếu có lỗi
         }
     }
 
-    // Hàm lấy giá trị quantity1 từ Firebase
     private void layQuantity1TuFirebase() {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("products").child(productId);
 
@@ -121,12 +172,12 @@ public class ThanhToanActi extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.e("ThanhToanActi", "Lỗi đọc quantity1 từ Firebase: " + databaseError.getMessage());
+                // Xử lý khi có lỗi đọc quantity1 từ Firebase
+                // Log.e("ThanhToanActi", "Lỗi đọc quantity1 từ Firebase: " + databaseError.getMessage());
             }
         });
     }
 
-    // Hàm kiểm tra số lượng và thực hiện tăng số lượng nếu hợp lệ
     private void kiemTraSoLuong(int quantity1) {
         if (soLuong < quantity1) {
             soLuong++;

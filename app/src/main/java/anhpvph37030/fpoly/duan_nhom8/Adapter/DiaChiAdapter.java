@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -60,7 +61,7 @@ public class DiaChiAdapter extends ArrayAdapter<ThongTinDiaChi> {
             holder.txtDiaChi = convertView.findViewById(R.id.txtDiachinha);
             holder.imgSua = convertView.findViewById(R.id.txtsuadiachi);
             holder.imgXoa = convertView.findViewById(R.id.btnDelete);
-
+            holder.chkLuachontaikhoan = convertView.findViewById(R.id.chktich);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -103,5 +104,6 @@ public class DiaChiAdapter extends ArrayAdapter<ThongTinDiaChi> {
         TextView txtDiaChi;
         ImageView imgSua;
         ImageView imgXoa;
+        CheckBox chkLuachontaikhoan;
     }
 }
