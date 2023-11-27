@@ -6,7 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -23,6 +25,12 @@ public class DiaChiAdapter extends ArrayAdapter<ThongTinDiaChi> {
     private EditClickListener editClickListener;
     private DeleteClickListener deleteClickListener;
     private LayoutInflater inflater;
+
+    private ThongTinDiaChi selectedDiaChi;
+    public ThongTinDiaChi getSelectedDiaChi() {
+        return selectedDiaChi;
+    }
+    private int selectedPosition = -1; // Biến để lưu trạng thái của địa chỉ được chọn
 
     public DiaChiAdapter(@NonNull Context context, @NonNull List<ThongTinDiaChi> diaChiList) {
         super(context, 0, diaChiList);
@@ -46,6 +54,12 @@ public class DiaChiAdapter extends ArrayAdapter<ThongTinDiaChi> {
         void onDeleteClick(int position);
     }
 
+    // Phương thức để đặt địa chỉ được chọn
+    public void setSelectedPosition(int position) {
+        selectedPosition = position;
+        notifyDataSetChanged();
+    }
+
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -61,7 +75,7 @@ public class DiaChiAdapter extends ArrayAdapter<ThongTinDiaChi> {
             holder.txtDiaChi = convertView.findViewById(R.id.txtDiachinha);
             holder.imgSua = convertView.findViewById(R.id.txtsuadiachi);
             holder.imgXoa = convertView.findViewById(R.id.btnDelete);
-            holder.chkLuachontaikhoan = convertView.findViewById(R.id.chktich);
+            holder.chkluachon = convertView.findViewById(R.id.chkluachon);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -74,7 +88,32 @@ public class DiaChiAdapter extends ArrayAdapter<ThongTinDiaChi> {
             holder.txtHoTen.setText(thongTinDiaChi.getHoTen());
             holder.txtSoDienThoai.setText(thongTinDiaChi.getSoDienThoai());
             holder.txtDiaChi.setText(thongTinDiaChi.getDiaChi());
+
+            // Đặt trạng thái của RadioButton dựa trên việc địa chỉ có được chọn hay không
+            holder.chkluachon.setChecked(position == selectedPosition);
         }
+        // Trong phương thức getView của Adapter
+        holder.chkluachon.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    if (selectedDiaChi != null) {
+                        selectedDiaChi.setSelected(false);
+                    }
+
+                    selectedDiaChi = getItem(position);
+                    if (selectedDiaChi != null) {
+                        selectedDiaChi.setSelected(true);
+                    }
+
+                    notifyDataSetChanged();
+                }
+            }
+        });
+
+// Bỏ dòng này nếu không cần CheckBox được chọn từ danh sách
+        holder.chkluachon.setChecked(position == selectedPosition);
+
 
         holder.imgSua.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,6 +143,6 @@ public class DiaChiAdapter extends ArrayAdapter<ThongTinDiaChi> {
         TextView txtDiaChi;
         ImageView imgSua;
         ImageView imgXoa;
-        CheckBox chkLuachontaikhoan;
+        CheckBox chkluachon;
     }
 }

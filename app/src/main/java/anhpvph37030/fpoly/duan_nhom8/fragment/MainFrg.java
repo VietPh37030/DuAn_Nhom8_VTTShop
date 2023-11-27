@@ -109,7 +109,7 @@ public class MainFrg extends Fragment {
             @Override
             public boolean onQueryTextChange(String newText) {
                 // Lọc danh sách sản phẩm dựa trên nội dung tìm kiếm
-                filterProducts(newText);
+//                filterProducts(newText);
                 return true;
             }
         });
@@ -170,21 +170,21 @@ public class MainFrg extends Fragment {
         gridView.setAdapter(filteredAdapter);
     }
 
-    private void filterProducts(String query) {
-        List<Product> filteredList = new ArrayList<>();
-        for (Product product : productList) {
-            // Kiểm tra nếu tên, giá hoặc hãng của sản phẩm không null và chứa nội dung tìm kiếm
-            if ((product.getName() != null && product.getName().toLowerCase().contains(query.toLowerCase())) ||
-                    (product.getPrice() != null && product.getPrice().toLowerCase().contains(query.toLowerCase())) ||
-                    (product.getHang() != null && product.getHang().toLowerCase().contains(query.toLowerCase()))) {
-                filteredList.add(product);
-            }
-        }
-
-        // Tạo Adapter và setAdapter cho GridView với danh sách sản phẩm đã lọc
-        ProductAdapter adapter = new ProductAdapter(getContext(), filteredList);
-        gridView.setAdapter(adapter);
-    }
+//    private void filterProducts(String query) {
+//        List<Product> filteredList = new ArrayList<>();
+//        for (Product product : productList) {
+//            // Kiểm tra nếu tên, giá hoặc hãng của sản phẩm không null và chứa nội dung tìm kiếm
+//            if ((product.getName() != null && product.getName().toLowerCase().contains(query.toLowerCase())) ||
+//                    (product.getPrice() != null && product.getPrice().toLowerCase().contains(query.toLowerCase())) ||
+//                    (product.getHang() != null && product.getHang().toLowerCase().contains(query.toLowerCase()))) {
+//                filteredList.add(product);
+//            }
+//        }
+//
+//        // Tạo Adapter và setAdapter cho GridView với danh sách sản phẩm đã lọc
+//        ProductAdapter adapter = new ProductAdapter(getContext(), filteredList);
+//        gridView.setAdapter(adapter);
+//    }
 
 
     // TimerTask để tự động chuyển đổi ảnh trong ViewPager

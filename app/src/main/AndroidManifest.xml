@@ -18,6 +18,9 @@
             android:name=".Activities.ThanhToanActi"
             android:exported="false" />
         <activity
+            android:name=".Activities.HoaDonActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activities.DiaChiActi"
             android:exported="false" />
         <activity

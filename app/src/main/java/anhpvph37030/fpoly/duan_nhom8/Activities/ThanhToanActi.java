@@ -1,6 +1,7 @@
 package anhpvph37030.fpoly.duan_nhom8.Activities;
 
 import android.content.Intent;
+import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -21,6 +22,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.util.Date;
+import java.util.Locale;
+
+import anhpvph37030.fpoly.duan_nhom8.model.HoaDon;
 import anhpvph37030.fpoly.duan_nhom8.model.ThongTinDiaChi;
 import anhpvph37030.fpoly.duan_nhom8.R;
 import anhpvph37030.fpoly.duan_nhom8.taikhoan.Login;
@@ -33,6 +38,8 @@ public class ThanhToanActi extends AppCompatActivity {
     private int soLuong = 1;  // Số lượng mặc định
     private int giaSanPham;  // Giá sản phẩm
     private String productId;  // ID của sản phẩm
+    private DatabaseReference productRef; // Khai báo DatabaseReference để tham chiếu đến sản phẩm cần cập nhật
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +69,7 @@ public class ThanhToanActi extends AppCompatActivity {
         txtnguoinhan = findViewById(R.id.txtnguoinhan);
         txtSdt = findViewById(R.id.txtSdt);
         txtDiaChi = findViewById(R.id.txtDiaChi);
-
+        btnthanhtoan = findViewById(R.id.btnthanhtoan);
         Picasso.get().load(productImageUrl).into(ImageSanPham);
         txttttensp.setText(productName);
 
@@ -95,8 +102,89 @@ public class ThanhToanActi extends AppCompatActivity {
                 }
             }
         });
+        btnthanhtoan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth auth = FirebaseAuth.getInstance();
+                String userID = auth.getCurrentUser().getUid();
+
+// Tạo thư mục HoaDonThanhToan/{userID}/ để lưu hóa đơn của người dùng
+
+
+// Tạo một đối tượng HoaDon từ thông tin đã nhập
+                HoaDon hoaDon = new HoaDon();
+                hoaDon.setImageUrl(productImageUrl);
+                hoaDon.setTenSanPham(productName);
+                hoaDon.setSoLuong(soLuong);
+                hoaDon.setTongTien(giaSanPham * soLuong);
+                hoaDon.setNguoiNhan(txtnguoinhan.getText().toString());
+                hoaDon.setSdt(txtSdt.getText().toString());
+                hoaDon.setDiaChi(txtDiaChi.getText().toString());
+                // Ngày đặt và mã hóa đơn có thể được xử lý ở đây, ví dụ:
+                hoaDon.setNgayDat(getCurrentDate());
+                hoaDon.setMaHoaDon(generateMaHoaDon());
+                hoaDon.setTrangThai("Chờ xác nhận");
+
+                // Đẩy dữ liệu lên Firebase
+                DatabaseReference hoaDonRef = FirebaseDatabase.getInstance().getReference().child("HoaDonThanhToan").child(userID);
+                String key = hoaDonRef.push().getKey();
+                hoaDonRef.child(key).setValue(hoaDon);
+
+                // Hiển thị thông báo hoặc chuyển hướng đến màn hình hóa đơn nếu cần
+                // Ví dụ:
+                // Cập nhật số lượng trên Firebase (quantity1)
+                capNhatSoLuongSauThanhToan(productId);
+                Intent intent = new Intent(ThanhToanActi.this, HoaDonActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
+    private void capNhatSoLuongSauThanhToan(String productId) {
+        if (productId != null) {
+            productRef = FirebaseDatabase.getInstance().getReference().child("products").child(productId);
+
+            productRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        int quantity1 = dataSnapshot.child("quantity1").getValue(Integer.class);
+                        // Kiểm tra nếu có đủ số lượng để trừ
+                        if (soLuong <= quantity1) {
+                            int newQuantity1 = quantity1 - soLuong;
+                            // Cập nhật lại quantity1 trên Firebase
+                            productRef.child("quantity1").setValue(newQuantity1);
+                        } else {
+                            // Hiển thị thông báo nếu số lượng vượt quá quantity1
+                            Toast.makeText(ThanhToanActi.this, "Sản phẩm không đủ để bạn mua", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    // Xử lý khi có lỗi đọc quantity1 từ Firebase
+                    // Log.e("ThanhToanActi", "Lỗi đọc quantity1 từ Firebase: " + databaseError.getMessage());
+                }
+            });
+        } else {
+            // Xử lý khi ID Sản phẩm là null
+            // Log.e("ThanhToanActi", "ID Sản phẩm là null");
+        }
+    }
+
+    private String getCurrentDate() {
+        // Xử lý và trả về ngày hiện tại dưới dạng chuỗi
+        // (Bạn có thể sử dụng thư viện SimpleDateFormat để định dạng ngày)
+        // Ví dụ:
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+        return sdf.format(new Date());
+    }
+    private String generateMaHoaDon() {
+        // Sử dụng timestamp để tạo mã hóa đơn
+        long timestamp = System.currentTimeMillis();
+        return String.valueOf(timestamp);
+    }
     private void kiemTraDangNhap() {
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = auth.getCurrentUser();
