@@ -105,11 +105,6 @@ public class ThanhToanActi extends AppCompatActivity {
         btnthanhtoan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FirebaseAuth auth = FirebaseAuth.getInstance();
-                String userID = auth.getCurrentUser().getUid();
-
-// Tạo thư mục HoaDonThanhToan/{userID}/ để lưu hóa đơn của người dùng
-
 
 // Tạo một đối tượng HoaDon từ thông tin đã nhập
                 HoaDon hoaDon = new HoaDon();
@@ -126,7 +121,7 @@ public class ThanhToanActi extends AppCompatActivity {
                 hoaDon.setTrangThai("Chờ xác nhận");
 
                 // Đẩy dữ liệu lên Firebase
-                DatabaseReference hoaDonRef = FirebaseDatabase.getInstance().getReference().child("HoaDonThanhToan").child(userID);
+                DatabaseReference hoaDonRef = FirebaseDatabase.getInstance().getReference().child("HoaDonThanhToan");
                 String key = hoaDonRef.push().getKey();
                 hoaDonRef.child(key).setValue(hoaDon);
 
