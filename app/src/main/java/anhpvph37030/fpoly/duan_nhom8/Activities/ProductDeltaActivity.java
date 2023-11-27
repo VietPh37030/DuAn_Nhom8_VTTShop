@@ -21,28 +21,33 @@ import anhpvph37030.fpoly.duan_nhom8.model.Cart;
 import anhpvph37030.fpoly.duan_nhom8.model.Product;
 
 public class ProductDeltaActivity extends AppCompatActivity {
-    private CartDAO cartDAO; // Khai báo đối tượng CartDAO
-
+    private CartDAO cartDAO;
     private String productId;
     private String productName;
     private String productPrice;
     private String productImageUrl;
-    private  String productDescription;
-    private  String productQuantity;
+    private String productDescription;
+    private String productQuantity;
     private Cart cart;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_delta);
 
         Intent intent = getIntent();
-        productId = intent.getStringExtra("PRODUCT_ID");
-        Log.d("ProductDeltaActivity", "Received Product ID: " + productId);
-        productName = intent.getStringExtra("PRODUCT_NAME");
-        productPrice = intent.getStringExtra("PRODUCT_PRICE");
-        productImageUrl = intent.getStringExtra("PRODUCT_IMAGE_URL");
-        productDescription = intent.getStringExtra("PRODUCT_description");
-        productQuantity = intent.getStringExtra("PRODUCT_QUANTITY");
+        if (intent != null) {
+            productId = intent.getStringExtra("PRODUCT_ID");
+            Log.d("ProductDeltaActivity", "Received Product ID: " + productId);
+            productName = intent.getStringExtra("PRODUCT_NAME");
+            productPrice = intent.getStringExtra("PRODUCT_PRICE");
+            productImageUrl = intent.getStringExtra("PRODUCT_IMAGE_URL");
+            productDescription = intent.getStringExtra("PRODUCT_description");
+            productQuantity = intent.getStringExtra("PRODUCT_QUANTITY");
+            Log.d("ProductDeltaActivity", "Received Product Quantity: " + productQuantity);
+        } else {
+            Log.e("ProductDeltaActivity", "Intent is null");
+        }
         Log.d("ProductDeltaActivity", "Received Product Quantity: " + productQuantity);
         TextView productNameTextView = findViewById(R.id.txtnamedeita);
         TextView productPriceTextView = findViewById(R.id.txtgiadeita);
@@ -50,6 +55,7 @@ public class ProductDeltaActivity extends AppCompatActivity {
         TextView productQantityTextView = findViewById(R.id.txtsoluongsanpham);
         TextView productDescription1 = findViewById(R.id.txtmota);
         Button btnThemGioHang = findViewById(R.id.btnthemvaogio);
+        Button btnThanhToan = findViewById(R.id.btnmuangay);
         Log.d("ProductDeltaActivity", "Received Quantity: " + productQuantity);
         cartDAO = CartDAO.getInstance();
         cart = new Cart();
@@ -60,53 +66,59 @@ public class ProductDeltaActivity extends AppCompatActivity {
 
         Picasso.get().load(productImageUrl).into(productImageView);
         Log.d("ImageLoad", "Image URL: " + productImageUrl);
-        Picasso.get().load(productImageUrl).into(productImageView);
 
         btnThemGioHang.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Kiểm tra xem sản phẩm đã có trong giỏ hàng chưa
                 if (!cartDAO.isProductAlreadyInCart(productId)) {
-                    // Nếu chưa có, thêm sản phẩm vào giỏ hàng và hiển thị thông báo
                     addToCart();
                 } else {
-                    // Nếu đã có, hiển thị thông báo
                     showProductAlreadyInCartDialog();
                 }
+            }
+        });
+
+        btnThanhToan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+// Create an Intent to start the ThanhToanActi activity
+                Intent thanhToanIntent = new Intent(ProductDeltaActivity.this, ThanhToanActi.class);
+                thanhToanIntent.putExtra("PRODUCT_ID",productId);
+                // Put extra data to pass to the ThanhToanActi activity
+                thanhToanIntent.putExtra("PRODUCT_NAME", productName);
+                thanhToanIntent.putExtra("PRODUCT_PRICE", productPrice);
+                thanhToanIntent.putExtra("PRODUCT_IMAGE_URL", productImageUrl);
+//                int quantity = Integer.parseInt(productQuantity);
+//                thanhToanIntent.putExtra("PRODUCT_QUANTITY", quantity);
+                thanhToanIntent.putExtra("PRODUCT_QUANTITY", productQuantity);
+
+                // Start the ThanhToanActi activity
+                startActivity(thanhToanIntent);
             }
         });
     }
 
     private void addToCart() {
-        // Tạo đối tượng Product từ thông tin chi tiết của sản phẩm
         Product product = new Product(productId, productImageUrl, productName, productPrice, Integer.parseInt(productQuantity), 0, "");
-        // Thêm sản phẩm vào giỏ hàng
-        cartDAO.addToCart(product, 1); // 1 là số lượng mặc định
+        cartDAO.addToCart(product, 1);
 
-        // Lấy danh sách sản phẩm trong giỏ hàng sau khi thêm mới
         List<Cart> updatedCartItems = cartDAO.getCartItems();
-
-        // Hiển thị dialog thông báo thêm vào giỏ hàng thành công
         showAddToCartSuccessDialog(updatedCartItems);
     }
 
     private void showProductAlreadyInCartDialog() {
-        // Hiển thị dialog thông báo sản phẩm đã có trong giỏ hàng
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Sản phẩm đã có trong giỏ hàng.")
                 .setPositiveButton("OK", (dialog, which) -> {
-                    // Đóng dialog
                     dialog.dismiss();
                 })
                 .show();
     }
 
     private void showAddToCartSuccessDialog(List<Cart> updatedCartItems) {
-        // Hiển thị dialog thông báo thêm vào giỏ hàng thành công
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Sản phẩm đã được thêm vào giỏ hàng.")
                 .setPositiveButton("OK", (dialog, which) -> {
-                    // Đóng dialog
                     dialog.dismiss();
                 })
                 .show();

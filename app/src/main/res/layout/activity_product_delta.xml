@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Activities.ProductDeltaActivity">
+    tools:context=".Activities.ProductDeltaActivity"
+    tools:ignore="ExtraText">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -141,5 +142,6 @@ iPhone 13: 128GB | 256GB | 512GB. Màu sắc: Hồng, Đen, Trắng"
             android:background="@drawable/editbootom"
             android:text="Mua ngay"
             android:textColor="@android:color/white" />
+
     </LinearLayout>
 </LinearLayout>
