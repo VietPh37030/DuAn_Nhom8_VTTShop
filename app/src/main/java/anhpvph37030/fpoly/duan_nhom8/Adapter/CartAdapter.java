@@ -41,7 +41,6 @@ public class CartAdapter extends ArrayAdapter<Cart> {
     private List<Cart> cartItemList;
     private CartDAO cartDAO;
     private MyCartFrg myCartFragment;
-    Product product;
 
     public CartAdapter(Context context, List<Cart> cartItemList, CartDAO cartDAO, MyCartFrg myCartFragment) {
         super(context, 0, cartItemList);
@@ -76,7 +75,6 @@ public class CartAdapter extends ArrayAdapter<Cart> {
             holder.quantityTextView = listItemView.findViewById(R.id.txt_soluong2);
             holder.btnCancle = listItemView.findViewById(R.id.btn_cancle);
             holder.cardView = listItemView.findViewById(R.id.cardView);
-            holder.isSelected = false; // Đặt trạng thái đã chọn về false
             listItemView.setTag(holder);
         } else {
             holder = (ViewHolder) listItemView.getTag();
@@ -121,26 +119,6 @@ public class CartAdapter extends ArrayAdapter<Cart> {
                 }
             });
 
-            holder.cardView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    holder.isSelected = !holder.isSelected;
-
-                    // Update the UI based on the selection state
-                    if (holder.isSelected) {
-                        holder.cardView.setBackground(new ColorDrawable(Color.parseColor("#A9B388")));
-                    } else {
-                        holder.cardView.setBackground(new ColorDrawable(Color.parseColor("#FFFFFF")));
-                    }
-
-                    // Update the position field in the ViewHolder
-                    holder.position = position;
-
-                    // Notify the fragment about the click
-                    myCartFragment.onCardViewClicked(holder.isSelected, position);
-                }
-            });
-
         } else {
             Log.e("CartAdapter", "cartItem or cartItem.getProduct() is null");
         }
@@ -156,9 +134,6 @@ public class CartAdapter extends ArrayAdapter<Cart> {
         TextView quantityTextView;
         Button btnCancle;
         LinearLayout cardView;
-        boolean isSelected;
-        int position;  // Add a position field to store the item position
-
     }
 
     private void removeFromCart(final int position) {
@@ -186,10 +161,8 @@ public class CartAdapter extends ArrayAdapter<Cart> {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
                                                 if (task.isSuccessful()) {
-                                                    // Xử lý khi xóa thành công
                                                     Toast.makeText(context, "Sản phẩm đã được xóa khỏi Firebase", Toast.LENGTH_SHORT).show();
                                                 } else {
-                                                    // Xử lý khi xóa thất bại
                                                     Toast.makeText(context, "Không thể xóa sản phẩm khỏi Firebase", Toast.LENGTH_SHORT).show();
                                                 }
                                             }
@@ -207,7 +180,6 @@ public class CartAdapter extends ArrayAdapter<Cart> {
             });
         }
 
-        // Gọi phương thức tính tổng giá trị từ MyCartFrg
         myCartFragment.updateTotalPrice();
     }
 
@@ -220,14 +192,13 @@ public class CartAdapter extends ArrayAdapter<Cart> {
             updateQuantityOnFirebase(cartItem);
         }
 
-        // Gọi phương thức tính tổng giá trị từ MyCartFrg
         myCartFragment.updateTotalPrice();
     }
 
     private void increaseQuantity(int position) {
         final Cart cartItem = getItem(position);
 
-        int availableQuantity = cartItem.getProduct().getQuantity1(); // Get the available quantity
+        int availableQuantity = cartItem.getProduct().getQuantity1();
 
         if (cartItem != null && cartItem.getQuantity() < availableQuantity) {
             cartItem.setQuantity(cartItem.getQuantity() + 1);
@@ -237,10 +208,8 @@ public class CartAdapter extends ArrayAdapter<Cart> {
             Toast.makeText(context, "Số lượng đã đạt giới hạn", Toast.LENGTH_SHORT).show();
         }
 
-        // Gọi phương thức tính tổng giá trị từ MyCartFrg
         myCartFragment.updateTotalPrice();
     }
-
 
     private void updateQuantityOnFirebase(final Cart cartItem) {
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -260,10 +229,8 @@ public class CartAdapter extends ArrayAdapter<Cart> {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
                                                 if (task.isSuccessful()) {
-                                                    // Xử lý khi cập nhật số lượng thành công
                                                     Toast.makeText(context, "Số lượng đã được cập nhật trên Firebase", Toast.LENGTH_SHORT).show();
                                                 } else {
-                                                    // Xử lý khi cập nhật số lượng thất bại
                                                     Toast.makeText(context, "Không thể cập nhật số lượng trên Firebase", Toast.LENGTH_SHORT).show();
                                                 }
                                             }
@@ -276,13 +243,11 @@ public class CartAdapter extends ArrayAdapter<Cart> {
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-                    // Xử lý lỗi cơ sở dữ liệu
                     Toast.makeText(context, "Lỗi cơ sở dữ liệu: " + error.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
         }
 
-        // Gọi phương thức tính tổng giá trị từ MyCartFrg
         myCartFragment.updateTotalPrice();
     }
 }
