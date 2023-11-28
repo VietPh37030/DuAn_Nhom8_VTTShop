@@ -1,6 +1,7 @@
 package anhpvph37030.fpoly.duan_nhom8.Activities;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 
@@ -10,6 +11,8 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -35,9 +38,16 @@ public class HoaDonActivity extends AppCompatActivity {
         setContentView(R.layout.activity_hoadon);
         toolbar = findViewById(R.id.toolbar);
         listViewHoaDon = findViewById(R.id.lsthoadon);
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = auth.getCurrentUser();
 
-        // Khởi tạo DatabaseReference
-        hoaDonRef = FirebaseDatabase.getInstance().getReference().child("HoaDonThanhToan");
+        if (currentUser != null) {
+            // Người dùng đã đăng nhập, thực hiện các hành động tiếp theo
+            String userID = currentUser.getUid();
+            hoaDonRef = FirebaseDatabase.getInstance().getReference().child("HoaDonThanhToan").child(userID);
+        } else {
+            // Người dùng chưa đăng nhập, thực hiện các hành động phù hợp với ứng dụng của bạn
+        }
             toolbar.setNavigationIcon(R.drawable.back);
             toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
@@ -84,6 +94,7 @@ public class HoaDonActivity extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 // Xử lý khi có lỗi xảy ra
+                Log.e("HoaDonActivity", "Lỗi đọc dữ liệu từ Firebase: " + databaseError.getMessage());
             }
         });
     }
