@@ -20,6 +20,7 @@ public class ChiTietHoaDon extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chi_tiet_hoa_don);
         // Khởi tạo ListView
+        // Khởi tạo ListView
         lstChiTietHoaDon = findViewById(R.id.lstchitiethd1);
 
         // Lấy dữ liệu từ Intent
