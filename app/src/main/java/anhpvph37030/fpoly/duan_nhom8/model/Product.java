@@ -47,6 +47,7 @@ public class Product {
 
     private boolean isVisible; // Thêm trường đánh dấu sản phẩm có hiển thị hay không
 
+
     public Product() {
     }
 
@@ -73,14 +74,16 @@ public class Product {
         this.quantity1 = quantity1;
         this.maDanhMuc = maDanhMuc;
         this.description = description;
+        this.isVisible = false;
     }
 
-//    public Product(String id, String image, String name, String price, int quantity, int maDanhMuc,String description) {
+
+//    public Product(String id, String image, String name, String price, int quantity1, int maDanhMuc,String description) {
 //        this.id = id;
 //        this.image = image;
 //        this.name = name;
 //        this.price = price;
-//        this.quantity = quantity;
+//        this.quantity1 = quantity1;
 //        this.maDanhMuc = maDanhMuc;
 //        this.description = description;
 //    }

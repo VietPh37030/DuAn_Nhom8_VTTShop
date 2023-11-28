@@ -37,6 +37,8 @@ public class MyCartFrg extends Fragment {
     private CartDAO cartDAO;
     private TextView txtTotalAmount;
     private boolean cardViewClicked = false;
+    private int selectedPosition = -1;
+    private Cart selectedCartItem;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -101,23 +103,54 @@ public class MyCartFrg extends Fragment {
     private void calculateAndDisplayTotalPrice() {
         int totalPrice = 0;
 
-        for (Cart cartItem : cartItems) {
-            if (cartItem != null && cartItem.getProduct() != null) {
-                String priceString = cartItem.getProduct().getPrice().replaceAll("[^0-9]", "");
-                try {
-                    int productPrice = Integer.parseInt(priceString);
-                    totalPrice += productPrice * cartItem.getQuantity();
-                } catch (NumberFormatException e) {
-                    Log.e("MyCartFrg", "Error parsing price: " + cartItem.getProduct().getPrice());
-                }
+        // Kiểm tra xem có sản phẩm được chọn không
+        if (selectedCartItem != null && selectedCartItem.getProduct() != null) {
+            String priceString = selectedCartItem.getProduct().getPrice().replaceAll("[^0-9]", "");
+            try {
+                int productPrice = Integer.parseInt(priceString);
+                totalPrice = productPrice * selectedCartItem.getQuantity();
+            } catch (NumberFormatException e) {
+                Log.e("MyCartFrg", "Error parsing price: " + selectedCartItem.getProduct().getPrice());
             }
         }
 
         // Hiển thị tổng giá trị trên giao diện người dùng
         txtTotalAmount.setText("Tổng tiền: " + totalPrice + " VND");
     }
-
+    //    private void calculateAndDisplayTotalPrice() {
+//        int totalPrice = 0;
+//
+//        // Duyệt qua tất cả các sản phẩm trong giỏ hàng để tính tổng giá trị
+//        for (Cart cartItem : cartItems) {
+//            if (cartItem.getProduct() != null) {
+//                String priceString = cartItem.getProduct().getPrice().replaceAll("[^0-9]", "");
+//                try {
+//                    int productPrice = Integer.parseInt(priceString);
+//                    totalPrice += productPrice * cartItem.getQuantity();
+//                } catch (NumberFormatException e) {
+//                    Log.e("MyCartFrg", "Error parsing price: " + cartItem.getProduct().getPrice());
+//                }
+//            }
+//        }
+//
+//        // Hiển thị tổng giá trị trên giao diện người dùng
+//        txtTotalAmount.setText("Tổng tiền: " + totalPrice + " VND");
+//    }
     public void updateTotalPrice() {
         cardViewClicked = true;
+    }
+
+    public void onCardViewClicked(boolean isSelected, int position) {
+        // Update the total price only if the card view is selected
+        if (isSelected) {
+            selectedPosition = position;
+            selectedCartItem = cartItems.get(selectedPosition);
+            calculateAndDisplayTotalPrice();
+        } else {
+            // Nếu không có CardView được click, reset giá trị về 0
+            txtTotalAmount.setText("Tổng tiền: 0 VND");
+            selectedPosition = -1; // Đặt lại vị trí đã chọn
+            selectedCartItem = null; // Đặt lại sản phẩm đã chọn
+        }
     }
 }

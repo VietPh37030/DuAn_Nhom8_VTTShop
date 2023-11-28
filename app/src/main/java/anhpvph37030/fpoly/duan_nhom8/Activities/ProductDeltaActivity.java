@@ -70,10 +70,15 @@ public class ProductDeltaActivity extends AppCompatActivity {
         btnThemGioHang.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!cartDAO.isProductAlreadyInCart(productId)) {
-                    addToCart();
+                int quantity = Integer.parseInt(productQuantity);
+                if (quantity > 0) {
+                    if (!cartDAO.isProductAlreadyInCart(productId)) {
+                        addToCart();
+                    } else {
+                        showProductAlreadyInCartDialog();
+                    }
                 } else {
-                    showProductAlreadyInCartDialog();
+                    showInvalidQuantityDialog();
                 }
             }
         });
@@ -123,5 +128,15 @@ public class ProductDeltaActivity extends AppCompatActivity {
                 })
                 .show();
     }
+
+    private void showInvalidQuantityDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Số lượng sản phẩm không hợp lệ.")
+                .setPositiveButton("OK", (dialog, which) -> {
+                    dialog.dismiss();
+                })
+                .show();
+    }
+
 
 }
