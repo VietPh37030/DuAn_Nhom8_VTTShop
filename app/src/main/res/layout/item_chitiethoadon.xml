@@ -19,7 +19,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="843dp"
                 android:orientation="horizontal">
 
                 <LinearLayout
@@ -41,7 +41,7 @@
                             android:textStyle="bold" />
 
                         <TextView
-                            android:id="@+id/txtmahoadon"
+                            android:id="@+id/txtmahoadonct"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="157"
@@ -49,28 +49,6 @@
                             android:textStyle="italic" />
                     </LinearLayout>
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Số điện thoại: "
-                            android:textColor="@color/black"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/txtSdt"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="01-01-1010"
-                            android:textColor="#1FAEFF"
-                            android:textSize="13sp" />
-                    </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -87,7 +65,7 @@
                             android:textStyle="bold" />
 
                         <TextView
-                            android:id="@+id/txtSoLuongDH"
+                            android:id="@+id/txtSoLuonghd1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="01-01-1010"
@@ -95,28 +73,6 @@
                             android:textSize="13sp" />
                     </LinearLayout>
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Địa chỉ nhận hàng: "
-                            android:textColor="@color/black"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/txtDiaChi"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="01-01-1010"
-                            android:textColor="#1FAEFF"
-                            android:textSize="13sp" />
-                    </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -132,7 +88,7 @@
                             android:textStyle="bold" />
 
                         <TextView
-                            android:id="@+id/txttongtien"
+                            android:id="@+id/txttongtienhd"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="18.799.000đ"
@@ -141,9 +97,9 @@
                             android:textStyle="italic" />
 
                         <TextView
-                            android:layout_marginLeft="10dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
                             android:text="VND"
                             android:textColor="#F60909"
                             android:textSize="13sp"
@@ -159,52 +115,32 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Ngày Đặt: "
+                            android:text="Tên Sản Phẩm: "
                             android:textColor="@color/black"
                             android:textSize="15sp"
                             android:textStyle="bold" />
 
                         <TextView
-                            android:id="@+id/txtthoigian"
+                            android:id="@+id/txttensphd"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="01-01-1010"
-                            android:textColor="#1FAEFF"
-                            android:textSize="13sp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Trạng thái: "
+                            android:textAllCaps="true"
                             android:textColor="@color/black"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/txtTrangThai"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="01-01-1010"
-                            android:textColor="#1FAEFF"
-                            android:textSize="13sp" />
+                            android:textSize="15sp" />
                     </LinearLayout>
+
+
                 </LinearLayout>
 
-                <Button
-                    android:id="@+id/buttonsemchitiet"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+
+                <ImageView
+                    android:id="@+id/imageView3"
+                    android:layout_width="100dp"
+                    android:layout_height="135dp"
                     android:layout_weight="1"
-                    android:background="@drawable/editbootom"
-                    android:layout_gravity="bottom"
-                    android:text="Xem Chi Tiet" />
+                    android:scaleType="fitCenter"
+                    app:srcCompat="@drawable/ip15" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

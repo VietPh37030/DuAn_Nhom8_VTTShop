@@ -33,12 +33,12 @@
 
             <ImageView
                 android:id="@+id/imgdeilta"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="187dp"
+                android:layout_height="193dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="30dp"
-                android:src="@drawable/phone_phong"
-                android:layout_marginBottom="10dp"/>
+                android:layout_marginBottom="10dp"
+                android:src="@drawable/phone_phong" />
 
             <!--    // close bao1-->
         </LinearLayout>

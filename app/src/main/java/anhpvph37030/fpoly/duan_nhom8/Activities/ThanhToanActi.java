@@ -132,6 +132,8 @@ public class ThanhToanActi extends AppCompatActivity {
                 // Cập nhật số lượng trên Firebase (quantity1)
                 capNhatSoLuongSauThanhToan(productId);
                 Intent intent = new Intent(ThanhToanActi.this, HoaDonActivity.class);
+                Toast.makeText(ThanhToanActi.this, "Thanh toán thành công", Toast.LENGTH_SHORT).show();
+
                 startActivity(intent);
             }
         });

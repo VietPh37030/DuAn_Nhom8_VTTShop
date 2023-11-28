@@ -1,8 +1,10 @@
 package anhpvph37030.fpoly.duan_nhom8.Activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
@@ -25,12 +27,14 @@ import java.util.List;
 import anhpvph37030.fpoly.duan_nhom8.Adapter.HoaDonAdapter;
 import anhpvph37030.fpoly.duan_nhom8.R;
 import anhpvph37030.fpoly.duan_nhom8.model.HoaDon;
+import anhpvph37030.fpoly.duan_nhom8.model.Product;
 
 
 public class HoaDonActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private ListView listViewHoaDon;
     private DatabaseReference hoaDonRef;
+    private List<HoaDon> hoadonlist;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +61,26 @@ public class HoaDonActivity extends AppCompatActivity {
             });
         // Gọi hàm để hiển thị dữ liệu từ Firebase
         displayDataFromFirebase();
+//        listViewHoaDon.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                if (hoadonlist != null && position < hoadonlist.size()) {
+//                    HoaDon selectedHoadon = hoadonlist.get(position);
+//                    if (selectedHoadon != null) {
+//                        // Thêm dữ liệu vào Intent
+//                        Intent intent = new Intent(HoaDonActivity.this, ChiTietHoaDon.class);
+//                        intent.putExtra("ORDER_ID", selectedHoadon.getMaHoaDon());
+//                        intent.putExtra("ORDER_QUANTITY", String.valueOf(selectedHoadon.getSoLuong()));
+//                        intent.putExtra("ORDER_SUM", String.valueOf(selectedHoadon.getTongTien()));
+//                        intent.putExtra("ORDER_NAME", selectedHoadon.getTenSanPham());
+//                        intent.putExtra("ORDER_IMAGE", selectedHoadon.getImageUrl());
+//
+//                        // Chuyển sang ChiTietHoaDonActivity
+//                        startActivity(intent);
+//                    }
+//                }
+//            }
+//        });
     }
 
     private void ExitsActi() {
@@ -97,5 +121,7 @@ public class HoaDonActivity extends AppCompatActivity {
                 Log.e("HoaDonActivity", "Lỗi đọc dữ liệu từ Firebase: " + databaseError.getMessage());
             }
         });
+
     }
+
 }
