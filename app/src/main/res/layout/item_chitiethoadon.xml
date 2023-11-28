@@ -19,7 +19,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="843dp"
                 android:orientation="horizontal">
 
                 <LinearLayout
@@ -50,7 +50,6 @@
                     </LinearLayout>
 
 
-
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -73,7 +72,6 @@
                             android:textColor="#1FAEFF"
                             android:textSize="13sp" />
                     </LinearLayout>
-
 
 
                     <LinearLayout
@@ -99,9 +97,9 @@
                             android:textStyle="italic" />
 
                         <TextView
-                            android:layout_marginLeft="10dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
                             android:text="VND"
                             android:textColor="#F60909"
                             android:textSize="13sp"
@@ -127,8 +125,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="01-01-1010"
-                            android:textColor="@color/black"
                             android:textAllCaps="true"
+                            android:textColor="@color/black"
                             android:textSize="15sp" />
                     </LinearLayout>
 

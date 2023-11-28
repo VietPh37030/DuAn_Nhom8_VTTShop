@@ -39,6 +39,7 @@ public class ChiTietHoaDon extends AppCompatActivity {
         hoaDonChiTietList.add(orderSum);
         hoaDonChiTietList.add(orderName);
         hoaDonChiTietList.add(orderImage);
+//        hoaDonChiTietList.add(orderId + ", " + orderQuantity + ", " + orderSum + ", " + orderName + ", " + orderImage);
 
         // Log để kiểm tra dữ liệu
         Log.d("ChiTietHoaDon", "ORDER_ID: " + orderId);
@@ -49,6 +50,5 @@ public class ChiTietHoaDon extends AppCompatActivity {
         // Tạo Adapter và liên kết với ListView
         ChiTietHoaDonAdpter chiTietHoaDonAdapter = new ChiTietHoaDonAdpter(this, R.layout.item_chitiethoadon, hoaDonChiTietList);
         lstChiTietHoaDon.setAdapter(chiTietHoaDonAdapter);
-        chiTietHoaDonAdapter.notifyDataSetChanged();
     }
 }
