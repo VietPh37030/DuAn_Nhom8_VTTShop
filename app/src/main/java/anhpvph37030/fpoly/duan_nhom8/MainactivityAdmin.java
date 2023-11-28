@@ -14,11 +14,13 @@ import com.google.android.material.navigation.NavigationBarView;
 import java.util.ArrayList;
 
 import anhpvph37030.fpoly.duan_nhom8.Adapter.MenuAdapter;
+import anhpvph37030.fpoly.duan_nhom8.fragment.Ad_TaiKhoanFrg;
 import anhpvph37030.fpoly.duan_nhom8.fragment.AdminQL;
 import anhpvph37030.fpoly.duan_nhom8.fragment.CaNhanFrg;
 import anhpvph37030.fpoly.duan_nhom8.fragment.DanhMucFrg;
 import anhpvph37030.fpoly.duan_nhom8.fragment.MainFrg;
 import anhpvph37030.fpoly.duan_nhom8.fragment.MyCartFrg;
+import anhpvph37030.fpoly.duan_nhom8.fragment.QL_HoaDonFrg;
 import anhpvph37030.fpoly.duan_nhom8.fragment.Ql_KhachHangFrg;
 import anhpvph37030.fpoly.duan_nhom8.fragment.ThongKeFrg;
 import anhpvph37030.fpoly.duan_nhom8.fragment.TrangThaiFrg;
@@ -40,9 +42,9 @@ public class MainactivityAdmin extends AppCompatActivity {
         bottomNavigationView_adm = findViewById(R.id.menu_nav_adm);
         list.add(new DanhMucFrg());
         list.add(new AdminQL());
-        list.add(new Ql_KhachHangFrg());
-        list.add(new TrangThaiFrg());
+        list.add(new QL_HoaDonFrg());
         list.add(new ThongKeFrg());
+        list.add(new Ad_TaiKhoanFrg());
         adapter = new MenuAdapter(this, list);
         pagerMain_adm.setAdapter(adapter);
         pagerMain_adm.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
