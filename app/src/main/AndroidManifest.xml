@@ -15,6 +15,9 @@
         android:theme="@style/Theme.DuAn_Nhom8"
         tools:targetApi="31">
         <activity
+            android:name=".Activities.ChiTietHoaDon"
+            android:exported="false" />
+        <activity
             android:name=".Activities.ThanhToanActi"
             android:exported="false" />
         <activity

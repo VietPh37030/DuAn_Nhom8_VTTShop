@@ -1,10 +1,12 @@
 package anhpvph37030.fpoly.duan_nhom8.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -12,6 +14,7 @@ import androidx.annotation.Nullable;
 
 import java.util.List;
 
+import anhpvph37030.fpoly.duan_nhom8.Activities.ChiTietHoaDon;
 import anhpvph37030.fpoly.duan_nhom8.model.HoaDon;
 import anhpvph37030.fpoly.duan_nhom8.R;
 
@@ -41,6 +44,7 @@ public class HoaDonAdapter extends ArrayAdapter<HoaDon> {
         TextView txtTongTien = convertView.findViewById(R.id.txttongtien);
         TextView txtNgayDat = convertView.findViewById(R.id.txtthoigian);
         TextView txtTrangThai = convertView.findViewById(R.id.txtTrangThai);
+        Button buttonsemchitiet = convertView.findViewById(R.id.buttonsemchitiet);
         // ... Ánh xạ thêm các thành phần khác
 
         // Lấy đối tượng HoaDon tại vị trí hiện tại
@@ -55,7 +59,19 @@ public class HoaDonAdapter extends ArrayAdapter<HoaDon> {
         txtNgayDat.setText(hoaDon.getNgayDat());
         txtTrangThai.setText(hoaDon.getTrangThai());
         // ... Gán dữ liệu cho các thành phần khác
-
+        buttonsemchitiet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, ChiTietHoaDon.class);
+                // Truyền dữ liệu từ HoaDonAdapter sang ChiTietHoaDonActivity
+                intent.putExtra("ORDER_ID", hoaDon.getMaHoaDon());
+                intent.putExtra("ORDER_QUANTITY", String.valueOf(hoaDon.getSoLuong()));
+                intent.putExtra("ORDER_SUM", String.valueOf(hoaDon.getTongTien()));
+                intent.putExtra("ORDER_NAME", hoaDon.getTenSanPham());
+                intent.putExtra("ORDER_IMAGE", hoaDon.getImageUrl());
+                context.startActivity(intent);
+            }
+        });
         return convertView;
     }
 }
