@@ -23,10 +23,13 @@ public class Ql_HoaDonAdapter extends ArrayAdapter<HoaDon> {
         super(context, resource, objects);
     }
 
+    // ...
+
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         if (convertView == null) {
+            Log.d("Ql_HoaDonAdapter", "convertView is null. Creating new view.");
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_ql_hoadon, parent, false);
         }
 
@@ -38,6 +41,9 @@ public class Ql_HoaDonAdapter extends ArrayAdapter<HoaDon> {
         TextView txtNguoiNhan = convertView.findViewById(R.id.tvNguoiNhan);
         TextView txtDiaChi = convertView.findViewById(R.id.tvDiachiNhan);
         TextView txtSdt = convertView.findViewById(R.id.tvsdt);
+        TextView txtTenSanPham = convertView.findViewById(R.id.hdtensp); // Thêm TextView mới
+        TextView txtImageUrl = convertView.findViewById(R.id.imgHoaDon); // Thêm TextView mới
+        TextView txtTrangThai = convertView.findViewById(R.id.tvtrangthai); // Thêm TextView mới
         Button btnHuyDon = convertView.findViewById(R.id.btnHuyDon);
         Button btnXN = convertView.findViewById(R.id.btnXN);
 
@@ -46,6 +52,7 @@ public class Ql_HoaDonAdapter extends ArrayAdapter<HoaDon> {
         Log.d("Ql_HoaDonAdapter", "Processing item at position " + position + ": " + hoaDon.toString());
         // Gán dữ liệu từ đối tượng HoaDon vào các thành phần UI
         if (hoaDon != null) {
+            Log.d("Ql_HoaDonAdapter", "Processing item at position " + position + ": " + hoaDon.toString());
             txtMaHoaDon.setText("Mã Hóa Đơn: " + hoaDon.getMaHoaDon());
             txtSoLuong.setText("Số Lượng: " + hoaDon.getSoLuong());
             txtTongTien.setText("Tổng Tiền: " + hoaDon.getTongTien());
@@ -53,6 +60,9 @@ public class Ql_HoaDonAdapter extends ArrayAdapter<HoaDon> {
             txtNguoiNhan.setText("Người Nhận: " + hoaDon.getNguoiNhan());
             txtDiaChi.setText("Địa Chỉ: " + hoaDon.getDiaChi());
             txtSdt.setText("Số Điện Thoại: " + hoaDon.getSdt());
+            txtTenSanPham.setText("Tên Sản Phẩm: " + hoaDon.getTenSanPham()); // Thêm thông tin chi tiết
+            txtImageUrl.setText("Hình Ảnh: " + hoaDon.getImageUrl()); // Thêm thông tin chi tiết
+            txtTrangThai.setText("Trạng Thái: " + hoaDon.getTrangThai()); // Thêm thông tin chi tiết
 
             // Xử lý sự kiện cho Button nếu cần
             btnHuyDon.setOnClickListener(new View.OnClickListener() {
@@ -68,8 +78,11 @@ public class Ql_HoaDonAdapter extends ArrayAdapter<HoaDon> {
                     // Xử lý khi Button Xác Nhận được nhấn
                 }
             });
+        } else {
+            Log.e("Ql_HoaDonAdapter", "getItem returns null for position " + position);
         }
 
         return convertView;
     }
+
 }

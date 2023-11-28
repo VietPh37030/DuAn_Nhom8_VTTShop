@@ -39,6 +39,12 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:paddingLeft="10dp">
+            <TextView
+                android:id="@+id/hdtensp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Số Lượng: 1"
+                android:textSize="18dp"/>
 
             <TextView
                 android:id="@+id/hdSoLuong"
@@ -79,6 +85,13 @@
         android:layout_marginLeft="20dp"/>
     <TextView
         android:id="@+id/tvsdt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Số điện thoại: "
+        android:textSize="22dp"
+        android:layout_marginLeft="20dp"/>
+    <TextView
+        android:id="@+id/tvtrangthai"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Số điện thoại: "
