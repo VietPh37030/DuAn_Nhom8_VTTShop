@@ -38,6 +38,7 @@ public class DiaChiActi extends AppCompatActivity {
     private ArrayList<ThongTinDiaChi> diaChiList;
     private DiaChiAdapter diaChiAdapter;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -206,7 +207,8 @@ public class DiaChiActi extends AppCompatActivity {
                     ThongTinDiaChi thongTinDiaChi = dataSnapshot.getValue(ThongTinDiaChi.class);
                     diaChiList.add(thongTinDiaChi);
                 }
-
+                // Đặt địa chỉ được chọn nếu có sẵn
+                setSelectedAddress();
                 diaChiAdapter.notifyDataSetChanged();
             }
 
@@ -215,5 +217,14 @@ public class DiaChiActi extends AppCompatActivity {
                 // Xử lý khi có lỗi xảy ra
             }
         });
+    }
+
+    private void setSelectedAddress() {
+        for (ThongTinDiaChi diaChi : diaChiList) {
+            if (diaChi.isSelected()) {
+                // Đặt địa chỉ được chọn trong ThanhToanActi hoặc xử lý theo cách cần thiết
+                // Ví dụ: Bạn có thể lưu trữ nó trong một biến và sử dụng khi cần thiết
+            }
+        }
     }
 }

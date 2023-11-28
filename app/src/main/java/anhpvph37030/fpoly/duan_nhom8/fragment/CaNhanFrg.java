@@ -31,6 +31,7 @@ import com.google.firebase.storage.StorageReference;
 import anhpvph37030.fpoly.duan_nhom8.Activities.ChangeInfoActivity;
 import anhpvph37030.fpoly.duan_nhom8.Activities.ChangePassActivity;
 import anhpvph37030.fpoly.duan_nhom8.Activities.DiaChiActi;
+import anhpvph37030.fpoly.duan_nhom8.Activities.HoaDonActivity;
 import anhpvph37030.fpoly.duan_nhom8.R;
 import anhpvph37030.fpoly.duan_nhom8.taikhoan.Login;
 
@@ -41,7 +42,7 @@ public class CaNhanFrg extends Fragment {
     TextView btndangxuat;
     TextView cthaydoimk;
     TextView cthaydoithongtin;
-
+    TextView cthayHoadon;
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
     private DatabaseReference userRef;
@@ -63,6 +64,7 @@ public class CaNhanFrg extends Fragment {
         cthaydoithongtin = v.findViewById(R.id.nav_Bill_ltru);
         btndangxuat = v.findViewById(R.id.btndangxuat);
         btneditdiachi = v.findViewById(R.id.btneditdiachi);
+        cthayHoadon = v.findViewById(R.id.btnHoaDonflash);
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
         userRef = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUser.getUid());
@@ -107,6 +109,13 @@ public class CaNhanFrg extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), ChangeInfoActivity.class);
+                startActivity(intent);
+            }
+        });
+        cthayHoadon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), HoaDonActivity.class);
                 startActivity(intent);
             }
         });

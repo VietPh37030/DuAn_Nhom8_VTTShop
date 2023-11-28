@@ -14,9 +14,11 @@
         android:orientation="horizontal"
         android:layout_margin="10dp">
         <CheckBox
-            android:id="@+id/chktich"
+            android:id="@+id/chkluachon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true"
             />
         <LinearLayout
             android:layout_width="wrap_content"
