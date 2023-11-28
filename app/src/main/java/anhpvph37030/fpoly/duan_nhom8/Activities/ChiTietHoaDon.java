@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -39,8 +40,15 @@ public class ChiTietHoaDon extends AppCompatActivity {
         hoaDonChiTietList.add(orderName);
         hoaDonChiTietList.add(orderImage);
 
+        // Log để kiểm tra dữ liệu
+        Log.d("ChiTietHoaDon", "ORDER_ID: " + orderId);
+        Log.d("ChiTietHoaDon", "ORDER_QUANTITY: " + orderQuantity);
+        Log.d("ChiTietHoaDon", "ORDER_SUM: " + orderSum);
+        Log.d("ChiTietHoaDon", "ORDER_NAME: " + orderName);
+        Log.d("ChiTietHoaDon", "ORDER_IMAGE: " + orderImage);
         // Tạo Adapter và liên kết với ListView
         ChiTietHoaDonAdpter chiTietHoaDonAdapter = new ChiTietHoaDonAdpter(this, R.layout.item_chitiethoadon, hoaDonChiTietList);
         lstChiTietHoaDon.setAdapter(chiTietHoaDonAdapter);
+        chiTietHoaDonAdapter.notifyDataSetChanged();
     }
 }

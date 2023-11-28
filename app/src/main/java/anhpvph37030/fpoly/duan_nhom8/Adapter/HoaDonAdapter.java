@@ -2,6 +2,7 @@ package anhpvph37030.fpoly.duan_nhom8.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,8 @@ import androidx.annotation.Nullable;
 
 import java.util.List;
 
+import anhpvph37030.fpoly.duan_nhom8.Activities.ChiTietHoaDon;
+import anhpvph37030.fpoly.duan_nhom8.Activities.HoaDonActivity;
 import anhpvph37030.fpoly.duan_nhom8.model.HoaDon;
 import anhpvph37030.fpoly.duan_nhom8.R;
 
@@ -61,6 +64,22 @@ public class HoaDonAdapter extends ArrayAdapter<HoaDon> {
         buttonsemchitiet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Thêm dữ liệu vào Intent
+                Intent intent = new Intent(context, ChiTietHoaDon.class);
+                intent.putExtra("ORDER_ID", hoaDon.getMaHoaDon());
+                intent.putExtra("ORDER_QUANTITY", String.valueOf(hoaDon.getSoLuong()));
+                intent.putExtra("ORDER_SUM", String.valueOf(hoaDon.getTongTien()));
+                intent.putExtra("ORDER_NAME", hoaDon.getTenSanPham());
+                intent.putExtra("ORDER_IMAGE", hoaDon.getImageUrl());
+                // Log để kiểm tra dữ liệu
+                Log.d("HoaDonAdapter", "ORDER_ID: " + hoaDon.getMaHoaDon());
+                Log.d("HoaDonAdapter", "ORDER_QUANTITY: " + hoaDon.getSoLuong());
+                Log.d("HoaDonAdapter", "ORDER_SUM: " + hoaDon.getTongTien());
+                Log.d("HoaDonAdapter", "ORDER_NAME: " + hoaDon.getTenSanPham());
+                Log.d("HoaDonAdapter", "ORDER_IMAGE: " + hoaDon.getImageUrl());
+
+                context.startActivity(intent);
+
             }
         });
         return convertView;

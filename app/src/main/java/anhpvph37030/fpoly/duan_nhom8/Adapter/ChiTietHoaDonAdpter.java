@@ -1,6 +1,7 @@
 package anhpvph37030.fpoly.duan_nhom8.Adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +41,12 @@ public class ChiTietHoaDonAdpter  extends ArrayAdapter<String> {
             holder.txtTenSanPham = convertView.findViewById(R.id.txttensphd);
             holder.imageView = convertView.findViewById(R.id.imageView3);
 
+// Trong phương thức getView
+            Log.d("ChiTietHoaDonAdapter", "MaHoaDon: " + hoaDonChiTietList.get(0));
+            Log.d("ChiTietHoaDonAdapter", "SoLuong: " + hoaDonChiTietList.get(1));
+            Log.d("ChiTietHoaDonAdapter", "TongTien: " + hoaDonChiTietList.get(2));
+            Log.d("ChiTietHoaDonAdapter", "TenSanPham: " + hoaDonChiTietList.get(3));
+            Log.d("ChiTietHoaDonAdapter", "ImageUrl: " + hoaDonChiTietList.get(4));
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -50,13 +57,14 @@ public class ChiTietHoaDonAdpter  extends ArrayAdapter<String> {
         holder.txtSoLuong.setText( hoaDonChiTietList.get(1));
         holder.txtTongTien.setText( hoaDonChiTietList.get(2));
         holder.txtTenSanPham.setText( hoaDonChiTietList.get(3));
-
-        // Load hình ảnh sử dụng Picasso
         Picasso.get().load(hoaDonChiTietList.get(4)).into(holder.imageView);
-
         return convertView;
     }
-
+    @Override
+    public int getCount() {
+        Log.d("ChiTietHoaDonAdapter", "getCount: " + hoaDonChiTietList.size());
+        return hoaDonChiTietList.size();
+    }
     static class ViewHolder {
         TextView txtMaHoaDon;
         TextView txtSoLuong;
