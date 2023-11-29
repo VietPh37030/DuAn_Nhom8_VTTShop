@@ -14,6 +14,16 @@ public class HoaDon {
     private String ngayDat;
     private int trangThai;
 
+    private  ThongTinDiaChi thongTinDiaChi;
+
+    public ThongTinDiaChi getThongTinDiaChi() {
+        return thongTinDiaChi;
+    }
+
+    public void setThongTinDiaChi(ThongTinDiaChi thongTinDiaChi) {
+        this.thongTinDiaChi = thongTinDiaChi;
+    }
+
     public HoaDon() {
     }
 
@@ -29,6 +39,7 @@ public class HoaDon {
         this.ngayDat = ngayDat;
         this.trangThai = trangThai;
     }
+
 
     public String getMaHoaDon() {
         return maHoaDon;
