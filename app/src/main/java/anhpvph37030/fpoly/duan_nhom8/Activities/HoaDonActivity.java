@@ -52,13 +52,13 @@ public class HoaDonActivity extends AppCompatActivity {
         } else {
             // Người dùng chưa đăng nhập, thực hiện các hành động phù hợp với ứng dụng của bạn
         }
-            toolbar.setNavigationIcon(R.drawable.back);
-            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ExitsActi();
-                }
-            });
+        toolbar.setNavigationIcon(R.drawable.back);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ExitsActi();
+            }
+        });
         // Gọi hàm để hiển thị dữ liệu từ Firebase
         displayDataFromFirebase();
 //        listViewHoaDon.setOnItemClickListener(new AdapterView.OnItemClickListener() {

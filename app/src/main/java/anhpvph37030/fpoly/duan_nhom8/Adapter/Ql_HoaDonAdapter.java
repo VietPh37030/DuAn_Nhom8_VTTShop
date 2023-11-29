@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,7 +19,7 @@ import anhpvph37030.fpoly.duan_nhom8.R;
 import anhpvph37030.fpoly.duan_nhom8.model.HoaDon;
 
 public class Ql_HoaDonAdapter extends ArrayAdapter<HoaDon> {
-
+    int trangThai;
     public Ql_HoaDonAdapter(@NonNull Context context, int resource, @NonNull List<HoaDon> objects) {
         super(context, resource, objects);
     }
@@ -42,7 +43,7 @@ public class Ql_HoaDonAdapter extends ArrayAdapter<HoaDon> {
         TextView txtDiaChi = convertView.findViewById(R.id.tvDiachiNhan);
         TextView txtSdt = convertView.findViewById(R.id.tvsdt);
         TextView txtTenSanPham = convertView.findViewById(R.id.hdtensp); // Thêm TextView mới
-        TextView txtImageUrl = convertView.findViewById(R.id.imgHoaDon); // Thêm TextView mới
+        ImageView txtImageUrl = convertView.findViewById(R.id.imgHoaDon); // Thêm TextView mới
         TextView txtTrangThai = convertView.findViewById(R.id.tvtrangthai); // Thêm TextView mới
         Button btnHuyDon = convertView.findViewById(R.id.btnHuyDon);
         Button btnXN = convertView.findViewById(R.id.btnXN);
@@ -61,9 +62,23 @@ public class Ql_HoaDonAdapter extends ArrayAdapter<HoaDon> {
             txtDiaChi.setText("Địa Chỉ: " + hoaDon.getDiaChi());
             txtSdt.setText("Số Điện Thoại: " + hoaDon.getSdt());
             txtTenSanPham.setText("Tên Sản Phẩm: " + hoaDon.getTenSanPham()); // Thêm thông tin chi tiết
-            txtImageUrl.setText("Hình Ảnh: " + hoaDon.getImageUrl()); // Thêm thông tin chi tiết
-            txtTrangThai.setText("Trạng Thái: " + hoaDon.getTrangThai()); // Thêm thông tin chi tiết
-
+//            txtImageUrl.setText("Hình Ảnh: " + hoaDon.getImageUrl()); // Thêm thông tin chi tiết
+//            txtTrangThai.setText("Trạng Thái: " + hoaDon.getTrangThai()); // Thêm thông tin chi tiết
+            trangThai = Integer.parseInt(hoaDon.getTrangThai());
+            if (trangThai == 0) {
+                btnXN.setText("Xác Nhận");
+            } else if (trangThai == 1) {
+                btnXN.setText("Giao Hàng");
+            } else if (trangThai == 2) {
+                btnXN.setText("Hoàn Thành");
+                btnHuyDon.setVisibility(View.GONE);
+            } else if (trangThai == 3) {
+                btnXN.setVisibility(View.GONE);
+                btnHuyDon.setVisibility(View.GONE);
+            } else if (trangThai == 4) {
+                btnXN.setText("Khôi Phục");
+                btnHuyDon.setVisibility(View.GONE);
+            }
             // Xử lý sự kiện cho Button nếu cần
             btnHuyDon.setOnClickListener(new View.OnClickListener() {
                 @Override
