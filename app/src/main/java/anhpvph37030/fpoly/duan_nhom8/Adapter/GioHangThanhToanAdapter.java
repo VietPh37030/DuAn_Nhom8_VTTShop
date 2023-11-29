@@ -64,7 +64,7 @@ public class GioHangThanhToanAdapter extends ArrayAdapter<Cart> {
 
             holder.productNameTextView.setText(cartItem.getProduct().getName());
             holder.productPriceTextView.setText(cartItem.getProduct().getPrice());
-//            holder.quantityTextView.setText(String.valueOf(cartItem.getQuantity()));
+            holder.quantityTextView.setText(String.valueOf(cartItem.getProduct().getQuantity1()));
             holder.quantityChoiceTextView.setText(String.valueOf(cartItem.getQuantity()));
         }
 

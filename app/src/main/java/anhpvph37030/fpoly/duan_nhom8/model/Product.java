@@ -1,6 +1,11 @@
 package anhpvph37030.fpoly.duan_nhom8.model;
 
-public class Product {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
+public class Product implements Parcelable {
     private String id;
     private String image;
     private String name;
@@ -13,6 +18,30 @@ public class Product {
     
 
     // Các phương thức khác...
+
+    protected Product(Parcel in) {
+        id = in.readString();
+        image = in.readString();
+        name = in.readString();
+        price = in.readString();
+        quantity1 = in.readInt();
+        hang = in.readString();
+        maDanhMuc = in.readInt();
+        description = in.readString();
+        isVisible = in.readByte() != 0;
+    }
+
+    public static final Creator<Product> CREATOR = new Creator<Product>() {
+        @Override
+        public Product createFromParcel(Parcel in) {
+            return new Product(in);
+        }
+
+        @Override
+        public Product[] newArray(int size) {
+            return new Product[size];
+        }
+    };
 
     public String getDescription() {
         return description;
@@ -126,6 +155,24 @@ public class Product {
 
     public void setPrice(String price) {
         this.price = price;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(image);
+        dest.writeString(name);
+        dest.writeString(price);
+        dest.writeInt(quantity1);
+        dest.writeString(hang);
+        dest.writeInt(maDanhMuc);
+        dest.writeString(description);
+        dest.writeByte((byte) (isVisible ? 1 : 0));
     }
 }
 
