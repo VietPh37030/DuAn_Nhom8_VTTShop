@@ -12,12 +12,12 @@ public class HoaDon {
     private String sdt;
     private String diaChi;
     private String ngayDat;
-    private String trangThai;
+    private int trangThai;
 
     public HoaDon() {
     }
 
-    public HoaDon(String maHoaDon, String imageUrl, String tenSanPham, int soLuong, int tongTien, String nguoiNhan, String sdt, String diaChi, String ngayDat, String trangThai) {
+    public HoaDon(String maHoaDon, String imageUrl, String tenSanPham, int soLuong, int tongTien, String nguoiNhan, String sdt, String diaChi, String ngayDat, int trangThai) {
         this.maHoaDon = maHoaDon;
         this.imageUrl = imageUrl;
         this.tenSanPham = tenSanPham;
@@ -102,11 +102,11 @@ public class HoaDon {
         this.ngayDat = ngayDat;
     }
 
-    public String getTrangThai() {
+    public int getTrangThai() {
         return trangThai;
     }
 
-    public void setTrangThai(String trangThai) {
+    public void setTrangThai(int trangThaii) {
         this.trangThai = trangThai;
     }
 }

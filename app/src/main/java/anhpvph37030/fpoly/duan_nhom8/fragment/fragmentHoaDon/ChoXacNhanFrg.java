@@ -58,7 +58,7 @@ public class ChoXacNhanFrg extends Fragment {
                         String tenSanPham = hoaDonSnapshot.child("tenSanPham").getValue(String.class);
                         int soLuong = hoaDonSnapshot.child("soLuong").getValue(Integer.class);
                         int tongTien = hoaDonSnapshot.child("tongTien").getValue(Integer.class);
-                        String trangThai = hoaDonSnapshot.child("trangThai").getValue(String.class);
+                        int trangThai = hoaDonSnapshot.child("trangThai").getValue(Integer.class);
                         Log.d("ChoXacNhanFrg", "maHoaDon: " + maHoaDon);
                         Log.d("ChoXacNhanFrg", "diaChi: " + diaChi);
                         Log.d("ChoXacNhanFrg", "imageUrl: " + imageUrl);
