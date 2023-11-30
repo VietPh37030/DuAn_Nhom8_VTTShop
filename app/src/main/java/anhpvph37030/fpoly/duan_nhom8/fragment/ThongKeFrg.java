@@ -32,8 +32,10 @@ public class ThongKeFrg extends Fragment {
 
     private EditText edtNgayBatDau;
     private EditText edtNgayKetThuc;
-    private TextView txtTongDoanhThu;
+    private TextView txtTongDoanhThu, txtTop1;
     private Button btnTinhDoanhThu;
+    private int totalRevenue = 0;
+
 
     public ThongKeFrg() {
         // Required empty public constructor
@@ -47,6 +49,7 @@ public class ThongKeFrg extends Fragment {
         edtNgayBatDau = view.findViewById(R.id.edtNgayBatDau);
         edtNgayKetThuc = view.findViewById(R.id.edtNgayKetThuc);
         txtTongDoanhThu = view.findViewById(R.id.txtTongDoanhThu);
+        txtTop1 = view.findViewById(R.id.txtTop1);
         btnTinhDoanhThu = view.findViewById(R.id.btnTinhDoanhThu);
 
         btnTinhDoanhThu.setOnClickListener(new View.OnClickListener() {
@@ -79,18 +82,19 @@ public class ThongKeFrg extends Fragment {
     }
 
     // Phương thức hiển thị DatePickerDialog
+    // Phương thức hiển thị DatePickerDialog
     private void showDatePickerDialog(final EditText editText) {
         Calendar calendar = Calendar.getInstance();
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
         int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+        int month = calendar.get(Calendar.MONTH);
+        int year = calendar.get(Calendar.YEAR);
 
         DatePickerDialog datePickerDialog = new DatePickerDialog(
                 requireContext(),
                 (view, year1, month1, dayOfMonth1) -> {
                     month1 += 1; // DatePickerDialog sử dụng index từ 0 đến 11 cho tháng
-                    String selectedDate = year1 + "-" + (month1 < 10 ? "0" + month1 : month1) + "-" +
-                            (dayOfMonth1 < 10 ? "0" + dayOfMonth1 : dayOfMonth1);
+                    String selectedDate = (dayOfMonth1 < 10 ? "0" + dayOfMonth1 : dayOfMonth1) + "-" +
+                            (month1 < 10 ? "0" + month1 : month1) + "-" + year1;
 
                     // Hiển thị ngày đã chọn trong EditText
                     editText.setText(selectedDate);
@@ -102,14 +106,19 @@ public class ThongKeFrg extends Fragment {
         datePickerDialog.show();
     }
 
+
     // Phương thức tính doanh thu dựa trên khoảng thời gian đã chọn
+    // ...
+
     private void calculateRevenueForDateRange(String ngayBatDau, String ngayKetThuc) {
-        DatabaseReference giaoHangThanhCongRef = FirebaseDatabase.getInstance().getReference("GiaoHangThanhCong");
+        DatabaseReference giaoHangThanhCongRef = FirebaseDatabase.getInstance().getReference().child("GiaoHangThanhCong");
 
         giaoHangThanhCongRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 int totalRevenue = 0;
+                String topProduct = "";
+                int maxQuantity = 0;
 
                 for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
                     for (DataSnapshot hoaDonSnapshot : userSnapshot.getChildren()) {
@@ -117,12 +126,26 @@ public class ThongKeFrg extends Fragment {
                         if (hoaDonSnapshot.hasChild("tongTien")) {
                             int tongTien = hoaDonSnapshot.child("tongTien").getValue(Integer.class);
                             String ngayDat = hoaDonSnapshot.child("ngayDat").getValue(String.class);
+                            String tenSanPham = hoaDonSnapshot.child("tenSanPham").getValue(String.class);
+                            int soLuong = hoaDonSnapshot.child("soLuong").getValue(Integer.class);
+
+                            // Log dữ liệu để theo dõi
+                            Log.d("MyTag", "ngayDat: " + ngayDat);
+                            Log.d("MyTag", "ngayBatDau: " + ngayBatDau);
+                            Log.d("MyTag", "ngayKetThuc: " + ngayKetThuc);
                             Log.d("MyTag", "Tong Tien: " + tongTien);
 
                             // Kiểm tra xem hóa đơn có nằm trong khoảng thời gian đã chọn hay không
                             if (isDateInRange(ngayDat, ngayBatDau, ngayKetThuc)) {
                                 // Nếu có, thì cộng tổng doanh thu
                                 totalRevenue += tongTien;
+                                if (soLuong > maxQuantity) {
+                                    maxQuantity = soLuong;
+                                    topProduct = tenSanPham;
+                                }
+                                Log.d("MyTag", "Hóa đơn nằm trong khoảng thời gian đã chọn. Tổng doanh thu tạm thời: " + totalRevenue);
+                            } else {
+                                Log.d("MyTag", "Hóa đơn không nằm trong khoảng thời gian đã chọn.");
                             }
                         }
                     }
@@ -130,6 +153,8 @@ public class ThongKeFrg extends Fragment {
 
                 // Hiển thị tổng doanh thu trong TextView
                 txtTongDoanhThu.setText(String.valueOf(totalRevenue));
+                txtTop1.setText(topProduct + " - " + maxQuantity + " sản phẩm");
+                Log.d("MyTag", "Tổng doanh thu sau khi tính toán: " + totalRevenue);
             }
 
             @Override
@@ -140,11 +165,9 @@ public class ThongKeFrg extends Fragment {
         });
     }
 
-
-
     // Phương thức kiểm tra xem một ngày có nằm trong khoảng thời gian đã chọn không
     private boolean isDateInRange(String date, String startDate, String endDate) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
         try {
             Date dateObj = sdf.parse(date);
             Date startDateObj = sdf.parse(startDate);

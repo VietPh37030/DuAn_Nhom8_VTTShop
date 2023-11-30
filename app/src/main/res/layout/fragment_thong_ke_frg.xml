@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".fragment.ThongKeFrg">
 
@@ -11,8 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -41,6 +41,7 @@
                 android:inputType="none" />
 
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -69,6 +70,7 @@
                 android:inputType="none" />
 
         </LinearLayout>
+
         <Button
             android:id="@+id/btnTinhDoanhThu"
             android:layout_width="140dp"
@@ -80,6 +82,7 @@
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="18sp" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -87,12 +90,13 @@
             android:text="Doanh thu nhận được:"
             android:textSize="24sp"
             android:textStyle="bold" />
+
         <TextView
             android:id="@+id/txtTongDoanhThu"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:layout_marginLeft="10dp"
             android:layout_margin="26dp"
+            android:layout_marginLeft="10dp"
             android:background="@drawable/grey_bg"
             android:gravity="center"
             android:text="0"
@@ -100,46 +104,47 @@
             android:textSize="28sp"
             android:textStyle="bold" />
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        >
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Sản Phẩm Top 1 Doanh Thu:"
-            android:textStyle="bold"
-            android:layout_marginLeft="10dp"
-            android:textColor="#000"
-            android:textSize="15dp"
-            />
+        android:orientation="horizontal">
+
         <TextView
             android:id="@+id/txtTop1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="Sản Phẩm Top 1 Doanh Thu:"
+            android:textColor="#000"
+            android:textSize="15dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txtTop1DT"
             android:layout_width="140dp"
             android:layout_height="wrap_content"
-            android:text=""
-            android:textStyle="bold"
             android:layout_marginLeft="10dp"
+            android:text=""
             android:textColor="#FF0000"
             android:textSize="15dp"
-            />
+            android:textStyle="bold" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="VND"
-            android:textStyle="bold"
             android:layout_marginLeft="10dp"
+            android:text="VND"
             android:textColor="#FF0000"
             android:textSize="15dp"
-            />
+            android:textStyle="bold" />
 
         <ImageView
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_gravity="right"
-            android:background="@drawable/chartavt"/>
-
+            android:background="@drawable/chartavt" />
 
     </LinearLayout>
+
 </LinearLayout>
