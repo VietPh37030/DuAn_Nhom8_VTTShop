@@ -2,6 +2,7 @@ package anhpvph37030.fpoly.duan_nhom8.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -85,8 +86,10 @@ public class MyCartFrg extends Fragment {
                     // Tính toán tổng tiền
                     int totalAmount = calculateAndDisplayTotalPrice();
                     Intent intent = new Intent(getContext(), GioHangThanhToanActi.class);
+                    // Đưa danh sách cartItems vào Intent
+                    intent.putParcelableArrayListExtra("cartItems", new ArrayList<>(cartItems));
                     // Đưa tổng tiền vào Intent
-                    intent.putExtra("totalAmount", calculateAndDisplayTotalPrice());
+                    intent.putExtra("totalAmount", totalAmount);
 
                     startActivity(intent);
                 }

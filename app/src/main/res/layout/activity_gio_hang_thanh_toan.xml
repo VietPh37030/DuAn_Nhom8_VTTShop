@@ -35,8 +35,8 @@
 
             <ListView
                 android:id="@+id/lstthanhtoagio"
-                android:layout_width="wrap_content"
-                android:layout_height="327dp" />
+                android:layout_width="match_parent"
+                android:layout_height="354dp" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
