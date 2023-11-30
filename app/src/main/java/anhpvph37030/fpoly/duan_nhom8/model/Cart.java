@@ -1,6 +1,11 @@
 package anhpvph37030.fpoly.duan_nhom8.model;
 
-public class Cart {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
+public class Cart implements Parcelable {
     private Product product;
     private int quantity;
 
@@ -12,6 +17,23 @@ public class Cart {
         this.product = product;
         this.quantity = quantity1;
     }
+
+    protected Cart(Parcel in) {
+        product = in.readParcelable(Product.class.getClassLoader());
+        quantity = in.readInt();
+    }
+
+    public static final Creator<Cart> CREATOR = new Creator<Cart>() {
+        @Override
+        public Cart createFromParcel(Parcel in) {
+            return new Cart(in);
+        }
+
+        @Override
+        public Cart[] newArray(int size) {
+            return new Cart[size];
+        }
+    };
 
     public Product getProduct() {
         return product;
@@ -28,4 +50,16 @@ public class Cart {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
+        dest.writeParcelable(product, flags);
+        dest.writeInt(quantity);
+    };
+
 }

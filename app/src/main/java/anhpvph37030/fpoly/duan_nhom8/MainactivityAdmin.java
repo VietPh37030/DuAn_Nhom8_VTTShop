@@ -28,7 +28,6 @@ public class MainactivityAdmin extends AppCompatActivity {
     MenuAdapter adapter;
     ViewPager2 pagerMain_adm;
     ArrayList<Fragment> list = new ArrayList<>();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,11 +40,9 @@ public class MainactivityAdmin extends AppCompatActivity {
         bottomNavigationView_adm = findViewById(R.id.menu_nav_adm);
         list.add(new DanhMucFrg());
         list.add(new AdminQL());
+        list.add(new Ql_KhachHangFrg());
         list.add(new TrangThaiFrg());
         list.add(new ThongKeFrg());
-        list.add(new Ql_KhachHangFrg());
-
-
         adapter = new MenuAdapter(this, list);
         pagerMain_adm.setAdapter(adapter);
         pagerMain_adm.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {

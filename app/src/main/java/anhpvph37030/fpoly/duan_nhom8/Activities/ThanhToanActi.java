@@ -120,7 +120,7 @@ public class ThanhToanActi extends AppCompatActivity {
                 // Ngày đặt và mã hóa đơn có thể được xử lý ở đây, ví dụ:
                 hoaDon.setNgayDat(getCurrentDate());
                 hoaDon.setMaHoaDon(generateMaHoaDon());
-                hoaDon.setTrangThai("Chờ xác nhận");
+                hoaDon.setTrangThai(0);
 
                 // Đẩy dữ liệu lên Firebase
                 DatabaseReference hoaDonRef = FirebaseDatabase.getInstance().getReference().child("HoaDonThanhToan").child(userID);

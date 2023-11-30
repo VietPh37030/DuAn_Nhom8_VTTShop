@@ -25,11 +25,15 @@ public class HoaDonAdapter extends ArrayAdapter<HoaDon> {
     private List<HoaDon> hoaDonList;
     private Context context;
 
+
     public HoaDonAdapter(@NonNull Context context, int resource, @NonNull List<HoaDon> objects) {
         super(context, resource, objects);
         this.context = context;
         this.hoaDonList = objects;
     }
+    // Hàm chuyển đổi giá trị trạng thái số sang chuỗi
+
+
 
     @NonNull
     @Override
@@ -59,7 +63,22 @@ public class HoaDonAdapter extends ArrayAdapter<HoaDon> {
         txtDiachinhanhang.setText(hoaDon.getDiaChi());
         txtTongTien.setText(String.valueOf(hoaDon.getTongTien()));
         txtNgayDat.setText(hoaDon.getNgayDat());
-        txtTrangThai.setText(hoaDon.getTrangThai());
+        // Gọi hàm chuyển đổi để lấy chuỗi trạng thái tương ứng
+        txtTrangThai.setText(String.valueOf(hoaDon.getTrangThai()));
+        if (hoaDon.getTrangThai() == 0) {
+            txtTrangThai.setText("Trạng thái: Chờ xác nhân");
+        } else if (hoaDon.getTrangThai() == 1) {
+            txtTrangThai.setText("Trạng thái: Đã xác nhân");
+        } else if (hoaDon.getTrangThai() == 2) {
+            txtTrangThai.setText("Trạng thái: Đang giao");
+//            txtTrangThai.setVisibility(View.GONE);
+        } else if (hoaDon.getTrangThai() == 3) {
+            txtTrangThai.setText("Trạng thái: Giao hàng thành công");
+//            txtTrangThai.setVisibility(View.GONE);
+        } else if (hoaDon.getTrangThai() == 4) {
+            txtTrangThai.setText("Trạng thái: Đã hủy");
+//            holder.btnhuy.setVisibility(View.GONE);
+        }
         // ... Gán dữ liệu cho các thành phần khác
         buttonsemchitiet.setOnClickListener(new View.OnClickListener() {
             @Override
