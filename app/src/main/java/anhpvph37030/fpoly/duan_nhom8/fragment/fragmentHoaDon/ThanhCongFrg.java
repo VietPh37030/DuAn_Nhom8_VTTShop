@@ -59,22 +59,25 @@ public class ThanhCongFrg extends Fragment {
                         int soLuong = hoaDonSnapshot.child("soLuong").getValue(Integer.class);
                         int tongTien = hoaDonSnapshot.child("tongTien").getValue(Integer.class);
                         int trangThai = hoaDonSnapshot.child("trangThai").getValue(Integer.class);
-                        Log.d("ChoXacNhanFrg", "maHoaDon: " + maHoaDon);
-                        Log.d("ChoXacNhanFrg", "diaChi: " + diaChi);
-                        Log.d("ChoXacNhanFrg", "imageUrl: " + imageUrl);
-                        Log.d("ChoXacNhanFrg", "ngayDat: " + ngayDat);
-                        Log.d("ChoXacNhanFrg", "nguoiNhan: " + nguoiNhan);
-                        Log.d("ChoXacNhanFrg", "sdt: " + sdt);
-                        Log.d("ChoXacNhanFrg", "tenSanPham: " + tenSanPham);
-                        Log.d("ChoXacNhanFrg", "soLuong: " + soLuong);
-                        Log.d("ChoXacNhanFrg", "tongTien: " + tongTien);
-                        Log.d("ChoXacNhanFrg", "trangThai: " + trangThai);
+                        Log.d("ThanhCongFrg", "maHoaDon: " + maHoaDon);
+                        Log.d("ThanhCongFrg", "diaChi: " + diaChi);
+                        Log.d("ThanhCongFrg", "imageUrl: " + imageUrl);
+                        Log.d("ThanhCongFrg", "ngayDat: " + ngayDat);
+                        Log.d("ThanhCongFrg", "nguoiNhan: " + nguoiNhan);
+                        Log.d("ThanhCongFrg", "sdt: " + sdt);
+                        Log.d("ThanhCongFrg", "tenSanPham: " + tenSanPham);
+                        Log.d("ThanhCongFrg", "soLuong: " + soLuong);
+                        Log.d("ThanhCongFrg", "tongTien: " + tongTien);
+                        Log.d("ThanhCongFrg", "trangThai: " + trangThai);
 
-                        // Filter only items with trangThai = 0
+                        // Filter only items with trangThai = 3
                         if (trangThai == 3) {
                             // Tạo đối tượng HoaDon và thêm vào danh sách
                             HoaDon hoaDon = new HoaDon(maHoaDon, imageUrl, tenSanPham, soLuong, tongTien, nguoiNhan, sdt, diaChi, ngayDat, trangThai);
                             hoaDonList.add(hoaDon);
+
+                            // Chuyển đơn hàng thành công vào bảng GiaoHangThanhCong
+                            moveHoaDonToGiaoHangThanhCong(userSnapshot.getKey(), maHoaDon, hoaDon);
                         }
                     }
                 }
@@ -84,15 +87,24 @@ public class ThanhCongFrg extends Fragment {
                 hoaDonAdapter.addAll(hoaDonList);
                 hoaDonAdapter.notifyDataSetChanged();
 
-                Log.d("ChoXacNhanFrg", "Data pushed to ListView: " + hoaDonList.size() + " items");
+                Log.d("ThanhCongFrg", "Data pushed to ListView: " + hoaDonList.size() + " items");
             }
 
             @Override
             public void onCancelled(DatabaseError error) {
-                Log.e("ChoXacNhanFrg", "Error reading data from Firebase: " + error.getMessage());
+                Log.e("ThanhCongFrg", "Error reading data from Firebase: " + error.getMessage());
             }
         });
 
         return view;
+    }
+
+    // Phương thức chuyển đơn hàng vào bảng GiaoHangThanhCong
+    private void moveHoaDonToGiaoHangThanhCong(String userId, String maHoaDon, HoaDon hoaDon) {
+        DatabaseReference giaoHangThanhCongRef = FirebaseDatabase.getInstance().getReference().child("GiaoHangThanhCong");
+        DatabaseReference newHoaDonRef = giaoHangThanhCongRef.child(userId).child(maHoaDon);
+
+        // Set dữ liệu của đơn hàng mới trong bảng GiaoHangThanhCong
+        newHoaDonRef.setValue(hoaDon);
     }
 }
