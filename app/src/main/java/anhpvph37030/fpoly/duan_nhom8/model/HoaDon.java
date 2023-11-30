@@ -106,7 +106,7 @@ public class HoaDon {
         return trangThai;
     }
 
-    public void setTrangThai(int trangThaii) {
+    public void setTrangThai(int trangThai) {
         this.trangThai = trangThai;
     }
 }

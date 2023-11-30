@@ -69,9 +69,13 @@ public class ChoXacNhanFrg extends Fragment {
                         Log.d("ChoXacNhanFrg", "soLuong: " + soLuong);
                         Log.d("ChoXacNhanFrg", "tongTien: " + tongTien);
                         Log.d("ChoXacNhanFrg", "trangThai: " + trangThai);
-                        // Tạo đối tượng HoaDon và thêm vào danh sách
-                        HoaDon hoaDon = new HoaDon(maHoaDon, imageUrl, tenSanPham, soLuong, tongTien, nguoiNhan, sdt, diaChi, ngayDat, trangThai);
-                        hoaDonList.add(hoaDon);
+
+                        // Filter only items with trangThai = 0
+                        if (trangThai == 0) {
+                            // Tạo đối tượng HoaDon và thêm vào danh sách
+                            HoaDon hoaDon = new HoaDon(maHoaDon, imageUrl, tenSanPham, soLuong, tongTien, nguoiNhan, sdt, diaChi, ngayDat, trangThai);
+                            hoaDonList.add(hoaDon);
+                        }
                     }
                 }
 
@@ -89,8 +93,7 @@ public class ChoXacNhanFrg extends Fragment {
             }
         });
 
-
-
         return view;
     }
 }
+

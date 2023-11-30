@@ -13,6 +13,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -94,22 +98,61 @@ public class Ql_HoaDonAdapter extends ArrayAdapter<HoaDon> {
                 btnHuyDon.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        // Xử lý khi Button Hủy Đơn được nhấn
+                        Log.d("Ql_HoaDonAdapter", "Button HuyDon clicked for position: " + position);
+
+                        // Đặt trạng thái về 4 (hoặc giá trị tương ứng với trạng thái hủy)
+                        hoaDon.setTrangThai(4);
+
+                        // Cập nhật trạng thái lên Firebase
+                        updateTrangThaiOnFirebase(hoaDon.getMaHoaDon(), hoaDon.getTrangThai());
+
+                        notifyDataSetChanged();
                     }
                 });
 
                 btnXN.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        // Xử lý khi Button Xác Nhận được nhấn
+                        // Perform actions when Button Xác Nhận is clicked
+                        Log.d("Ql_HoaDonAdapter", "Button XN clicked for position: " + position);
+                        int currentTrangThai = hoaDon.getTrangThai();
+
+                        // Nếu trạng thái hiện tại là 4, đặt lại trạng thái về 0, ngược lại tăng lên 1
+                        hoaDon.setTrangThai(currentTrangThai == 4 ? 0 : currentTrangThai + 1);
+
+                        // Cập nhật trạng thái lên Firebase
+                        updateTrangThaiOnFirebase(hoaDon.getMaHoaDon(), hoaDon.getTrangThai());
+
+                        notifyDataSetChanged();
                     }
                 });
+
             } else {
                 Log.e("Ql_HoaDonAdapter", "getItem returns null for position " + position);
             }
         }
 
             return convertView;
+    }
+    // Phương thức cập nhật trạng thái lên Firebase
+    private void updateTrangThaiOnFirebase(String maHoaDon, int trangThai) {
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = auth.getCurrentUser();
+
+        if (currentUser != null) {
+            String userId = currentUser.getUid();
+
+
+            DatabaseReference hoaDonRef = FirebaseDatabase.getInstance().getReference()
+                    .child("HoaDonThanhToan")
+                    .child("sMmkbEQqNAOXifAaMw1H4wAXbV33")
+                    .child(maHoaDon)
+                    .child("trangThai");
+
+            hoaDonRef.setValue(trangThai);
+        } else {
+            Log.e("Ql_HoaDonAdapter", "Current user is null");
+        }
     }
 
 }
