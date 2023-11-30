@@ -25,6 +25,7 @@ import anhpvph37030.fpoly.duan_nhom8.model.HoaDon;
 
 public class ChoXacNhanFrg extends Fragment {
     private Ql_HoaDonAdapter hoaDonAdapter;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -33,7 +34,7 @@ public class ChoXacNhanFrg extends Fragment {
         hoaDonAdapter = new Ql_HoaDonAdapter(getContext(), R.layout.item_ql_hoadon, new ArrayList<>());
         listView.setAdapter(hoaDonAdapter);
 
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("HoaDonThanhToan");
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("HoaDonThanhToan");
 
         // Thêm ValueEventListener để lắng nghe sự thay đổi dữ liệu
         databaseReference.addValueEventListener(new ValueEventListener() {
@@ -43,6 +44,8 @@ public class ChoXacNhanFrg extends Fragment {
 
                 // Lặp qua từng người dùng
                 for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
+                    String userId = userSnapshot.getKey(); // Lấy userId từ key của mỗi user
+
                     // Lặp qua từng hóa đơn của người dùng
                     for (DataSnapshot hoaDonSnapshot : userSnapshot.getChildren()) {
                         // Lấy mã hóa đơn (key) và tất cả thông tin của hóa đơn (value)
@@ -58,6 +61,8 @@ public class ChoXacNhanFrg extends Fragment {
                         int soLuong = hoaDonSnapshot.child("soLuong").getValue(Integer.class);
                         int tongTien = hoaDonSnapshot.child("tongTien").getValue(Integer.class);
                         int trangThai = hoaDonSnapshot.child("trangThai").getValue(Integer.class);
+
+                        Log.d("ChoXacNhanFrg", "userId: " + userId); // Sử dụng userId ở đây nếu cần
                         Log.d("ChoXacNhanFrg", "maHoaDon: " + maHoaDon);
                         Log.d("ChoXacNhanFrg", "diaChi: " + diaChi);
                         Log.d("ChoXacNhanFrg", "imageUrl: " + imageUrl);
@@ -95,4 +100,3 @@ public class ChoXacNhanFrg extends Fragment {
         return view;
     }
 }
-

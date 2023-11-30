@@ -15,8 +15,11 @@ import androidx.annotation.Nullable;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -135,24 +138,37 @@ public class Ql_HoaDonAdapter extends ArrayAdapter<HoaDon> {
             return convertView;
     }
     // Phương thức cập nhật trạng thái lên Firebase
+    // Trong phương thức updateTrangThaiOnFirebase trong Ql_HoaDonAdapter
+
     private void updateTrangThaiOnFirebase(String maHoaDon, int trangThai) {
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-        FirebaseUser currentUser = auth.getCurrentUser();
+        DatabaseReference hoaDonRef = FirebaseDatabase.getInstance().getReference("HoaDonThanhToan");
 
-        if (currentUser != null) {
-            String userId = currentUser.getUid();
+        // Thêm ValueEventListener để lấy trạng thái mới của tất cả hóa đơn từ tất cả người dùng
+        hoaDonRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // Lặp qua từng người dùng
+                for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
+                    // Lặp qua từng hóa đơn của người dùng
+                    for (DataSnapshot hoaDonSnapshot : userSnapshot.getChildren()) {
+                        String currentMaHoaDon = hoaDonSnapshot.getKey();
 
+                        // Kiểm tra nếu là hóa đơn cần cập nhật
+                        if (currentMaHoaDon.equals(maHoaDon)) {
+                            // Cập nhật trạng thái mới
+                            hoaDonSnapshot.child("trangThai").getRef().setValue(trangThai);
+                            break; // Thoát khỏi vòng lặp khi đã tìm thấy và cập nhật
+                        }
+                    }
+                }
+            }
 
-            DatabaseReference hoaDonRef = FirebaseDatabase.getInstance().getReference()
-                    .child("HoaDonThanhToan")
-                    .child("sMmkbEQqNAOXifAaMw1H4wAXbV33")
-                    .child(maHoaDon)
-                    .child("trangThai");
-
-            hoaDonRef.setValue(trangThai);
-        } else {
-            Log.e("Ql_HoaDonAdapter", "Current user is null");
-        }
+            @Override
+            public void onCancelled(DatabaseError error) {
+                Log.e("Ql_HoaDonAdapter", "Error updating data on Firebase: " + error.getMessage());
+            }
+        });
     }
+
 
 }
