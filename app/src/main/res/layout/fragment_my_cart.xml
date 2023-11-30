@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/white"
     tools:context=".fragment.MyCartFrg">
 
     <ListView
@@ -21,6 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="-150dp"
         android:orientation="horizontal"
+        android:background="@color/white"
         android:padding="16dp">
 
         <!-- TextView để hiển thị tổng tiền -->
@@ -31,7 +33,9 @@
             android:layout_weight="1"
             android:textColor="@color/black"
             android:text="Tổng tiền: 0 VND"
-            android:textSize="18sp" />
+            android:textAllCaps="true"
+            android:textStyle="bold"
+            android:textSize="10sp" />
 
         <!-- Button để thanh toán -->
         <Button

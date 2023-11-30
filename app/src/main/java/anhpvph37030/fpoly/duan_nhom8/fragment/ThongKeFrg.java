@@ -122,7 +122,6 @@ public class ThongKeFrg extends Fragment {
 
                 for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
                     for (DataSnapshot hoaDonSnapshot : userSnapshot.getChildren()) {
-                        // Đảm bảo rằng tồn tại thông tin về tổng tiền trong hóa đơn
                         if (hoaDonSnapshot.hasChild("tongTien")) {
                             int tongTien = hoaDonSnapshot.child("tongTien").getValue(Integer.class);
                             String ngayDat = hoaDonSnapshot.child("ngayDat").getValue(String.class);
@@ -135,9 +134,7 @@ public class ThongKeFrg extends Fragment {
                             Log.d("MyTag", "ngayKetThuc: " + ngayKetThuc);
                             Log.d("MyTag", "Tong Tien: " + tongTien);
 
-                            // Kiểm tra xem hóa đơn có nằm trong khoảng thời gian đã chọn hay không
                             if (isDateInRange(ngayDat, ngayBatDau, ngayKetThuc)) {
-                                // Nếu có, thì cộng tổng doanh thu
                                 totalRevenue += tongTien;
                                 if (soLuong > maxQuantity) {
                                     maxQuantity = soLuong;
@@ -164,6 +161,7 @@ public class ThongKeFrg extends Fragment {
             }
         });
     }
+
 
     // Phương thức kiểm tra xem một ngày có nằm trong khoảng thời gian đã chọn không
     private boolean isDateInRange(String date, String startDate, String endDate) {

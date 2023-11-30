@@ -83,6 +83,10 @@ public class CaNhanFrg extends Fragment {
                     public void onClick(DialogInterface dialog, int which) {
                         mAuth.signOut();
                         Toast.makeText(getActivity(), "Đăng xuất thành công", Toast.LENGTH_SHORT).show();
+
+                        // Kết thúc tất cả các Activity trong ứng dụng
+                        getActivity().finishAffinity();
+
                         Intent intent = new Intent(getActivity(), Login.class);
                         startActivity(intent);
                     }
@@ -96,6 +100,7 @@ public class CaNhanFrg extends Fragment {
                 builder.show();
             }
         });
+
 
         cthaydoimk.setOnClickListener(new View.OnClickListener() {
             @Override
