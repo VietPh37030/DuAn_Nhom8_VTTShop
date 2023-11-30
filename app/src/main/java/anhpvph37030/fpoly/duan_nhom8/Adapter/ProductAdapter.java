@@ -93,5 +93,19 @@ public class ProductAdapter extends ArrayAdapter<Product> {
 
         return listItemView;
     }
+
+    public void updateData(List<Product> filteredProducts) {
+        // Kiểm tra filteredProducts có null không
+        if (filteredProducts != null) {
+            // Xóa dữ liệu cũ
+            productList.clear();
+
+            // Thêm dữ liệu mới
+            productList.addAll(filteredProducts);
+
+            // Thông báo cho adapter biết rằng dữ liệu đã thay đổi
+            notifyDataSetChanged();
+        }
+    }
 }
 

@@ -62,10 +62,11 @@ public class SignUp extends AppCompatActivity {
         progressDialog = new ProgressDialog(this);
     }
 
-    private void dangNhap(){
+    private void dangNhap() {
         Intent intent = new Intent(this, Login.class);
         startActivity(intent);
     }
+
     private void dangKy() {
         String email = edtEmail.getEditText().getText().toString().trim();
         String password = edtMatKhau.getEditText().getText().toString().trim();

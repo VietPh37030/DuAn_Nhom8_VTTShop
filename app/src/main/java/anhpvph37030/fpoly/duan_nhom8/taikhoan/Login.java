@@ -127,12 +127,13 @@ public class Login extends AppCompatActivity {
                                             if ("admin".equals(role)) {
                                                 // Người dùng là admin, chuyển hướng tới màn hình admin
                                                 Intent intent = new Intent(Login.this, MainactivityAdmin.class);
-
+                                                intent.putExtra("USER_EMAIL", email);
+                                                intent.putExtra("USER_PASSWORD", pass);
                                                 startActivity(intent);
                                             } else {
                                                 // Người dùng không phải admin, chuyển hướng tới màn hình thông thường
                                                 Intent intent = new Intent(Login.this, MainActivity.class);
-                                                saveCredentials(email,pass,chkluumk.isChecked());
+                                                saveCredentials(email, pass, chkluumk.isChecked());
                                                 startActivity(intent);
                                             }
                                         }

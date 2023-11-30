@@ -25,6 +25,7 @@ public class manhinhchao extends AppCompatActivity {
             }
         }, 3000);
     }
+
     private void nextActivity() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user == null) {

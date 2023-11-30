@@ -40,4 +40,14 @@
         android:background="@drawable/add_button"
         android:src="@drawable/ic_add"
         android:text="Nút nổi" />
+    <!-- Thêm FrameLayout -->
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/lstadmin"
+        android:layout_below="@+id/search_view"
+        android:layout_margin="10dp">
+        <!-- Đặt các thành phần bên trong FrameLayout nếu cần -->
+    </FrameLayout>
 </RelativeLayout>

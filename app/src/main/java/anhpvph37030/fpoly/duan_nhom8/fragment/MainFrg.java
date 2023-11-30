@@ -40,6 +40,8 @@ public class MainFrg extends Fragment {
     private List<Product> productList;
     private ProductAdapter productAdapter;
     private GridView gridView;
+    private List<Product> originalProductList;
+    private List<Product> filteredProductList;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -64,27 +66,31 @@ public class MainFrg extends Fragment {
         productsRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                productList = new ArrayList<>();
+                originalProductList = new ArrayList<>();
+                filteredProductList = new ArrayList<>();
 
                 for (DataSnapshot productSnapshot : dataSnapshot.getChildren()) {
                     Product product = productSnapshot.getValue(Product.class);
-                    productList.add(product);
+                    originalProductList.add(product);
+                    filteredProductList.add(product);
                 }
 
-                // Tìm kiếm sản phẩm theo hãng "XIAOMI" (Thay thế bằng hãng muốn tìm kiếm)
-                String brandToSearch = "XIAOMI";
-                List<Product> filteredProducts = searchByBrand(productList, brandToSearch);
-
-                // Cập nhật GridView với danh sách sản phẩm đã lọc theo hãng
-                updateGridView(filteredProducts);
-
-                // Tạo Adapter và setAdapter cho GridView
-                ProductAdapter adapter = new ProductAdapter(getContext(), productList);
-                gridView.setAdapter(adapter);
+                // Kiểm tra xem productList có null hay không trước khi sao chép
+                if (productList != null) {
+                    productList.clear(); // Xóa dữ liệu cũ nếu có
+                    productList.addAll(originalProductList);
+                } else {
+                    productList = new ArrayList<>(originalProductList);
+                }
+            
 
                 // Tạo Adapter cho ViewPager
                 BannerPagerAdapter bannerPagerAdapter = new BannerPagerAdapter(getContext(), bannerImages);
                 viewPager.setAdapter(bannerPagerAdapter);
+
+                // Tạo Adapter và setAdapter cho GridView
+                productAdapter = new ProductAdapter(getContext(), productList);
+                gridView.setAdapter(productAdapter);
 
                 // Tự động chuyển đổi giữa các ảnh sau một khoảng thời gian
                 Timer timer = new Timer();
@@ -109,7 +115,7 @@ public class MainFrg extends Fragment {
             @Override
             public boolean onQueryTextChange(String newText) {
                 // Lọc danh sách sản phẩm dựa trên nội dung tìm kiếm
-//                filterProducts(newText);
+                filterProducts(newText);
                 return true;
             }
         });
@@ -146,61 +152,60 @@ public class MainFrg extends Fragment {
         return v;
     }
 
+    // Thêm phương thức để cập nhật GridView với danh sách sản phẩm đã lọc
+    private void updateGridView(List<Product> filteredProducts) {
+        productAdapter.updateData(filteredProducts);
+    }
+
     // Thêm phương thức tìm kiếm theo hãng
     private List<Product> searchByBrand(List<Product> products, String brand) {
         List<Product> result = new ArrayList<>();
         for (Product product : products) {
-            // Kiểm tra nếu hãng không null và chứa nội dung tìm kiếm
-            if (product.getHang() != null && product.getHang().equalsIgnoreCase(brand)) {
+            // Kiểm tra nếu sản phẩm thuộc hãng
+            if (isProductByBrand(product, brand)) {
                 result.add(product);
             }
         }
         return result;
     }
 
-
     // Thêm phương thức để kiểm tra sản phẩm có thuộc hãng không
     private boolean isProductByBrand(Product product, String brand) {
         return product.getHang() != null && product.getHang().equalsIgnoreCase(brand);
     }
 
-    // Thêm phương thức để cập nhật GridView với danh sách sản phẩm đã lọc
-    private void updateGridView(List<Product> filteredProducts) {
-        ProductAdapter filteredAdapter = new ProductAdapter(getContext(), filteredProducts);
-        gridView.setAdapter(filteredAdapter);
+    // Thêm phương thức để lọc danh sách sản phẩm dựa trên nội dung tìm kiếm
+    private void filterProducts(String query) {
+        List<Product> filteredList = new ArrayList<>();
+        for (Product product : originalProductList) {
+            // Kiểm tra nếu tên, giá hoặc hãng của sản phẩm chứa nội dung tìm kiếm
+            if ((product.getName() != null && product.getName().toLowerCase().contains(query.toLowerCase())) ||
+                    (product.getPrice() != null && product.getPrice().toLowerCase().contains(query.toLowerCase())) ||
+                    (product.getHang() != null && product.getHang().toLowerCase().contains(query.toLowerCase()))) {
+                filteredList.add(product);
+            }
+        }
+        // Cập nhật GridView với danh sách sản phẩm đã lọc
+        updateGridView(filteredList);
     }
-
-//    private void filterProducts(String query) {
-//        List<Product> filteredList = new ArrayList<>();
-//        for (Product product : productList) {
-//            // Kiểm tra nếu tên, giá hoặc hãng của sản phẩm không null và chứa nội dung tìm kiếm
-//            if ((product.getName() != null && product.getName().toLowerCase().contains(query.toLowerCase())) ||
-//                    (product.getPrice() != null && product.getPrice().toLowerCase().contains(query.toLowerCase())) ||
-//                    (product.getHang() != null && product.getHang().toLowerCase().contains(query.toLowerCase()))) {
-//                filteredList.add(product);
-//            }
-//        }
-//
-//        // Tạo Adapter và setAdapter cho GridView với danh sách sản phẩm đã lọc
-//        ProductAdapter adapter = new ProductAdapter(getContext(), filteredList);
-//        gridView.setAdapter(adapter);
-//    }
 
 
     // TimerTask để tự động chuyển đổi ảnh trong ViewPager
     public class MyTimerTask extends TimerTask {
         @Override
         public void run() {
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    if (viewPager.getCurrentItem() < bannerImages.length - 1) {
-                        viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
-                    } else {
-                        viewPager.setCurrentItem(0);
+            if (getActivity() != null) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (viewPager.getCurrentItem() < bannerImages.length - 1) {
+                            viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
+                        } else {
+                            viewPager.setCurrentItem(0);
+                        }
                     }
-                }
-            });
+                });
+            }
         }
     }
 }
