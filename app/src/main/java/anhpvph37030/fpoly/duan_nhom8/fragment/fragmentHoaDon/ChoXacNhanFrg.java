@@ -25,7 +25,6 @@ import anhpvph37030.fpoly.duan_nhom8.model.HoaDon;
 
 public class ChoXacNhanFrg extends Fragment {
     private Ql_HoaDonAdapter hoaDonAdapter;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
