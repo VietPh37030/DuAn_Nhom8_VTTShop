@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#CEEDD9"
+    android:background="@color/white"
     android:orientation="vertical"
     tools:context=".fragment.MainFrg">
 
@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:background="#ACF1C0"
+        android:background="@color/black"
         android:orientation="horizontal"
         android:paddingLeft="10dp"
         android:paddingTop="5dp"

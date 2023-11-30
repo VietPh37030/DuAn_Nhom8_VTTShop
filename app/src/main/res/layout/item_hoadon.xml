@@ -185,7 +185,7 @@
                             android:layout_width="172dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:layout_marginLeft="3px"
+                            android:layout_marginLeft="5px"
                             android:text="01-01-1010"
                             android:textColor="#1FAEFF"
                             android:textSize="13sp" />

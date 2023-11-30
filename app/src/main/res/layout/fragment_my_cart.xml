@@ -29,6 +29,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:textColor="@color/black"
             android:text="Tổng tiền: 0 VND"
             android:textSize="18sp" />
 
@@ -37,6 +38,7 @@
             android:id="@+id/btnThanhToan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/editbootom"
             android:text="Thanh toán" />
     </LinearLayout>
 

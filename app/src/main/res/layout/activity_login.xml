@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#000"
     android:orientation="vertical"
     tools:context=".taikhoan.Login">
 
@@ -15,7 +16,7 @@
 
         <ImageView
             android:layout_width="168dp"
-            android:layout_height="100dp"
+            android:layout_height="116dp"
             android:layout_gravity="center"
             android:layout_marginTop="100dp"
             android:background="@drawable/logo" />
@@ -25,7 +26,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="Chào Mừng bạn đến với"
-            android:textColor="#fff"
+            android:textColor="@color/black"
             android:textStyle="bold" />
 
         <TextView
@@ -60,6 +61,7 @@
                 android:layout_width="380dp"
                 android:layout_height="wrap_content"
                 android:hint="Tài khoản"
+                android:textColor="#000"
                 android:maxLines="1" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -76,6 +78,7 @@
                 android:layout_width="380dp"
                 android:layout_height="wrap_content"
                 android:hint="Mật khẩu"
+                android:textColor="#000"
                 android:inputType="textPassword" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -93,18 +96,19 @@
             android:layout_height="wrap_content"
             android:layout_gravity="left"
             android:layout_marginLeft="10dp"
-            android:buttonTint="#0a3d62"
+            android:buttonTint="#EFEFEF"
             android:text="Lưu tài khoản"
-            android:textColor="#0a3d62" />
+            android:textColor="#F3F3F3"
+            android:textColorHint="#fff" />
 
         <Button
             android:id="@+id/btndangnhap"
             android:layout_width="256dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-          android:background="@drawable/editbootom3"
-
-            android:text="Đăng nhập" />
+            android:background="@drawable/editbootom3"
+            android:text="Đăng nhập"
+            android:textColor="#fff" />
 
         <TextView
             android:id="@+id/txtchuacotk"
@@ -112,7 +116,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:text="Don't have an account yet?"
-            android:textColor="#C5B0B0" />
+            android:textColor="@color/white" />
 
     </LinearLayout>
 

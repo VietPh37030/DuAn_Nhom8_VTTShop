@@ -1,0 +1,13 @@
+<!-- res/drawable/custom_spinner_background.xml -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Background for each item -->
+    <item android:drawable="@drawable/item_spinner" />
+
+    <!-- Divider line -->
+    <item>
+        <shape android:shape="line">
+            <size android:height="1dp" />
+            <solid android:color="#000000" /> <!-- Set the divider color -->
+        </shape>
+    </item>
+</layer-list>

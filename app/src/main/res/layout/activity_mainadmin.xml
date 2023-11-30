@@ -10,7 +10,7 @@
         android:id="@+id/pagerMain_adm"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#CEEDD9" />
+        android:background="@color/white" />
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"

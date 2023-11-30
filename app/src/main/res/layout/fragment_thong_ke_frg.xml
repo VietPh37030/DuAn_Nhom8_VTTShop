@@ -77,10 +77,10 @@
             android:layout_height="50dp"
             android:layout_gravity="center"
             android:layout_margin="21dp"
-            android:background="@drawable/round_shape"
+            android:background="@drawable/solid"
             android:text="Doanh thu"
             android:textAllCaps="false"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:textSize="18sp" />
 
         <TextView
@@ -100,7 +100,7 @@
             android:background="@drawable/grey_bg"
             android:gravity="center"
             android:text="0"
-            android:textColor="@color/black"
+            android:textColor="#FF0000"
             android:textSize="28sp"
             android:textStyle="bold" />
     </LinearLayout>
@@ -109,6 +109,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="Top:"
+            android:textColor="#FF0000"
+            android:textSize="15dp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/txtTop1"
@@ -116,6 +124,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:text="Sản Phẩm Top 1 Doanh Thu:"
+            android:textAllCaps="true"
             android:textColor="#000"
             android:textSize="15dp"
             android:textStyle="bold" />
