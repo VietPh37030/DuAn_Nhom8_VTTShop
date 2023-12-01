@@ -32,10 +32,9 @@ public class ThongKeFrg extends Fragment {
 
     private EditText edtNgayBatDau;
     private EditText edtNgayKetThuc;
-    private TextView txtTongDoanhThu, txtTop1;
+    private TextView txtTongDoanhThu, txtTop1, txtSoLuongDonHangBiHuy;
     private Button btnTinhDoanhThu;
     private int totalRevenue = 0;
-
 
     public ThongKeFrg() {
         // Required empty public constructor
@@ -50,6 +49,7 @@ public class ThongKeFrg extends Fragment {
         edtNgayKetThuc = view.findViewById(R.id.edtNgayKetThuc);
         txtTongDoanhThu = view.findViewById(R.id.txtTongDoanhThu);
         txtTop1 = view.findViewById(R.id.txtTop1);
+        txtSoLuongDonHangBiHuy = view.findViewById(R.id.txtSoluonghangkhachhuy);
         btnTinhDoanhThu = view.findViewById(R.id.btnTinhDoanhThu);
 
         btnTinhDoanhThu.setOnClickListener(new View.OnClickListener() {
@@ -82,7 +82,6 @@ public class ThongKeFrg extends Fragment {
     }
 
     // Phương thức hiển thị DatePickerDialog
-    // Phương thức hiển thị DatePickerDialog
     private void showDatePickerDialog(final EditText editText) {
         Calendar calendar = Calendar.getInstance();
         int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
@@ -106,10 +105,7 @@ public class ThongKeFrg extends Fragment {
         datePickerDialog.show();
     }
 
-
     // Phương thức tính doanh thu dựa trên khoảng thời gian đã chọn
-    // ...
-
     private void calculateRevenueForDateRange(String ngayBatDau, String ngayKetThuc) {
         DatabaseReference giaoHangThanhCongRef = FirebaseDatabase.getInstance().getReference().child("GiaoHangThanhCong");
 
@@ -151,7 +147,9 @@ public class ThongKeFrg extends Fragment {
                 // Hiển thị tổng doanh thu trong TextView
                 txtTongDoanhThu.setText(String.valueOf(totalRevenue));
                 txtTop1.setText(topProduct + " - " + maxQuantity + " sản phẩm");
-                Log.d("MyTag", "Tổng doanh thu sau khi tính toán: " + totalRevenue);
+
+                // Gọi phương thức tính số đơn hàng bị hủy
+                calculateCancelledOrders(ngayBatDau, ngayKetThuc);
             }
 
             @Override
@@ -161,6 +159,45 @@ public class ThongKeFrg extends Fragment {
             }
         });
     }
+
+    // Phương thức tính số lượng đơn hàng bị hủy
+    private void calculateCancelledOrders(String ngayBatDau, String ngayKetThuc) {
+        DatabaseReference donHangKhachHuyRef = FirebaseDatabase.getInstance().getReference("DonHangKhachHuy");
+
+        donHangKhachHuyRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                int cancelledOrders = 0;
+
+                for (DataSnapshot donHangSnapshot : dataSnapshot.getChildren()) {
+                    String ngayHuy = donHangSnapshot.child("ngayDat").getValue(String.class);
+
+                    // Log dữ liệu để theo dõi
+                    Log.d("MyTag", "ngayHuy: " + ngayHuy);
+                    Log.d("MyTag", "ngayBatDau: " + ngayBatDau);
+                    Log.d("MyTag", "ngayKetThuc: " + ngayKetThuc);
+
+                    if (isDateInRange(ngayHuy, ngayBatDau, ngayKetThuc)) {
+                        cancelledOrders++;
+                        Log.d("MyTag", "Đơn hàng đã bị hủy nằm trong khoảng thời gian đã chọn. Số đơn bị hủy tạm thời: " + cancelledOrders);
+                    } else {
+                        Log.d("MyTag", "Đơn hàng đã bị hủy không nằm trong khoảng thời gian đã chọn.");
+                    }
+                }
+
+                // Hiển thị số lượng đơn hàng bị hủy trong TextView
+                txtSoLuongDonHangBiHuy.setText(String.valueOf(cancelledOrders));
+                Log.d("MyTag", "Tổng số đơn hàng bị hủy sau khi tính toán: " + cancelledOrders);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Xử lý khi có lỗi xảy ra
+                Log.e("MyTag", "Error: " + error.getMessage());
+            }
+        });
+    }
+
 
 
     // Phương thức kiểm tra xem một ngày có nằm trong khoảng thời gian đã chọn không
