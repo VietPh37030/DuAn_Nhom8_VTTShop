@@ -88,7 +88,7 @@
                   android:layout_height="wrap_content"
                   android:text="Vui Lòng Xác Nhận Qua Email Mà Bạn Đăng Kí!"
                   android:textStyle="italic"
-                  android:textColor="#F3DCDC"
+                  android:textColor="@color/black"
                   />
               <Button
                   android:id="@+id/btn_sendotp"
