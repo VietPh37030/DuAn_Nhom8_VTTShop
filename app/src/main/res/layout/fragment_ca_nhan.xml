@@ -57,7 +57,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:text="a@gmail.com"
-            android:textColor="#FFF"
+            android:textColor="@color/black"
             android:textStyle="bold" />
 
         <androidx.cardview.widget.CardView

@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:layout_height="wrap_content"
     tools:context=".Activities.ProductDeltaActivity"
     tools:ignore="ExtraText">
-
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -98,7 +100,10 @@
                 android:textColor="#03A9F4" />
 
         </LinearLayout>
-
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
         <LinearLayout
             android:layout_width="380dp"
             android:layout_height="190dp"
@@ -113,12 +118,19 @@
                 android:layout_gravity="center"
                 android:padding="30dp"
                 android:text="iPhone 13 mini: 128GB | 256GB | 512GB. Màu sắc: Hồng, Đen, Trắng, Xanh, Đỏ (Đối với bản 512GB chỉ áp dụng màu Đen).
-iPhone 13: 128GB | 256GB | 512GB. Màu sắc: Hồng, Đen, Trắng"
+            iPhone 13: 128GB | 256GB | 512GB. Màu sắc: Hồng, Đen, Trắng"
                 android:textColor="#000" />
 
         </LinearLayout>
+</ScrollView>
     </LinearLayout>
     <!--    //layout bao-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom"
+        android:orientation="vertical"
+        >
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -145,4 +157,6 @@ iPhone 13: 128GB | 256GB | 512GB. Màu sắc: Hồng, Đen, Trắng"
             android:textColor="@android:color/white" />
 
     </LinearLayout>
+    </LinearLayout>
 </LinearLayout>
+</ScrollView>
