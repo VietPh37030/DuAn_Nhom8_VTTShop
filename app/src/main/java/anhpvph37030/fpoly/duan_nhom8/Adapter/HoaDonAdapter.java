@@ -21,8 +21,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
@@ -72,12 +77,16 @@ public class HoaDonAdapter extends ArrayAdapter<HoaDon> {
         txtTrangThai.setText(String.valueOf(hoaDon.getTrangThai()));
         if (hoaDon.getTrangThai() == 0) {
             txtTrangThai.setText("Trạng thái: Chờ xác nhận");
+            btnHuyDonHang.setVisibility(View.VISIBLE);
         } else if (hoaDon.getTrangThai() == 1) {
             txtTrangThai.setText("Trạng thái: Đã xác nhận");
+            btnHuyDonHang.setVisibility(View.GONE);     // Ẩn nút xóa
         } else if (hoaDon.getTrangThai() == 2) {
             txtTrangThai.setText("Trạng thái: Đang giao");
+            btnHuyDonHang.setVisibility(View.GONE);
         } else if (hoaDon.getTrangThai() == 3) {
             txtTrangThai.setText("Trạng thái: Giao hàng thành công");
+            btnHuyDonHang.setVisibility(View.GONE);
         } else if (hoaDon.getTrangThai() == 4) {
             txtTrangThai.setText("Trạng thái: Đã hủy");
         }
@@ -112,20 +121,63 @@ public class HoaDonAdapter extends ArrayAdapter<HoaDon> {
     }
 
     private void chuyenDonHangSangDanhSachDaHuy(HoaDon hoaDon) {
-        DatabaseReference donHangDaHuyRef = FirebaseDatabase.getInstance().getReference().child("DonHangKhachHuy");
-        donHangDaHuyRef.child(hoaDon.getMaHoaDon()).setValue(hoaDon);
+        DatabaseReference donHangDaHuyRef = FirebaseDatabase.getInstance().getReference().child("DonHangKhachHuy")
+                .child(hoaDon.getMaHoaDon());
 
-        hoaDonRef.child(hoaDon.getMaHoaDon()).removeValue().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                hoaDonList.remove(hoaDon);
-                notifyDataSetChanged();
-                hienThiThongBao("Thông báo đơn hàng", "Cảm ơn quý khách đã sử dụng dịch vụ. Đơn hàng của quý khách đã được hủy.");
-            } else {
-                Log.e("HoaDonAdapter", "Lỗi xóa dữ liệu từ Firebase: " + task.getException().getMessage());
-                hienThiThongBao("Lỗi", "Có lỗi xảy ra khi xóa đơn hàng. Vui lòng thử lại.");
-            }
-        });
+        donHangDaHuyRef.setValue(hoaDon)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+                        if (currentUser != null) {
+                            String userId = currentUser.getUid();
+                            String maHoaDon = hoaDon.getMaHoaDon();
+
+                            // Xóa đơn hàng từ HoaDonThanhToan dựa trên maHoaDon
+                            DatabaseReference hoaDonRef = FirebaseDatabase.getInstance().getReference("HoaDonThanhToan");
+                            hoaDonRef.child(userId).orderByChild("maHoaDon").equalTo(maHoaDon)
+                                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                            for (DataSnapshot hoaDonSnapshot : dataSnapshot.getChildren()) {
+                                                hoaDonSnapshot.getRef().removeValue()
+                                                        .addOnCompleteListener(removeTask -> {
+                                                            if (removeTask.isSuccessful()) {
+                                                                hoaDonList.remove(hoaDon);
+                                                                notifyDataSetChanged();
+                                                                hienThiThongBao("Thông báo đơn hàng", "Cảm ơn quý khách đã sử dụng dịch vụ. Đơn hàng của quý khách đã được hủy.");
+                                                            } else {
+                                                                Log.e("HoaDonAdapter", "Lỗi xóa dữ liệu từ Firebase: " + removeTask.getException().getMessage());
+                                                                hienThiThongBao("Lỗi", "Có lỗi xảy ra khi xóa đơn hàng. Vui lòng thử lại.");
+                                                            }
+                                                        });
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onCancelled(DatabaseError error) {
+                                            Log.e("HoaDonAdapter", "Lỗi đọc dữ liệu từ Firebase: " + error.getMessage());
+                                            hienThiThongBao("Lỗi", "Có lỗi xảy ra khi đọc dữ liệu từ Firebase. Vui lòng thử lại.");
+                                        }
+                                    });
+                        } else {
+                            Log.e("HoaDonAdapter", "Người dùng không tồn tại");
+                            hienThiThongBao("Lỗi", "Người dùng không tồn tại. Vui lòng đăng nhập lại.");
+                        }
+                    } else {
+                        Log.e("HoaDonAdapter", "Lỗi chuyển dữ liệu sang DonHangKhachHuy: " + task.getException().getMessage());
+                        hienThiThongBao("Lỗi", "Có lỗi xảy ra khi chuyển đơn hàng sang danh sách đã hủy. Vui lòng thử lại.");
+                    }
+                });
     }
+
+
+
+
+
+
+
+
+
 
     private void hienThiThongBao(String title, String body) {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
