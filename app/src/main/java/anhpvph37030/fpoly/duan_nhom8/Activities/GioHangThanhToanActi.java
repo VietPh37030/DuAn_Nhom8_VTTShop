@@ -60,9 +60,7 @@ public class GioHangThanhToanActi extends AppCompatActivity {
             txtTotalAmount.setText(totalAmount + " VND");
 
             // Display cart items in ListView
-            ListView listView = findViewById(R.id.lstthanhtoagio);
-            GioHangThanhToanAdapter adapter = new GioHangThanhToanAdapter(this, cartItems);
-            listView.setAdapter(adapter);
+            updateUIWithProducts(cartItems);
 
             // Set the cart items as tag to the button for retrieval later
             btnThanhToanGio.setTag(cartItems);
@@ -93,6 +91,10 @@ public class GioHangThanhToanActi extends AppCompatActivity {
                     hoaDonChung.setSdt(diaChi.getSoDienThoai());
                     hoaDonChung.setDiaChi(diaChi.getDiaChi());
 
+                    // Thêm thông tin sản phẩm vào hóa đơn chung
+                    StringBuilder tenSanPham = new StringBuilder();
+                    StringBuilder imageUrl = new StringBuilder();
+
                     int tongSoLuong = 0;
                     int tongTien = 0;
 
@@ -103,15 +105,22 @@ public class GioHangThanhToanActi extends AppCompatActivity {
                         String numericPriceString = productPriceString.replaceAll("[^0-9]", "");
                         int productPrice = Integer.parseInt(numericPriceString);
                         tongTien += productPrice * cartItem.getQuantity();
+
+                        // Thêm thông tin sản phẩm vào StringBuilder
+                        tenSanPham.append(cartItem.getProduct().getName()).append(", ");
+                        imageUrl.append(cartItem.getProduct().getImage()).append(", ");
                     }
 
+                    // Cắt bỏ dấu "," cuối cùng nếu có
+                    if (tenSanPham.length() > 0) {
+                        tenSanPham.deleteCharAt(tenSanPham.length() - 2);
+                        imageUrl.deleteCharAt(imageUrl.length() - 2);
+                    }
+
+                    hoaDonChung.setTenSanPham(tenSanPham.toString());
+                    hoaDonChung.setImageUrl(imageUrl.toString());
                     hoaDonChung.setSoLuong(tongSoLuong);
                     hoaDonChung.setTongTien(tongTien);
-
-                    // Log thông tin HoaDon trước khi đẩy lên Firebase
-//                    Log.d("HoaDonInfo", "MaHoaDon: " + hoaDonChung.getMaHoaDonChung());
-//                    Log.d("HoaDonInfo", "NgayDat: " + hoaDonChung.getNgayDat());
-//                    Log.d("HoaDonInfo", "TrangThai: " + hoaDonChung.getTrangThai());
 
                     // Đẩy thông tin lên Firebase
                     DatabaseReference hoaDonThanhToanRef = FirebaseDatabase.getInstance().getReference().child("HoaDonThanhToan").child(currentUser.getUid());
@@ -124,8 +133,6 @@ public class GioHangThanhToanActi extends AppCompatActivity {
             });
         }
     }
-
-
 
     private interface OnNguoiNhanFetchedListener {
         void onNguoiNhanFetched(ThongTinDiaChi diaChi);
@@ -155,8 +162,6 @@ public class GioHangThanhToanActi extends AppCompatActivity {
             }
         });
     }
-
-
 
     private void fetchAndDisplayAddress() {
         diaChiRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -188,6 +193,13 @@ public class GioHangThanhToanActi extends AppCompatActivity {
         txtDiaChi.setText(diaChi.getDiaChi());
     }
 
+    private void updateUIWithProducts(List<Cart> cartItems) {
+        // Cập nhật giao diện người dùng với danh sách sản phẩm
+        ListView listView = findViewById(R.id.lstthanhtoagio);
+        GioHangThanhToanAdapter adapter = new GioHangThanhToanAdapter(this, cartItems);
+        listView.setAdapter(adapter);
+    }
+
     private String generateMaHoaDon() {
         // Sử dụng một số thông tin chung để tạo mã hóa đơn cho toàn bộ đơn hàng
         long timestamp = System.currentTimeMillis();
@@ -202,8 +214,8 @@ public class GioHangThanhToanActi extends AppCompatActivity {
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
         return sdf.format(new Date());
     }
+
     private interface OnNguoiNhanFetchedListener1 {
         void onNguoiNhanFetched(ThongTinDiaChi diaChi);
     }
-
 }
