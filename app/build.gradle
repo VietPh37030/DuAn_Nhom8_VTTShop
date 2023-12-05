@@ -7,6 +7,11 @@ android {
     namespace 'anhpvph37030.fpoly.duan_nhom8'
     compileSdk 34
 
+
+    buildFeatures{
+        viewBinding true
+    }
+
     defaultConfig {
         applicationId "anhpvph37030.fpoly.duan_nhom8"
         minSdk 29
@@ -53,4 +58,5 @@ dependencies {
     implementation 'androidx.viewpager2:viewpager2:1.0.0'
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.28'
     implementation("com.google.firebase:firebase-messaging")
+    implementation 'com.android.volley:volley:1.2.1'
 }

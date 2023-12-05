@@ -3,4 +3,8 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="text_second">#828282</color>
+    <color name="bg_color_layout">#9C27B0</color>
+    <color name="edit_text_color">#343442</color>
+    <color name="ttn_bg_color">#393C40</color>
+    <color name="gpt_bg_color">#0EA47E</color>
 </resources>

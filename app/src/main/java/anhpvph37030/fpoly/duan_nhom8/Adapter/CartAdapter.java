@@ -229,9 +229,9 @@ public class CartAdapter extends ArrayAdapter<Cart> {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
                                                 if (task.isSuccessful()) {
-                                                    Toast.makeText(context, "Số lượng đã được cập nhật trên Firebase", Toast.LENGTH_SHORT).show();
+                                                    Toast.makeText(context, "Số lượng đã được cập nhật  ", Toast.LENGTH_SHORT).show();
                                                 } else {
-                                                    Toast.makeText(context, "Không thể cập nhật số lượng trên Firebase", Toast.LENGTH_SHORT).show();
+                                                    Toast.makeText(context, "Không thể cập nhật số lượng  ", Toast.LENGTH_SHORT).show();
                                                 }
                                             }
                                         });

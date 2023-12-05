@@ -32,6 +32,7 @@ import anhpvph37030.fpoly.duan_nhom8.Activities.ChangeInfoActivity;
 import anhpvph37030.fpoly.duan_nhom8.Activities.ChangePassActivity;
 import anhpvph37030.fpoly.duan_nhom8.Activities.DiaChiActi;
 import anhpvph37030.fpoly.duan_nhom8.Activities.HoaDonActivity;
+import anhpvph37030.fpoly.duan_nhom8.MainActivity;
 import anhpvph37030.fpoly.duan_nhom8.R;
 import anhpvph37030.fpoly.duan_nhom8.taikhoan.Login;
 
@@ -43,6 +44,7 @@ public class CaNhanFrg extends Fragment {
     TextView cthaydoimk;
     TextView cthaydoithongtin;
     TextView cthayHoadon;
+    TextView txtChamSocKhachhang;
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
     private DatabaseReference userRef;
@@ -65,6 +67,7 @@ public class CaNhanFrg extends Fragment {
         btndangxuat = v.findViewById(R.id.btndangxuat);
         btneditdiachi = v.findViewById(R.id.btneditdiachi);
         cthayHoadon = v.findViewById(R.id.btnHoaDonflash);
+        txtChamSocKhachhang = v.findViewById(R.id.txtChamSocKhachhang);
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
         userRef = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUser.getUid());
@@ -128,6 +131,13 @@ public class CaNhanFrg extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), DiaChiActi.class);
+                startActivity(intent);
+            }
+        });
+        txtChamSocKhachhang.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), MainActivity.class);
                 startActivity(intent);
             }
         });

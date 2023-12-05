@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#CEEDD9"
+    tools:context=".MainActivity2">
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/pagerMain"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#ADFFFFFF" />
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginBottom="8dp"
+        android:elevation="5dp"
+        android:translationZ="10dp"
+        app:cardCornerRadius="20dp">
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/menu_nav"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:background="#FBEFEF"
+            app:itemIconTint="@color/color_item_bottom_nav"
+            app:itemTextColor="@color/color_item_bottom_nav"
+            app:menu="@menu/bottom_navigation" />
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>

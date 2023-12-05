@@ -15,7 +15,7 @@
         android:theme="@style/Theme.DuAn_Nhom8"
         tools:targetApi="31">
         <activity
-            android:name=".draggabluble"
+            android:name=".MainActivity2"
             android:exported="false" />
 
         <service

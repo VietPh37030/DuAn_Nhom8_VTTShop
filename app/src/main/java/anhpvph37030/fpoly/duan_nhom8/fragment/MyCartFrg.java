@@ -23,8 +23,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import anhpvph37030.fpoly.duan_nhom8.Activities.GioHangThanhToanActi;
 import anhpvph37030.fpoly.duan_nhom8.Adapter.CartAdapter;
@@ -99,6 +101,11 @@ public class MyCartFrg extends Fragment {
         return view;
     }
 
+    private String formatCurrency(int amount) {
+        NumberFormat format = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+        return format.format(amount);
+    }
+
     private int calculateAndDisplayTotalPrice() {
         int totalPrice = 0;
 
@@ -114,10 +121,12 @@ public class MyCartFrg extends Fragment {
             }
         }
 
-        txtTotalAmount.setText("Tổng tiền: " + totalPrice + " VND");
+        String formattedTotalPrice = formatCurrency(totalPrice);
+        txtTotalAmount.setText("Tổng tiền: " + formattedTotalPrice);
 
         return totalPrice;
     }
+
 
     public void updateTotalPrice() {
         calculateAndDisplayTotalPrice();
