@@ -14,5 +14,10 @@
         android:icon="@drawable/ic_cart"
         android:title="Search"
         app:showAsAction="always" />
+    <item
+        android:id="@+id/loc"
+        android:icon="@drawable/loc"
+        android:title="Search"
+        app:showAsAction="always" />
 
 </menu>

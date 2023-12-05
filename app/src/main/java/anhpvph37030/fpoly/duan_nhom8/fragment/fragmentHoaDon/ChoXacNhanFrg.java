@@ -1,5 +1,6 @@
 package anhpvph37030.fpoly.duan_nhom8.fragment.fragmentHoaDon;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -8,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -19,6 +21,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import anhpvph37030.fpoly.duan_nhom8.Activities.ChiTietHoaDonAdmin;
 import anhpvph37030.fpoly.duan_nhom8.Adapter.Ql_HoaDonAdapter;
 import anhpvph37030.fpoly.duan_nhom8.R;
 import anhpvph37030.fpoly.duan_nhom8.model.HoaDon;
@@ -33,7 +36,16 @@ public class ChoXacNhanFrg extends Fragment {
         ListView listView = view.findViewById(R.id.lvQuanLyHoaDon);
         hoaDonAdapter = new Ql_HoaDonAdapter(getContext(), R.layout.item_ql_hoadon, new ArrayList<>());
         listView.setAdapter(hoaDonAdapter);
-
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                HoaDon selectedHoaDon = hoaDonAdapter.getItem(position);
+                if (selectedHoaDon != null) {
+                    // Chuyển sang màn hình chi tiết và chuyển dữ liệu hóa đơn
+                    navigateToChiTietHoaDon(selectedHoaDon);
+                }
+            }
+        });
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("HoaDonThanhToan");
 
         // Thêm ValueEventListener để lắng nghe sự thay đổi dữ liệu
@@ -99,4 +111,25 @@ public class ChoXacNhanFrg extends Fragment {
 
         return view;
     }
+
+    private void navigateToChiTietHoaDon(HoaDon selectedHoaDon) {
+        // Tạo một Intent để chuyển sang màn hình chi tiết
+        Intent intent = new Intent(getContext(), ChiTietHoaDonAdmin.class);
+
+        // Đính kèm dữ liệu hóa đơn vào Intent
+        intent.putExtra("maHoaDon", selectedHoaDon.getMaHoaDon());
+        intent.putExtra("imageUrl", selectedHoaDon.getImageUrl());
+        intent.putExtra("tenSanPham", selectedHoaDon.getTenSanPham());
+        intent.putExtra("soLuong", selectedHoaDon.getSoLuong());
+        intent.putExtra("tongTien", selectedHoaDon.getTongTien());
+        intent.putExtra("nguoiNhan", selectedHoaDon.getNguoiNhan());
+        intent.putExtra("sdt", selectedHoaDon.getSdt());
+        intent.putExtra("diaChi", selectedHoaDon.getDiaChi());
+        intent.putExtra("ngayDat", selectedHoaDon.getNgayDat());
+        intent.putExtra("trangThai", selectedHoaDon.getTrangThai());
+
+        // Chuyển sang màn hình chi tiết
+        startActivity(intent);
+    }
+
 }

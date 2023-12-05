@@ -13,6 +13,15 @@ public class HoaDon {
     private String diaChi;
     private String ngayDat;
     private int trangThai;
+    private int giaSanPham;
+
+    public int getGiaSanPham() {
+        return giaSanPham;
+    }
+
+    public void setGiaSanPham(int giaSanPham) {
+        this.giaSanPham = giaSanPham;
+    }
 
     private  ThongTinDiaChi thongTinDiaChi;
 
@@ -39,6 +48,8 @@ public class HoaDon {
         this.ngayDat = ngayDat;
         this.trangThai = trangThai;
     }
+
+
 
 
     public String getMaHoaDon() {

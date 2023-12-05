@@ -108,7 +108,9 @@
             android:background="@drawable/item_cart_bgr"
             android:backgroundTint="#F10000"
             android:text="Hủy"
-            android:textColor="#FFFFFF"/>
+            android:textColor="#FFFFFF"
+            android:focusable="false"
+            android:clickable="false"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -121,7 +123,9 @@
                 android:background="@drawable/item_cart_bgr"
                 android:backgroundTint="#00CC08"
                 android:text="Xác Nhận"
-                android:textColor="#FFFFFF"/>
+                android:textColor="#FFFFFF"
+                android:focusable="false"
+                android:clickable="false"/>
         </LinearLayout>
 
     </LinearLayout>
