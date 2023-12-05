@@ -8,33 +8,36 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.Toast;
-import androidx.appcompat.widget.SearchView;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.viewpager.widget.ViewPager;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SearchView;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-
 import anhpvph37030.fpoly.duan_nhom8.Activities.ProductDeltaActivity;
 import anhpvph37030.fpoly.duan_nhom8.Adapter.BannerPagerAdapter;
+import anhpvph37030.fpoly.duan_nhom8.Adapter.DanhMucUserAdapter;
 import anhpvph37030.fpoly.duan_nhom8.Adapter.ProductAdapter;
 import anhpvph37030.fpoly.duan_nhom8.R;
+import anhpvph37030.fpoly.duan_nhom8.model.DanhMuc;
 import anhpvph37030.fpoly.duan_nhom8.model.Product;
 
 public class MainFrg extends Fragment {
-
-    private DatabaseReference productsRef;
+private RecyclerView rcvTheLoai;
+    private DatabaseReference productsRef,danhMucRef;
+    private ImageView imgAll;
     private ViewPager viewPager;
     private int[] bannerImages = {R.drawable.banner14, R.drawable.banner15, R.drawable.banner12};
     private List<Product> productList;
@@ -42,30 +45,66 @@ public class MainFrg extends Fragment {
     private GridView gridView;
     private List<Product> originalProductList;
     private List<Product> filteredProductList;
+    private DanhMucUserAdapter danhMucUserAdapter;
+    private List<DanhMuc> danhMucList; // Khởi tạo và điền dữ liệu vào danh sách này
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // Khởi tạo DatabaseReference để truy cập nút "products" trong Firebase Realtime Database
         productsRef = FirebaseDatabase.getInstance().getReference().child("products");
+        danhMucRef = FirebaseDatabase.getInstance().getReference().child("danhmuc");
+        danhMucList = new ArrayList<>();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_main_frg, container, false);
 
-        // Liên kết Adapter với GridView
         gridView = v.findViewById(R.id.gvDT);
-
-        // Liên kết ViewPager
         viewPager = v.findViewById(R.id.viewPager);
-        androidx.appcompat.widget.SearchView searchView = v.findViewById(R.id.searchView);
+        rcvTheLoai = v.findViewById(R.id.rcvTheLoai);
+        SearchView searchView = v.findViewById(R.id.searchView);
+        imgAll = v.findViewById(R.id.chonAll);
+        rcvTheLoai.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
 
-        // Lắng nghe sự kiện khi có thay đổi trong dữ liệu
-        productsRef.addValueEventListener(new ValueEventListener() {
+        danhMucUserAdapter = new DanhMucUserAdapter(getContext(), danhMucList);
+        danhMucUserAdapter.setOnDanhMucClickListener(new DanhMucUserAdapter.OnDanhMucClickListener() {
+            @Override
+            public void onDanhMucClick(DanhMuc danhMuc) {
+                // Xử lý sự kiện khi một danh mục được chọn, ví dụ: hiển thị sản phẩm của hãng
+                // Gọi phương thức để lấy sản phẩm của hãng từ cơ sở dữ liệu và cập nhật GridView
+                loadProductsByDanhMuc(danhMuc);
+            }
+        });
+        rcvTheLoai.setAdapter(danhMucUserAdapter);
+        danhMucRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                danhMucList.clear();
+
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    DanhMuc danhMuc = snapshot.getValue(DanhMuc.class);
+                    danhMucList.add(danhMuc);
+                }
+
+                danhMucUserAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Handle errors if needed
+            }
+        });
+        imgAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Hiển thị tất cả sản phẩm
+                showAllProducts();
+            }
+        });
+        productsRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
                 originalProductList = new ArrayList<>();
                 filteredProductList = new ArrayList<>();
 
@@ -75,74 +114,58 @@ public class MainFrg extends Fragment {
                     filteredProductList.add(product);
                 }
 
-                // Kiểm tra xem productList có null hay không trước khi sao chép
                 if (productList != null) {
-                    productList.clear(); // Xóa dữ liệu cũ nếu có
+                    productList.clear();
                     productList.addAll(originalProductList);
                 } else {
                     productList = new ArrayList<>(originalProductList);
                 }
-            
 
-                // Tạo Adapter cho ViewPager
                 BannerPagerAdapter bannerPagerAdapter = new BannerPagerAdapter(getContext(), bannerImages);
                 viewPager.setAdapter(bannerPagerAdapter);
 
-                // Tạo Adapter và setAdapter cho GridView
                 productAdapter = new ProductAdapter(getContext(), productList);
                 gridView.setAdapter(productAdapter);
 
-                // Tự động chuyển đổi giữa các ảnh sau một khoảng thời gian
                 Timer timer = new Timer();
-                timer.scheduleAtFixedRate(new MyTimerTask(), 2000, 4000); // Chuyển đổi ảnh mỗi 4 giây
+                timer.scheduleAtFixedRate(new MyTimerTask(), 2000, 4000);
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                // Xử lý khi có lỗi truy cập cơ sở dữ liệu
+            public void onCancelled(DatabaseError databaseError) {
                 Toast.makeText(getContext(), "Lỗi khi truy cập cơ sở dữ liệu", Toast.LENGTH_SHORT).show();
             }
         });
 
-        // Xử lý sự kiện khi người dùng thay đổi nội dung tìm kiếm
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                // Không cần xử lý submit ở đây
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                // Lọc danh sách sản phẩm dựa trên nội dung tìm kiếm
                 filterProducts(newText);
                 return true;
             }
         });
 
-        // Xử lý sự kiện khi người dùng chọn một sản phẩm
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (productList != null && position < productList.size()) {
                     Product selectedProduct = productList.get(position);
 
-                    // Kiểm tra xem selectedProduct có null hay không
                     if (selectedProduct != null) {
-                        // Tạo Intent để chuyển từ MainFrg sang ProductDeltaActivity
                         Intent intent = new Intent(getActivity(), ProductDeltaActivity.class);
-                        // Log để kiểm tra xem dữ liệu số lượng có đúng không
-                        Log.d("MainFrg", "Selected Product Quantity: " + selectedProduct.getQuantity1());
-                        // Đặt thông tin sản phẩm vào Intent
+                        Log.d("MainFrg", "Số lượng Sản phẩm đã chọn: " + selectedProduct.getQuantity1());
                         intent.putExtra("PRODUCT_ID", selectedProduct.getId());
                         intent.putExtra("PRODUCT_NAME", selectedProduct.getName());
                         intent.putExtra("PRODUCT_PRICE", selectedProduct.getPrice());
                         intent.putExtra("PRODUCT_IMAGE_URL", selectedProduct.getImage());
                         intent.putExtra("PRODUCT_description", selectedProduct.getDescription());
                         intent.putExtra("PRODUCT_QUANTITY", String.valueOf(selectedProduct.getQuantity1()));
-                        // Chuyển sang ProductDetailActivity
-                        // Log để kiểm tra xem Intent đã chứa đúng dữ liệu không
-                        Log.d("MainFrg", "Sending Intent with Quantity: " + selectedProduct.getQuantity1());
+                        Log.d("MainFrg", "Gửi Intent với Số lượng: " + selectedProduct.getQuantity1());
                         startActivity(intent);
                     }
                 }
@@ -151,10 +174,45 @@ public class MainFrg extends Fragment {
 
         return v;
     }
+    private void showAllProducts() {
+        // Cập nhật GridView với toàn bộ danh sách sản phẩm
+        updateGridView(originalProductList);
+    }
+//    private void updateDanhMucAdapter(List<DanhMuc> updatedList) {
+//        danhMucUserAdapter.clear();
+//        danhMucUserAdapter.addAll(updatedList);
+//        danhMucUserAdapter.notifyDataSetChanged();
+//    }
 
     // Thêm phương thức để cập nhật GridView với danh sách sản phẩm đã lọc
     private void updateGridView(List<Product> filteredProducts) {
         productAdapter.updateData(filteredProducts);
+    }
+    private void loadProductsByDanhMuc(DanhMuc danhMuc) {
+        // Lấy mã danh mục của danhMuc
+        int maDanhMuc = danhMuc.getMaDanhMuc();
+
+        // Thực hiện truy vấn cơ sở dữ liệu Firebase để lấy sản phẩm của hãng
+        DatabaseReference productsRef = FirebaseDatabase.getInstance().getReference().child("products");
+        productsRef.orderByChild("maDanhMuc").equalTo(maDanhMuc).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                List<Product> products = new ArrayList<>();
+
+                for (DataSnapshot productSnapshot : dataSnapshot.getChildren()) {
+                    Product product = productSnapshot.getValue(Product.class);
+                    products.add(product);
+                }
+
+                // Cập nhật GridView với danh sách sản phẩm của hãng
+                updateGridView(products);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Xử lý lỗi nếu cần
+            }
+        });
     }
 
     // Thêm phương thức tìm kiếm theo hãng
@@ -188,7 +246,6 @@ public class MainFrg extends Fragment {
         // Cập nhật GridView với danh sách sản phẩm đã lọc
         updateGridView(filteredList);
     }
-
 
     // TimerTask để tự động chuyển đổi ảnh trong ViewPager
     public class MyTimerTask extends TimerTask {

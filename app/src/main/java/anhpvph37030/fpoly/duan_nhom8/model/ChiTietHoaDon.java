@@ -1,6 +1,8 @@
 package anhpvph37030.fpoly.duan_nhom8.model;
 
-public class ChiTietHoaDon {
+import java.io.Serializable;
+
+public class ChiTietHoaDon implements Serializable {
     private String orderId;
     private String orderQuantity;
     private String orderSum;
