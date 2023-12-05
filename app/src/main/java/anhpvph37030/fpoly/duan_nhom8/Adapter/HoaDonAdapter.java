@@ -1,6 +1,5 @@
 package anhpvph37030.fpoly.duan_nhom8.Adapter;
 
-import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
@@ -31,7 +30,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
-import anhpvph37030.fpoly.duan_nhom8.Activities.ChiTietHoaDon;
+import anhpvph37030.fpoly.duan_nhom8.Activities.ChiTietHoaDonActivity;
 import anhpvph37030.fpoly.duan_nhom8.model.HoaDon;
 import anhpvph37030.fpoly.duan_nhom8.R;
 
@@ -94,7 +93,7 @@ public class HoaDonAdapter extends ArrayAdapter<HoaDon> {
         buttonsemchitiet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, ChiTietHoaDon.class);
+                Intent intent = new Intent(context, ChiTietHoaDonActivity.class);
                 intent.putExtra("ORDER_ID", hoaDon.getMaHoaDon());
                 intent.putExtra("ORDER_QUANTITY", String.valueOf(hoaDon.getSoLuong()));
                 intent.putExtra("ORDER_SUM", String.valueOf(hoaDon.getTongTien()));

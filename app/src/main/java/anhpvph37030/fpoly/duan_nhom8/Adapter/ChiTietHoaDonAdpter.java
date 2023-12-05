@@ -17,13 +17,14 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 import anhpvph37030.fpoly.duan_nhom8.R;
+import anhpvph37030.fpoly.duan_nhom8.model.ChiTietHoaDon;
 
-public class ChiTietHoaDonAdpter extends ArrayAdapter<String> {
-    private List<String> hoaDonChiTietList;
+public class ChiTietHoaDonAdpter extends ArrayAdapter<ChiTietHoaDon> {
+    private List<ChiTietHoaDon> hoaDonChiTietList;
     private Context context;
 
-    public ChiTietHoaDonAdpter(@NonNull Context context, int resource, List<String> hoaDonChiTietList) {
-        super(context, resource);
+    public ChiTietHoaDonAdpter(@NonNull Context context, int resource, List<ChiTietHoaDon> hoaDonChiTietList) {
+        super(context, resource, hoaDonChiTietList);
         this.context = context;
         this.hoaDonChiTietList = hoaDonChiTietList;
     }
@@ -43,31 +44,23 @@ public class ChiTietHoaDonAdpter extends ArrayAdapter<String> {
             holder.txtTenSanPham = convertView.findViewById(R.id.txttensphd);
             holder.imageView = convertView.findViewById(R.id.imageView3);
 
-            Log.d("ChiTietHoaDonAdapter", "MaHoaDon: " + hoaDonChiTietList.get(0));
-            Log.d("ChiTietHoaDonAdapter", "SoLuong: " + hoaDonChiTietList.get(1));
-            Log.d("ChiTietHoaDonAdapter", "TongTien: " + hoaDonChiTietList.get(2));
-            Log.d("ChiTietHoaDonAdapter", "TenSanPham: " + hoaDonChiTietList.get(3));
-            Log.d("ChiTietHoaDonAdapter", "ImageUrl: " + hoaDonChiTietList.get(4));
-
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        if (!hoaDonChiTietList.isEmpty() && position < hoaDonChiTietList.size()) {
-            holder.txtMaHoaDon.setText(hoaDonChiTietList.get(0));
-            holder.txtSoLuong.setText(hoaDonChiTietList.get(1));
-            holder.txtTongTien.setText(hoaDonChiTietList.get(2));
-            holder.txtTenSanPham.setText(hoaDonChiTietList.get(3));
+
+        ChiTietHoaDon chiTietHoaDonItem = getItem(position);
+        if (chiTietHoaDonItem != null) {
+            holder.txtMaHoaDon.setText(chiTietHoaDonItem.getOrderId());
+            holder.txtSoLuong.setText(chiTietHoaDonItem.getOrderQuantity());
+            holder.txtTongTien.setText(chiTietHoaDonItem.getOrderSum());
+            holder.txtTenSanPham.setText(chiTietHoaDonItem.getOrderName());
+
+            // Load hình ảnh sử dụng Picasso
+            Picasso.get().load(chiTietHoaDonItem.getOrderImage()).into(holder.imageView);
         }
-        // Load hình ảnh sử dụng Picasso
-        Picasso.get().load(hoaDonChiTietList.get(4)).into(holder.imageView);
 
         return convertView;
-    }
-
-    @Override
-    public int getCount() {
-        return hoaDonChiTietList.size();
     }
 
     static class ViewHolder {

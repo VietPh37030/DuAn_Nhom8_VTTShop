@@ -76,44 +76,46 @@ public class GioHangThanhToanActi extends AppCompatActivity {
     }
 
     private void onCLickThanhToanGio() {
-        // Lấy thông tin từ UI và tạo đối tượng HoaDon
-//        String maHoaDon = generateMaHoaDon();
-        String ngayDat = getCurrentDate();
-        int trangThai = 0;
-
-        // Lấy thông tin sản phẩm từ tag của nút thanh toán
         List<Cart> cartItems = (List<Cart>) btnThanhToanGio.getTag();
         if (cartItems != null && !cartItems.isEmpty()) {
-            // Lấy thông tin người nhận từ Firebase và đưa vào đối tượng HoaDon
             fetchAndSetNguoiNhan(new OnNguoiNhanFetchedListener1() {
                 @Override
                 public void onNguoiNhanFetched(ThongTinDiaChi diaChi) {
+                    // Tạo mã hóa đơn chung cho toàn bộ đơn hàng
+                    String maHoaDonChung = generateMaHoaDon();
+                    int trangThai = 0;
+
+                    HoaDon hoaDonChung = new HoaDon();
+                    hoaDonChung.setMaHoaDon(maHoaDonChung);
+                    hoaDonChung.setNgayDat(getCurrentDate());
+                    hoaDonChung.setTrangThai(trangThai);
+                    hoaDonChung.setNguoiNhan(diaChi.getHoTen());
+                    hoaDonChung.setSdt(diaChi.getSoDienThoai());
+                    hoaDonChung.setDiaChi(diaChi.getDiaChi());
+
+                    int tongSoLuong = 0;
+                    int tongTien = 0;
+
                     for (Cart cartItem : cartItems) {
-                        HoaDon hoaDon = new HoaDon();
-//                        hoaDon.setMaHoaDon(maHoaDon);
-                        hoaDon.setNgayDat(ngayDat);
-                        hoaDon.setTrangThai(trangThai);
-                        hoaDon.setImageUrl(cartItem.getProduct().getImage());
-                        hoaDon.setTenSanPham(cartItem.getProduct().getName());
-                        hoaDon.setSoLuong(cartItem.getQuantity());
+                        tongSoLuong += cartItem.getQuantity();
+
                         String productPriceString = cartItem.getProduct().getPrice();
                         String numericPriceString = productPriceString.replaceAll("[^0-9]", "");
                         int productPrice = Integer.parseInt(numericPriceString);
-                        hoaDon.setTongTien(productPrice * cartItem.getQuantity());
-
-                        // Đưa thông tin người nhận vào đối tượng HoaDon
-                        hoaDon.setNguoiNhan(diaChi.getHoTen());
-                        hoaDon.setSdt(diaChi.getSoDienThoai());
-                        hoaDon.setDiaChi(diaChi.getDiaChi());
-                        // Log thông tin HoaDon trước khi đẩy lên Firebase
-                        Log.d("HoaDonInfo", "MaHoaDon: " + hoaDon.getMaHoaDon());
-                        Log.d("HoaDonInfo", "NgayDat: " + hoaDon.getNgayDat());
-                        Log.d("HoaDonInfo", "TrangThai: " + hoaDon.getTrangThai());
-                        // Log thêm các thông tin khác của HoaDon
-                        // Đẩy thông tin lên Firebase
-                        DatabaseReference hoaDonThanhToanRef = FirebaseDatabase.getInstance().getReference().child("HoaDonThanhToan").child(currentUser.getUid());
-                        hoaDonThanhToanRef.push().setValue(hoaDon);
+                        tongTien += productPrice * cartItem.getQuantity();
                     }
+
+                    hoaDonChung.setSoLuong(tongSoLuong);
+                    hoaDonChung.setTongTien(tongTien);
+
+                    // Log thông tin HoaDon trước khi đẩy lên Firebase
+//                    Log.d("HoaDonInfo", "MaHoaDon: " + hoaDonChung.getMaHoaDonChung());
+//                    Log.d("HoaDonInfo", "NgayDat: " + hoaDonChung.getNgayDat());
+//                    Log.d("HoaDonInfo", "TrangThai: " + hoaDonChung.getTrangThai());
+
+                    // Đẩy thông tin lên Firebase
+                    DatabaseReference hoaDonThanhToanRef = FirebaseDatabase.getInstance().getReference().child("HoaDonThanhToan").child(currentUser.getUid());
+                    hoaDonThanhToanRef.push().setValue(hoaDonChung);
 
                     // Chuyển sang màn hình hóa đơn sau khi thanh toán tất cả sản phẩm
                     Intent intent = new Intent(GioHangThanhToanActi.this, HoaDonActivity.class);
@@ -122,6 +124,7 @@ public class GioHangThanhToanActi extends AppCompatActivity {
             });
         }
     }
+
 
 
     private interface OnNguoiNhanFetchedListener {
@@ -186,9 +189,9 @@ public class GioHangThanhToanActi extends AppCompatActivity {
     }
 
     private String generateMaHoaDon() {
-        // You can use a combination of current timestamp and a random number for simplicity
+        // Sử dụng một số thông tin chung để tạo mã hóa đơn cho toàn bộ đơn hàng
         long timestamp = System.currentTimeMillis();
-        int randomNumber = (int) (Math.random() * 1000); // Adjust the range as needed
+        int randomNumber = (int) (Math.random() * 1000); // Điều chỉnh phạm vi nếu cần
         return "HD" + timestamp + randomNumber;
     }
 

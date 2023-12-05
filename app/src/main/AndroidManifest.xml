@@ -30,7 +30,7 @@
             android:name=".Activities.GioHangThanhToanActi"
             android:exported="false" />
         <activity
-            android:name=".Activities.ChiTietHoaDon"
+            android:name=".Activities.ChiTietHoaDonActivity"
             android:exported="false" />
         <activity
             android:name=".Activities.ThanhToanActi"

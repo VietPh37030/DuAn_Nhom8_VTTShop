@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Activities.ChiTietHoaDon">
+    tools:context=".Activities.ChiTietHoaDonActivity">
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbardoitt"
         android:layout_width="match_parent"
