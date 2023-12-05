@@ -256,11 +256,12 @@
                     android:src="@drawable/chamsockh"/>
 
                 <TextView
+                    android:id="@+id/txtChamSocKhachhang"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="9"
                     android:padding="5dp"
-                    android:text="Chăm sóc khách hàng"
+                    android:text="Tư Vấn Khách Hàng"
                     android:textColor="#151515"
                     android:textSize="20sp" />
 

@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:fillViewport="true"
     android:background="@color/white"
+    android:fillViewport="true"
+    android:orientation="vertical"
     tools:context=".fragment.MainFrg">
 
     <!-- Header -->
@@ -74,6 +74,7 @@
             android:layout_height="100dp"
             android:layout_alignParentTop="true" />
     </RelativeLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

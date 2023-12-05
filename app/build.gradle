@@ -7,6 +7,11 @@ android {
     namespace 'anhpvph37030.fpoly.duan_nhom8'
     compileSdk 34
 
+
+    buildFeatures{
+        viewBinding true
+    }
+
     defaultConfig {
         applicationId "anhpvph37030.fpoly.duan_nhom8"
         minSdk 29

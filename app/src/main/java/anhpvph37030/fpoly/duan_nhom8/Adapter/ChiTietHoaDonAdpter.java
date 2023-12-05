@@ -1,6 +1,7 @@
 package anhpvph37030.fpoly.duan_nhom8.Adapter;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +15,10 @@ import androidx.annotation.Nullable;
 
 import com.squareup.picasso.Picasso;
 
+import java.text.NumberFormat;
+import java.util.Currency;
 import java.util.List;
+import java.util.Locale;
 
 import anhpvph37030.fpoly.duan_nhom8.R;
 import anhpvph37030.fpoly.duan_nhom8.model.ChiTietHoaDon;
@@ -53,7 +57,9 @@ public class ChiTietHoaDonAdpter extends ArrayAdapter<ChiTietHoaDon> {
         if (chiTietHoaDonItem != null) {
             holder.txtMaHoaDon.setText(chiTietHoaDonItem.getOrderId());
             holder.txtSoLuong.setText(chiTietHoaDonItem.getOrderQuantity());
-            holder.txtTongTien.setText(chiTietHoaDonItem.getOrderSum());
+            // Định dạng tổng tiền thành tiền Việt Nam và hiển thị
+            String formattedTotalAmount = formatCurrency(chiTietHoaDonItem.getOrderSum());
+            holder.txtTongTien.setText(formattedTotalAmount);
             holder.txtTenSanPham.setText(chiTietHoaDonItem.getOrderName());
 
             // Load hình ảnh sử dụng Picasso
@@ -61,6 +67,24 @@ public class ChiTietHoaDonAdpter extends ArrayAdapter<ChiTietHoaDon> {
         }
 
         return convertView;
+    }
+    private String formatCurrency(String amount) {
+        // Kiểm tra xem amount có chứa ký tự số hay không
+        if (!TextUtils.isEmpty(amount) && TextUtils.isDigitsOnly(amount)) {
+            int intAmount = Integer.parseInt(amount);
+
+            // Sử dụng NumberFormat để định dạng số thành chuỗi tiền Việt Nam
+            Locale localeVN = new Locale("vi", "VN");
+            NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(localeVN);
+
+            // Đặt đơn vị tiền tệ là VND
+            currencyFormatter.setCurrency(Currency.getInstance("VND"));
+
+            // Định dạng số thành chuỗi tiền tệ
+            return currencyFormatter.format(intAmount);
+        } else {
+            return amount; // Trả về nguyên bản nếu không thể chuyển đổi thành số
+        }
     }
 
     static class ViewHolder {

@@ -14,9 +14,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DuAn_Nhom8"
         tools:targetApi="31">
+<<<<<<< HEAD
 <!--        <activity-->
 <!--            android:name=".draggabluble"-->
 <!--            android:exported="false" />-->
+=======
+        <activity
+            android:name=".MainActivity2"
+            android:exported="false" />
+>>>>>>> origin/master
 
         <service
             android:name=".MyFirebaseMessagingService"

@@ -28,6 +28,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import anhpvph37030.fpoly.duan_nhom8.MainActivity;
+import anhpvph37030.fpoly.duan_nhom8.MainActivity2;
 import anhpvph37030.fpoly.duan_nhom8.MainactivityAdmin;
 import anhpvph37030.fpoly.duan_nhom8.R;
 
@@ -132,7 +133,7 @@ public class Login extends AppCompatActivity {
                                                 startActivity(intent);
                                             } else {
                                                 // Người dùng không phải admin, chuyển hướng tới màn hình thông thường
-                                                Intent intent = new Intent(Login.this, MainActivity.class);
+                                                Intent intent = new Intent(Login.this, MainActivity2.class);
                                                 saveCredentials(email, pass, chkluumk.isChecked());
                                                 startActivity(intent);
                                             }
