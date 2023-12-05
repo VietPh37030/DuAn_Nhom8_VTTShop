@@ -170,14 +170,6 @@ public class HoaDonAdapter extends ArrayAdapter<HoaDon> {
     }
 
 
-
-
-
-
-
-
-
-
     private void hienThiThongBao(String title, String body) {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         NotificationCompat.Builder builder;
