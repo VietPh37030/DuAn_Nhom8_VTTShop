@@ -71,7 +71,7 @@ public class ChangePassActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         // Đặt Navigation Icon là icon Exit
-        toolbar.setNavigationIcon(R.drawable.back);
+        toolbar.setNavigationIcon(R.drawable.ic_previous);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

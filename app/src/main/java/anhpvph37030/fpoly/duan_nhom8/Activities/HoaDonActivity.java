@@ -46,7 +46,7 @@ public class HoaDonActivity extends AppCompatActivity {
         } else {
             // Người dùng chưa đăng nhập, thực hiện các hành động phù hợp với ứng dụng của bạn
         }
-        toolbar.setNavigationIcon(R.drawable.back);
+        toolbar.setNavigationIcon(R.drawable.ic_previous);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

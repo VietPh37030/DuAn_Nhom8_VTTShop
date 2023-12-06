@@ -55,7 +55,7 @@ public class ChangeInfoActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         initUI();
 
-        toolbar.setNavigationIcon(R.drawable.back);
+        toolbar.setNavigationIcon(R.drawable.ic_previous);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
