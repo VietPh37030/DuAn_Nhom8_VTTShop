@@ -35,9 +35,6 @@ public class ProductDeltaActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_delta);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Chi tiết sản phẩm");
         Intent intent = getIntent();
         if (intent != null) {
             productId = intent.getStringExtra("PRODUCT_ID");
