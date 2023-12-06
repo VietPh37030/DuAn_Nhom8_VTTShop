@@ -1,26 +1,37 @@
 package anhpvph37030.fpoly.duan_nhom8.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import anhpvph37030.fpoly.duan_nhom8.Adapter.ChiTietHoaDonAdpter;
+import anhpvph37030.fpoly.duan_nhom8.MainActivity;
 import anhpvph37030.fpoly.duan_nhom8.R;
 import anhpvph37030.fpoly.duan_nhom8.model.ChiTietHoaDon;
 
 public class ChiTietHoaDonActivity extends AppCompatActivity {
     private ListView lstChiTietHoaDon;
-
+    Toolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chi_tiet_hoa_don);
+        toolbar = findViewById(R.id.toolbarcthd);
+        toolbar.setNavigationIcon(R.drawable.back);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                exitcthd();
+            }
+        });
 
         lstChiTietHoaDon = findViewById(R.id.lstchitiethd1);
 
@@ -40,5 +51,9 @@ public class ChiTietHoaDonActivity extends AppCompatActivity {
 
         ChiTietHoaDonAdpter chiTietHoaDonAdapter = new ChiTietHoaDonAdpter(this, R.layout.item_chitiethoadon, hoaDonChiTietList);
         lstChiTietHoaDon.setAdapter(chiTietHoaDonAdapter);
+    }
+
+    private void exitcthd() {
+        finish();
     }
 }

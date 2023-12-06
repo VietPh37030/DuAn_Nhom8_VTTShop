@@ -7,7 +7,7 @@
     android:orientation="vertical"
     tools:context=".Activities.ChiTietHoaDonActivity">
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbardoitt"
+        android:id="@+id/toolbarcthd"
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:background="#4CAF50"

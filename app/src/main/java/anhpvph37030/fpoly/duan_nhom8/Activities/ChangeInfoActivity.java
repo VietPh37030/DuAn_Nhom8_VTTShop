@@ -93,6 +93,7 @@ public class ChangeInfoActivity extends AppCompatActivity {
 
     private void exitApp() {
         finish();
+
     }
 
     private void updateUserInfo() {
