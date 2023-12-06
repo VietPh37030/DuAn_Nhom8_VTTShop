@@ -1,11 +1,16 @@
 package anhpvph37030.fpoly.duan_nhom8.fragment;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import com.google.firebase.database.DataSnapshot;
@@ -20,6 +25,7 @@ import java.util.List;
 import anhpvph37030.fpoly.duan_nhom8.Adapter.TaiKhoanAdapter;
 import anhpvph37030.fpoly.duan_nhom8.R;
 import anhpvph37030.fpoly.duan_nhom8.model.TaiKhoan;
+import anhpvph37030.fpoly.duan_nhom8.taikhoan.Login;
 
 public class Ql_KhachHangFrg extends Fragment {
 
@@ -41,6 +47,7 @@ public class Ql_KhachHangFrg extends Fragment {
         taiKhoanList = new ArrayList<>();
         taiKhoanAdapter = new TaiKhoanAdapter(getContext(), taiKhoanList);
         listView.setAdapter(taiKhoanAdapter);
+        Button btndangxuat = (Button) view.findViewById(R.id.btn_dangxuatadmin);
         // Kết nối Firebase
         databaseRef = FirebaseDatabase.getInstance().getReference().child("users");
 
@@ -66,7 +73,34 @@ public class Ql_KhachHangFrg extends Fragment {
                 // Xử lý khi có lỗi truy cập cơ sở dữ liệu
             }
         });
+        btndangxuat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle("Lưu ý");
+                builder.setIcon(R.drawable.thongbao);
+                builder.setMessage("Bạn có muốn đăng xuất không?");
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(getActivity(), "Đăng xuất thành công", Toast.LENGTH_SHORT).show();
 
+                        // Kết thúc tất cả các Activity trong ứng dụng
+                        getActivity().finishAffinity();
+
+                        Intent intent = new Intent(getActivity(), Login.class);
+                        startActivity(intent);
+                    }
+                });
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Do nothing
+                    }
+                });
+                builder.show();
+            }
+        });
         return view;
     }
 }

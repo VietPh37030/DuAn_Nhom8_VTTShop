@@ -30,7 +30,6 @@ public class ChiTietHoaDonAdmin extends AppCompatActivity {
         ImageView imgHoaDon = findViewById(R.id.imgHoaDon);
         TextView txtMaHoaDon = findViewById(R.id.txtMaHoaDon);
         TextView txtTenSanPham = findViewById(R.id.txtTenSanPham);
-        TextView txtTongtien = findViewById(R.id.txtTongTien);
         // Thêm các trường khác tương ứng
 
         // Sử dụng Picasso để hiển thị ảnh từ URL

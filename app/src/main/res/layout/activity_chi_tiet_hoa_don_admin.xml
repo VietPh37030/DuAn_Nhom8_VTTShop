@@ -40,13 +40,6 @@
                 android:text="Tên Sản Phẩm: "
                 android:textSize="18sp"
                 android:textStyle="bold"/>
-            <TextView
-                android:id="@+id/txtTongTien"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Tổng tiền: "
-                android:textSize="18sp"
-                android:textStyle="bold"/>
 
             <!-- Thêm các TextView khác tương ứng -->
 

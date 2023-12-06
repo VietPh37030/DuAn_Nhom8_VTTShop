@@ -20,8 +20,11 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import anhpvph37030.fpoly.duan_nhom8.MainActivity;
+import anhpvph37030.fpoly.duan_nhom8.MainActivity2;
 import anhpvph37030.fpoly.duan_nhom8.R;
 
 public class SignUp extends AppCompatActivity {
@@ -97,13 +100,25 @@ public class SignUp extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Intent intent = new Intent(SignUp.this, MainActivity.class);
-                            startActivity(intent);
-                            finishAffinity();
+                            // Đăng ký thành công, lấy thông tin người dùng
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            if (user != null) {
+                                // Lấy ID của người dùng
+                                String userId = user.getUid();
 
+                                // Thêm thông tin người dùng vào Firebase Realtime Database
+                                DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("users");
+                                usersRef.child(userId).child("email").setValue(email);
+                                usersRef.child(userId).child("password").setValue(password);
+                                usersRef.child(userId).child("role").setValue("user"); // Đặt role là "user" nếu là người dùng mới đăng ký
+
+                                // Chuyển đến MainActivity2
+                                Intent intent = new Intent(SignUp.this, MainActivity2.class);
+                                startActivity(intent);
+                                finishAffinity();
+                            }
                         } else {
-                            // If sign in fails, display a message to the user.
+                            // Đăng ký thất bại, hiển thị thông báo lỗi
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
                             Toast.makeText(SignUp.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
@@ -111,4 +126,5 @@ public class SignUp extends AppCompatActivity {
                     }
                 });
     }
+
 }

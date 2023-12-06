@@ -85,7 +85,13 @@
                             android:textSize="13sp"
                             android:textStyle="italic" />
                     </LinearLayout>
-
+                    <TextView
+                        android:id="@+id/txt_trang_thai"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text=""
+                        android:textColor="#FD0000" />
 
                 </LinearLayout>
 
