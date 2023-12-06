@@ -45,7 +45,9 @@ public class ChangeInfoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_info);
-
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Đổi thông tin");
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
         currentUserId = currentUser.getUid();

@@ -13,6 +13,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -33,7 +34,7 @@ public class DiaChiActi extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
     private DatabaseReference diaChiRef;
-
+    private Toolbar toolbar;
     private ListView listView;
     private ArrayList<ThongTinDiaChi> diaChiList;
     private DiaChiAdapter diaChiAdapter;
@@ -43,7 +44,9 @@ public class DiaChiActi extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dia_chi);
-
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Thông tin nhận hàng");
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
 

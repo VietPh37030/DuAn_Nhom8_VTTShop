@@ -44,7 +44,9 @@ public class ChangePassActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance();
         currentUser = mAuth.getCurrentUser();
-
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Đổi mật khẩu");
         edtOldPassword = findViewById(R.id.edt_changepass_mkc);
         edtNewPassword = findViewById(R.id.edt_changepass_mkm);
         edtConfirmPassword = findViewById(R.id.edt_changepass_nhaplaimk);

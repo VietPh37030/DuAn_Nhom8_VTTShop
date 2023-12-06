@@ -18,6 +18,7 @@ import anhpvph37030.fpoly.duan_nhom8.R;
 import anhpvph37030.fpoly.duan_nhom8.model.ChiTietHoaDon;
 
 public class ChiTietHoaDonActivity extends AppCompatActivity {
+
     private ListView lstChiTietHoaDon;
     Toolbar toolbar;
     @Override
@@ -26,6 +27,9 @@ public class ChiTietHoaDonActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chi_tiet_hoa_don);
         toolbar = findViewById(R.id.toolbarcthd);
         toolbar.setNavigationIcon(R.drawable.ic_previous);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Chi tiết hoá đơn");
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

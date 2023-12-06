@@ -4,17 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <item
-        android:id="@+id/item_add"
-        android:icon="@drawable/ic_search"
-        android:title="Add new"
-        app:showAsAction="ifRoom"
-        app:actionViewClass="androidx.appcompat.widget.SearchView"/>
-    <item
-        android:id="@+id/item_search"
-        android:icon="@drawable/ic_cart"
-        android:title="Search"
-        app:showAsAction="always" />
-    <item
         android:id="@+id/loc"
         android:icon="@drawable/loc"
         android:title="Search"

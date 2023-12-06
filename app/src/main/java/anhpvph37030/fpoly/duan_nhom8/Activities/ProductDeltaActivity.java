@@ -2,6 +2,7 @@ package anhpvph37030.fpoly.duan_nhom8.Activities;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -29,12 +30,14 @@ public class ProductDeltaActivity extends AppCompatActivity {
     private String productDescription;
     private String productQuantity;
     private Cart cart;
-
+    private Toolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_delta);
-
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Chi tiết sản phẩm");
         Intent intent = getIntent();
         if (intent != null) {
             productId = intent.getStringExtra("PRODUCT_ID");

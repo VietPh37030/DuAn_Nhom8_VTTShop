@@ -3,6 +3,7 @@ package anhpvph37030.fpoly.duan_nhom8.Adapter;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -18,6 +19,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.NotificationCompat;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -39,11 +41,13 @@ public class HoaDonAdapter extends ArrayAdapter<HoaDon> {
     private List<HoaDon> hoaDonList;
     private Context context;
     private DatabaseReference hoaDonRef;
+    private int selectedFilterStatus;
 
-    public HoaDonAdapter(@NonNull Context context, int resource, @NonNull List<HoaDon> objects) {
+    public HoaDonAdapter(@NonNull Context context, int resource, @NonNull List<HoaDon> objects, int selectedFilterStatus) {
         super(context, resource, objects);
         this.context = context;
         this.hoaDonList = objects;
+        this.selectedFilterStatus = selectedFilterStatus;
         hoaDonRef = FirebaseDatabase.getInstance().getReference().child("HoaDonThanhToan");
     }
 
@@ -168,7 +172,6 @@ public class HoaDonAdapter extends ArrayAdapter<HoaDon> {
                     }
                 });
     }
-
 
     private void hienThiThongBao(String title, String body) {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);

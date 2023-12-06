@@ -1,11 +1,14 @@
 package anhpvph37030.fpoly.duan_nhom8.Activities;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -29,6 +32,7 @@ public class HoaDonActivity extends AppCompatActivity {
     private ListView listViewHoaDon;
     private DatabaseReference hoaDonRef;
     private List<HoaDon> hoaDonList;
+    private int selectedFilterStatus = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +40,9 @@ public class HoaDonActivity extends AppCompatActivity {
         setContentView(R.layout.activity_hoadon);
         toolbar = findViewById(R.id.toolbar);
         listViewHoaDon = findViewById(R.id.lsthoadon);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Hóa Đơn");
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = auth.getCurrentUser();
 
@@ -53,20 +60,55 @@ public class HoaDonActivity extends AppCompatActivity {
                 ExitsActi();
             }
         });
+
+        // Thêm lựa chọn lọc vào toolbar
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if (item.getItemId() == R.id.loc) {
+                    // Hiển thị dialog để chọn trạng thái
+                    showFilterDialog();
+                    return true;
+                }
+                return false;
+            }
+        });
+
         // Gọi hàm để hiển thị dữ liệu từ Firebase
-        displayDataFromFirebase();
+        displayDataFromFirebase(selectedFilterStatus);
     }
 
     private void ExitsActi() {
         finish();
     }
 
-    private void displayDataFromFirebase() {
+    private void showFilterDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Chọn trạng thái");
+
+        String[] statusArray = {"Chờ xác nhận", "Đã xác nhận", "Đang giao", "Giao hàng thành công", "Đã hủy"};
+
+        builder.setSingleChoiceItems(statusArray, selectedFilterStatus, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int selectedIndex) {
+                selectedFilterStatus = selectedIndex;
+                dialogInterface.dismiss();
+                // Gọi hàm để hiển thị dữ liệu từ Firebase với trạng thái đã chọn
+                displayDataFromFirebase(selectedFilterStatus);
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void displayDataFromFirebase(int selectedFilterStatus) {
         // Sử dụng custom adapter HoaDonAdapter để hiển thị dữ liệu từ Firebase
         HoaDonAdapter hoaDonAdapter = new HoaDonAdapter(
                 this,
                 R.layout.item_hoadon,
-                new ArrayList<>()
+                new ArrayList<>(),
+                this.selectedFilterStatus
         );
 
         // Liên kết Adapter với ListView
@@ -78,10 +120,12 @@ public class HoaDonActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 hoaDonList = new ArrayList<>();
 
-                // Lặp qua dataSnapshot để lấy dữ liệu từ Firebase
+                // Lặp qua dataSnapshot để lấy dữ liệu từ Firebase và lọc theo trạng thái
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     HoaDon hoaDon = snapshot.getValue(HoaDon.class);
-                    hoaDonList.add(hoaDon);
+                    if (hoaDon != null && (HoaDonActivity.this.selectedFilterStatus == -1 || hoaDon.getTrangThai() == HoaDonActivity.this.selectedFilterStatus)) {
+                        hoaDonList.add(hoaDon);
+                    }
                 }
 
                 // Cập nhật dữ liệu mới cho Adapter

@@ -2,6 +2,8 @@ package anhpvph37030.fpoly.duan_nhom8.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
 import android.content.Intent;
 import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
@@ -29,7 +31,7 @@ import anhpvph37030.fpoly.duan_nhom8.model.HoaDon;
 import anhpvph37030.fpoly.duan_nhom8.model.ThongTinDiaChi;
 
 public class GioHangThanhToanActi extends AppCompatActivity {
-
+    private Toolbar toolbar;
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
     private DatabaseReference diaChiRef;
@@ -42,7 +44,9 @@ public class GioHangThanhToanActi extends AppCompatActivity {
         btnThanhToanGio = findViewById(R.id.btnthanhtoangh);
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
-
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Thanh Toán");
         if (currentUser != null) {
             diaChiRef = FirebaseDatabase.getInstance().getReference().child("thongtinnhanhang").child(currentUser.getUid());
         }
