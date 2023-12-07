@@ -38,14 +38,10 @@ public class HoaDonActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hoadon);
-        toolbar = findViewById(R.id.toolbar);
-        listViewHoaDon = findViewById(R.id.lsthoadon);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Hóa Đơn");
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = auth.getCurrentUser();
-
+        listViewHoaDon = (ListView) findViewById(R.id.lsthoadon);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (currentUser != null) {
             // Người dùng đã đăng nhập, thực hiện các hành động tiếp theo
             String userID = currentUser.getUid();
