@@ -24,7 +24,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import anhpvph37030.fpoly.duan_nhom8.R;
 
@@ -116,6 +118,9 @@ public class ThongKeFrg extends Fragment {
                 String topProduct = "";
                 int maxQuantity = 0;
 
+                // Create a map to store the total quantity sold for each product
+                Map<String, Integer> productQuantities = new HashMap<>();
+
                 for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
                     for (DataSnapshot hoaDonSnapshot : userSnapshot.getChildren()) {
                         if (hoaDonSnapshot.hasChild("tongTien")) {
@@ -132,10 +137,18 @@ public class ThongKeFrg extends Fragment {
 
                             if (isDateInRange(ngayDat, ngayBatDau, ngayKetThuc)) {
                                 totalRevenue += tongTien;
-                                if (soLuong > maxQuantity) {
-                                    maxQuantity = soLuong;
+
+                                // Update the quantity for the current product
+                                int currentQuantity = productQuantities.getOrDefault(tenSanPham, 0);
+                                int updatedQuantity = currentQuantity + soLuong;
+                                productQuantities.put(tenSanPham, updatedQuantity);
+
+                                // Check if the current product has the highest quantity
+                                if (updatedQuantity > maxQuantity) {
+                                    maxQuantity = updatedQuantity;
                                     topProduct = tenSanPham;
                                 }
+
                                 Log.d("MyTag", "Hóa đơn nằm trong khoảng thời gian đã chọn. Tổng doanh thu tạm thời: " + totalRevenue);
                             } else {
                                 Log.d("MyTag", "Hóa đơn không nằm trong khoảng thời gian đã chọn.");

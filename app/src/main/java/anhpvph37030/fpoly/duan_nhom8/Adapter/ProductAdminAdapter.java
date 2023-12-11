@@ -11,7 +11,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
 import com.bumptech.glide.Glide;
@@ -36,15 +35,18 @@ public class ProductAdminAdapter extends ArrayAdapter<Product> {
         super(context, 0, productList);
         this.context = context;
     }
+
     public interface EditSanPhamListener {
         void onEditSanPham(Product danhMuc);
     }
+
     public void setEditSanPhamListener(ProductAdminAdapter.EditSanPhamListener listener) {
         this.editSanPhamListener = listener;
     }
+
     @NonNull
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+    public View getView(int position, @NonNull View convertView, @NonNull ViewGroup parent) {
         View listItemView = convertView;
         if (listItemView == null) {
             listItemView = LayoutInflater.from(getContext()).inflate(
@@ -108,7 +110,7 @@ public class ProductAdminAdapter extends ArrayAdapter<Product> {
             btnXoa.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    confirmAndDeleteProduct(currentProduct);
+                    confirmAndDeleteProduct(currentProduct, position);
                 }
             });
 
@@ -116,8 +118,9 @@ public class ProductAdminAdapter extends ArrayAdapter<Product> {
 
         return listItemView;
     }
+
     // Hàm xác nhận và xóa sản phẩm
-    private void confirmAndDeleteProduct(Product selectedProduct) {
+    private void confirmAndDeleteProduct(Product selectedProduct, int position) {
         // Hiển thị Dialog xác nhận xóa
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("Xác nhận xóa sản phẩm");
@@ -125,7 +128,8 @@ public class ProductAdminAdapter extends ArrayAdapter<Product> {
         builder.setPositiveButton("Xóa", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                hideProduct(selectedProduct);
+                deleteProduct(selectedProduct, position);
+                Toast.makeText(context, "Xoá thành công", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -138,23 +142,16 @@ public class ProductAdminAdapter extends ArrayAdapter<Product> {
         builder.show();
     }
 
-//    // Hàm xóa sản phẩm
-//    private void deleteProduct(Product selectedProduct) {
-//        // Xóa sản phẩm từ Firebase ở đây
-//        DatabaseReference productRef = FirebaseDatabase.getInstance().getReference().child("products").child(selectedProduct.getId());
-//        productRef.removeValue();
-//
-//        // Hiển thị thông báo sau khi xóa
-//        Toast.makeText(getContext(), "Đã xóa sản phẩm", Toast.LENGTH_SHORT).show();
-//    }
-    // Hàm ẩn sản phẩm
-    private void hideProduct(Product selectedProduct) {
-        // Ẩn sản phẩm trong Firebase bằng cách cập nhật trường isHidden
+    // Hàm xóa sản phẩm
+    private void deleteProduct(Product selectedProduct, int position) {
+        // Xóa sản phẩm từ Firebase
         DatabaseReference productRef = FirebaseDatabase.getInstance().getReference().child("products").child(selectedProduct.getId());
-        productRef.child("visible").setValue(true);
+        productRef.removeValue();
 
-        // Hiển thị thông báo sau khi ẩn sản phẩm
-        Toast.makeText(getContext(), "Đã ẩn sản phẩm", Toast.LENGTH_SHORT).show();
+        // Xóa sản phẩm khỏi danh sách ngay lập tức
+        remove(getItem(position));
+
+        // Hiển thị thông báo sau khi xóa
+        Toast.makeText(getContext(), "Đã xóa sản phẩm", Toast.LENGTH_SHORT).show();
     }
-
 }

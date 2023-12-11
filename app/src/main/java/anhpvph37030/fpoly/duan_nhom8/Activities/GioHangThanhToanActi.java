@@ -44,9 +44,6 @@ public class GioHangThanhToanActi extends AppCompatActivity {
         btnThanhToanGio = findViewById(R.id.btnthanhtoangh);
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Thanh Toán");
         if (currentUser != null) {
             diaChiRef = FirebaseDatabase.getInstance().getReference().child("thongtinnhanhang").child(currentUser.getUid());
         }
